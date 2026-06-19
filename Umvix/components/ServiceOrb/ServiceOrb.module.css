@@ -1,0 +1,434 @@
+/* ServiceOrb — scoped styles only */
+
+.panel {
+  position: relative;
+  width: 100%;
+  min-height: 520px;
+  margin-top: 48px;
+  padding-top: 20px;
+  overflow: visible;
+}
+
+.ambientPrimary {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.035;
+  background: radial-gradient(
+    ellipse 50% 50% at 75% 50%,
+    rgba(var(--ambient-rgb, 255, 77, 109), 1) 0%,
+    transparent 100%
+  );
+  transition: background 1.2s ease;
+}
+
+.ambientSecondary {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.008;
+  background: radial-gradient(
+    ellipse 40% 40% at 12% 18%,
+    rgba(var(--ambient-rgb, 255, 77, 109), 1) 0%,
+    transparent 100%
+  );
+  transition: background 1.2s ease;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.connectors {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.connectorLine {
+  stroke-width: 1;
+  stroke-dasharray: 4 6;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.scene {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  min-height: 400px;
+  padding-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.orbAnchor {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+}
+
+.orb {
+  position: relative;
+  width: 155px;
+  height: 155px;
+  --orb-color: #c96b7f;
+  --orb-rgb: 201, 107, 127;
+  --orb-shadow: rgba(201, 107, 127, 0.12);
+}
+
+.orbCore {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 38% 32%,
+    rgba(255, 255, 255, 0.75) 0%,
+    rgba(var(--orb-rgb), 0.55) 22%,
+    rgba(var(--orb-rgb), 0.22) 55%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  box-shadow:
+    0 0 18px 2px rgba(var(--orb-rgb), 0.12),
+    0 0 50px 12px rgba(var(--orb-rgb), 0.04);
+  will-change: box-shadow;
+}
+
+.orbHighlight {
+  position: absolute;
+  top: 18%;
+  left: 22%;
+  width: 35%;
+  height: 25%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse,
+    rgba(255, 255, 255, 0.22) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.shimmerRing {
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  padding: 1px;
+  background: conic-gradient(
+    from 0deg,
+    transparent,
+    rgba(255, 255, 255, 0.7),
+    transparent 40%
+  );
+  opacity: 0.06;
+  animation: shimmerSpin 8s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.orbitRing1 {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 190px;
+  height: 190px;
+  margin-left: -95px;
+  margin-top: -95px;
+  border: 0.5px solid rgba(255, 255, 255, 0.04);
+  border-radius: 50%;
+  transform: rotateX(70deg);
+  animation: orbitSpin1 12s linear infinite;
+  pointer-events: none;
+}
+
+.orbitRing2 {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 220px;
+  height: 220px;
+  margin-left: -110px;
+  margin-top: -110px;
+  border: 0.5px dashed rgba(255, 255, 255, 0.025);
+  border-radius: 50%;
+  transform: rotateX(50deg) rotateY(30deg);
+  animation: orbitSpin2 18s linear infinite reverse;
+  pointer-events: none;
+}
+
+.pulseRing {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid var(--orb-color);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pillLayer {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  z-index: 5;
+  perspective: 900px;
+}
+
+.pillWrapper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+.pillFloat {
+  will-change: transform;
+}
+
+.servicePill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 170px;
+  padding: 10px 16px;
+  border-radius: 14px;
+  border: 0.5px solid rgba(255, 255, 255, 0.09);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: border-color 0.3s ease, transform 0.3s ease, background 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.servicePillActive {
+  transform: scale(1.03);
+  will-change: transform;
+  background: rgba(var(--active-rgb), 0.04);
+  border-left: 1.5px solid rgba(var(--active-rgb), 0.45);
+  border-top: 0.5px solid rgba(var(--active-rgb), 0.08);
+  border-right: 0.5px solid rgba(var(--active-rgb), 0.08);
+  border-bottom: 0.5px solid rgba(var(--active-rgb), 0.08);
+  box-shadow:
+    0 2px 12px rgba(var(--active-rgb), 0.06),
+    inset 0 0 8px rgba(var(--active-rgb), 0.02);
+}
+
+.pillIcon {
+  font-size: 1.1rem;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+.pillLabel {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.pillSub {
+  margin: 2px 0 0;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.3;
+}
+
+.pillIndicator {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  margin-left: auto;
+  flex-shrink: 0;
+  opacity: 0.3;
+  transition: opacity 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pillIndicatorActive {
+  opacity: 0.75;
+  box-shadow: 0 0 4px currentColor;
+}
+
+.popover {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + 120px);
+  transform: translateX(-50%);
+  z-index: 6;
+  min-width: 240px;
+  max-width: 280px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 0.5px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  pointer-events: auto;
+}
+
+.popoverTitle {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.popoverDesc {
+  margin: 6px 0 0;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.4;
+}
+
+.popoverLink {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.popoverLink:hover {
+  opacity: 0.8;
+}
+
+/* Mobile */
+.mobilePanel {
+  display: none;
+}
+
+.mobileCard {
+  border-radius: 14px;
+  border: 0.5px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 14px 16px;
+}
+
+.mobileCardLabel {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.mobileCardSub {
+  margin: 4px 0 0;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.mobilePills {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.mobilePill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  cursor: pointer;
+  text-align: left;
+}
+
+.mobilePillActive {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+@keyframes shimmerSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbitSpin1 {
+  from {
+    transform: rotateX(70deg) rotateZ(0deg);
+  }
+  to {
+    transform: rotateX(70deg) rotateZ(360deg);
+  }
+}
+
+@keyframes orbitSpin2 {
+  from {
+    transform: rotateX(50deg) rotateY(30deg) rotateZ(0deg);
+  }
+  to {
+    transform: rotateX(50deg) rotateY(30deg) rotateZ(360deg);
+  }
+}
+
+@keyframes drawLine {
+  from {
+    stroke-dashoffset: 200;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shimmerRing,
+  .orbitRing1,
+  .orbitRing2 {
+    animation: none;
+  }
+
+  .servicePillActive {
+    transform: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .panel {
+    min-height: auto;
+  }
+
+  .canvas,
+  .connectors,
+  .scene {
+    display: none !important;
+  }
+
+  .mobilePanel {
+    display: block;
+  }
+}
+
+@media (min-width: 768px) {
+  .mobilePanel {
+    display: none !important;
+  }
+}

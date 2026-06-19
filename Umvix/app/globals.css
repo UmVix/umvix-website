@@ -1,0 +1,533 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .site-container {
+    @apply mx-auto w-full max-w-[1400px] px-6;
+  }
+
+  /* Shared left edge for logo + hero headline */
+  .content-rail {
+    @apply pl-0;
+  }
+
+  .hero-headline-glow h1,
+  .hero-headline-glow h1 span {
+    font-family: var(--font-headline), system-ui, sans-serif;
+    font-weight: 800;
+  }
+
+  .btn-primary {
+    @apply bg-brand-gradient text-brand-white shadow-[0_8px_24px_rgba(255,31,61,0.28)] transition-opacity hover:opacity-90;
+  }
+
+  /* Individual preview card (browser-window look) — used in the filmstrip and
+     the mobile fallback. */
+  .smart-preview-bleed {
+    @apply relative h-full overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a0a] shadow-[0_20px_60px_rgba(0,0,0,0.4)];
+    min-height: 18rem;
+  }
+
+  /* Full-height clipping viewport for the pinned filmstrip. Bleeds to the right
+     edge of the screen while the left column stays put. No border/bg of its own
+     — it only clips the cards sliding through it. */
+  .smart-preview-rail {
+    @apply relative h-full overflow-hidden;
+  }
+
+  @media (min-width: 1024px) {
+    .smart-preview-bleed {
+      min-height: 0;
+    }
+
+    .smart-preview-rail {
+      width: calc(100% + (100vw - min(87.5rem, 100vw)) / 2 + 1.5rem);
+      max-width: none;
+    }
+  }
+}
+
+:root {
+  /* Brand gradient */
+  --brand-red: #ff1f3d;
+  --brand-red-dark: #b30000;
+  --brand-gradient: linear-gradient(135deg, #ff1f3d 0%, #b30000 100%);
+
+  /* Blacks */
+  --brand-black: #000000;
+  --brand-black-soft: #0a0a0a;
+
+  /* Text */
+  --brand-white: #ffffff;
+  --brand-gray: #a3a3a3;
+  --brand-gray-muted: #737373;
+
+  /* Sentiment-driven accent (set at runtime by AccentProvider) */
+  --accent-intensity: 1;
+  --accent-speed: 3s;
+
+  /* Sticky transparent navbar — used to offset page content */
+  --nav-height: 4.25rem;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --nav-height: 5rem;
+  }
+}
+
+html {
+  scroll-padding-top: var(--nav-height);
+  /* `clip` (not `hidden`) prevents horizontal scroll WITHOUT creating a scroll
+     container — required so `position: sticky` pinning works inside the page. */
+  overflow-x: clip;
+  scrollbar-width: none; /* Firefox */
+  scrollbar-gutter: auto;
+}
+
+html::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+body {
+  background-color: var(--brand-black);
+  color: var(--brand-white);
+  /* See note on <html>: `clip` keeps sticky pinning functional. */
+  overflow-x: clip;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+}
+
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+/* Accent glow whose strength + pulse speed follow the user's mood */
+.accent-glow {
+  box-shadow: 0 0 calc(30px * var(--accent-intensity)) -6px var(--brand-red);
+  animation: accent-pulse var(--accent-speed) ease-in-out infinite;
+}
+
+@keyframes accent-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 calc(24px * var(--accent-intensity)) -8px var(--brand-red);
+  }
+  50% {
+    box-shadow: 0 0 calc(48px * var(--accent-intensity)) -4px var(--brand-red);
+  }
+}
+
+@keyframes ambient-drift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(40px, -30px, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes ambient-drift-alt {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-50px, 30px, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes float-rotate {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-24px) rotate(180deg);
+  }
+  100% {
+    transform: translateY(0) rotate(360deg);
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes soft-pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes dash-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes neon-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.neon-border-container {
+  position: relative;
+  overflow: hidden;
+  padding: 1px;
+}
+
+.neon-border-container::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    transparent,
+    transparent,
+    transparent,
+    var(--brand-red)
+  );
+  animation: neon-rotate 2s linear infinite;
+  z-index: 0;
+}
+
+.neon-border-content {
+  position: relative;
+  z-index: 1;
+  background: var(--brand-black);
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes rise-bar {
+  0%,
+  100% {
+    transform: scaleY(0.45);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes waveform {
+  0%,
+  100% {
+    transform: scaleY(0.4);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes caret-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.typewriter-caret::after {
+  content: "";
+  display: inline-block;
+  width: 0.6ch;
+  height: 1em;
+  margin-left: 2px;
+  background: var(--brand-red);
+  vertical-align: text-bottom;
+  animation: caret-blink 1s step-end infinite;
+}
+
+/* Reduced-motion: neutralize non-essential animation site-wide */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Hide native cursor only when the custom cursor is active */
+@media (hover: hover) and (pointer: fine) {
+  body.custom-cursor-active {
+    cursor: none;
+  }
+  body.custom-cursor-active a,
+  body.custom-cursor-active button,
+  body.custom-cursor-active [data-cursor="hover"],
+  body.custom-cursor-active input,
+  body.custom-cursor-active textarea,
+  body.custom-cursor-active select,
+  body.custom-cursor-active label {
+    cursor: none;
+  }
+}
+
+/* Custom cursor layers */
+.custom-cursor-dot {
+  box-shadow:
+    0 0 4px 1px rgba(255, 31, 61, 0.5),
+    0 0 8px 2px rgba(255, 31, 61, 0.2);
+  transition: width 0.18s ease, height 0.18s ease, box-shadow 0.18s ease;
+  z-index: 3;
+}
+
+.custom-cursor-dot[data-hover="true"] {
+  width: 0.5rem;
+  height: 0.5rem;
+  box-shadow:
+    0 0 6px 1px rgba(255, 31, 61, 0.65),
+    0 0 12px 3px rgba(255, 31, 61, 0.25);
+}
+
+.custom-cursor-ring {
+  border-color: rgba(255, 31, 61, 0.45);
+  background: rgba(255, 31, 61, 0.03);
+  box-shadow:
+    0 0 6px rgba(255, 31, 61, 0.15),
+    inset 0 0 6px rgba(255, 31, 61, 0.05);
+  transition: width 0.18s ease, height 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+  z-index: 2;
+}
+
+.custom-cursor-ring[data-hover="true"] {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-color: rgba(255, 31, 61, 0.7);
+  background: rgba(255, 31, 61, 0.06);
+  box-shadow:
+    0 0 10px rgba(255, 31, 61, 0.2),
+    inset 0 0 8px rgba(255, 31, 61, 0.08);
+}
+
+.custom-cursor-trail {
+  background: radial-gradient(
+    circle,
+    rgba(255, 31, 61, 0.18) 0%,
+    rgba(255, 31, 61, 0.06) 45%,
+    transparent 70%
+  );
+  filter: blur(2px);
+  z-index: 1;
+}
+
+/* Glassmorphism surface for AI widgets */
+.glass {
+  background: rgba(10, 10, 10, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 31, 61, 0.18);
+}
+
+/* Premium glass card — contact CTA */
+.contact-glass-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.03) 42%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.35),
+    0 24px 64px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.contact-glass-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse 80% 50% at 50% -20%,
+    rgba(255, 255, 255, 0.14),
+    transparent 55%
+  );
+  pointer-events: none;
+}
+
+.contact-glass-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse 60% 40% at 100% 100%,
+    rgba(255, 31, 61, 0.08),
+    transparent 50%
+  );
+  pointer-events: none;
+}
+
+.contact-glass-icon {
+  background: linear-gradient(
+    145deg,
+    rgba(255, 31, 61, 0.22),
+    rgba(255, 31, 61, 0.08)
+  );
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 31, 61, 0.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 4px 16px rgba(255, 31, 61, 0.12);
+}
+
+.contact-glass-btn {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.contact-glass-btn:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+.contact-glass-divider {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.12) 50%,
+    transparent
+  );
+  height: 1px;
+  border: none;
+}
+
+/* Custom scrollbar inside chat */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(255, 31, 61, 0.4);
+  border-radius: 9999px;
+}
+
+/* Hide loading overlay via CSS if client JS is delayed (safety fallback) */
+@keyframes loading-screen-out {
+  0%,
+  92% {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+.loading-screen-overlay {
+  animation: loading-screen-out 4.2s ease-in-out forwards;
+}
+
+/* React controls exit once hydrated — prevents CSS fighting the fade-out glitch */
+.loading-screen-overlay.loading-screen-js {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-screen-overlay {
+    animation-duration: 0.8s;
+  }
+
+  .loading-screen-overlay.loading-screen-js {
+    animation: none;
+  }
+}
+
+/* Vertical scroll progress — brand theme tokens */
+.scroll-progress-fill {
+  background: linear-gradient(
+    180deg,
+    var(--brand-white) 0%,
+    var(--brand-red) 55%,
+    var(--brand-red-dark) 100%
+  );
+  box-shadow:
+    0 0 5px rgba(255, 255, 255, 0.3),
+    0 0 10px rgba(255, 31, 61, 0.55),
+    0 0 16px rgba(255, 31, 61, 0.22);
+  transition: none;
+}
+
+/* Hero service orb — CSS 3D sphere illusion */
+.service-orb-core {
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 32% 28%,
+    rgba(255, 255, 255, 0.92) 0%,
+    var(--orb-accent, #ff2d55) 40%,
+    #14020a 72%,
+    #000000 100%
+  );
+  box-shadow:
+    0 0 24px var(--orb-glow, rgba(255, 45, 85, 0.75)),
+    0 0 52px var(--orb-glow-soft, rgba(255, 45, 85, 0.35)),
+    inset -10px -14px 28px rgba(0, 0, 0, 0.55),
+    inset 5px 5px 14px rgba(255, 255, 255, 0.12);
+  transform: translate(-50%, -50%);
+  animation: service-orb-pulse 3s ease-in-out infinite;
+}
+
+@keyframes service-orb-pulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .service-orb-core {
+    animation: none;
+  }
+}
