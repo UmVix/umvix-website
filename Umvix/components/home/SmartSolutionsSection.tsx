@@ -28,7 +28,7 @@ function Heading() {
     <Reveal y={28}>
       <h2
         id="smart-solutions-heading"
-        className="mx-auto w-full max-w-none text-center font-headline text-[clamp(1.35rem,3.8vw,3.5rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-brand-white whitespace-nowrap"
+        className="mx-auto w-full max-w-none text-center font-headline text-[clamp(1.2rem,3.4vw,3.1rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-brand-white whitespace-nowrap"
       >
         Smart <span className="text-brand-red">Agentic AI</span> For Your Business
       </h2>

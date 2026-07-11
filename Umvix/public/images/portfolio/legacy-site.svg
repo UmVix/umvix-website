@@ -1,0 +1,117 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Outdated legacy website design">
+  <defs>
+    <linearGradient id="lg-banner" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#2a5db0"/>
+      <stop offset="1" stop-color="#16356b"/>
+    </linearGradient>
+    <linearGradient id="lg-tab" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#f2f2f2"/>
+      <stop offset="1" stop-color="#c9c9c9"/>
+    </linearGradient>
+    <linearGradient id="lg-btn" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#ffe07a"/>
+      <stop offset="1" stop-color="#e0a900"/>
+    </linearGradient>
+    <linearGradient id="lg-marquee" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#ffd94a"/>
+      <stop offset="1" stop-color="#f2b800"/>
+    </linearGradient>
+  </defs>
+
+  <!-- page background: old tiled light -->
+  <rect width="1600" height="900" fill="#dfe6ef"/>
+  <rect x="40" y="24" width="1520" height="852" fill="#ffffff" stroke="#9aa7b8" stroke-width="2"/>
+
+  <!-- top banner -->
+  <rect x="40" y="24" width="1520" height="120" fill="url(#lg-banner)"/>
+  <rect x="40" y="24" width="1520" height="120" fill="url(#lg-banner)" opacity="0.9"/>
+  <!-- fake globe logo -->
+  <circle cx="120" cy="84" r="34" fill="#7db3ff" stroke="#ffffff" stroke-width="3"/>
+  <path d="M86 84 h68 M120 50 v68 M96 62 q24 22 48 0 M96 106 q24 -22 48 0" stroke="#16356b" stroke-width="2" fill="none"/>
+  <text x="176" y="80" font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="42" fill="#ffffff">GlobalCorp Solutions</text>
+  <text x="178" y="112" font-family="Georgia, serif" font-style="italic" font-size="20" fill="#cfe0ff">"Your Partner in Business Since 1998"</text>
+  <!-- email/print old links -->
+  <text x="1520" y="52" font-family="Arial, sans-serif" font-size="15" fill="#cfe0ff" text-anchor="end">Home | Sitemap | Email Us</text>
+
+  <!-- nav tabs (beveled) -->
+  <g font-family="Arial, sans-serif" font-size="17" fill="#0033aa">
+    <rect x="40" y="144" width="150" height="40" fill="url(#lg-tab)" stroke="#9aa7b8"/>
+    <text x="115" y="170" text-anchor="middle" font-weight="700">Home</text>
+    <rect x="190" y="144" width="150" height="40" fill="url(#lg-tab)" stroke="#9aa7b8"/>
+    <text x="265" y="170" text-anchor="middle">About Us</text>
+    <rect x="340" y="144" width="150" height="40" fill="url(#lg-tab)" stroke="#9aa7b8"/>
+    <text x="415" y="170" text-anchor="middle">Products</text>
+    <rect x="490" y="144" width="150" height="40" fill="url(#lg-tab)" stroke="#9aa7b8"/>
+    <text x="565" y="170" text-anchor="middle">Services</text>
+    <rect x="640" y="144" width="150" height="40" fill="url(#lg-tab)" stroke="#9aa7b8"/>
+    <text x="715" y="170" text-anchor="middle">Contact</text>
+  </g>
+  <rect x="40" y="144" width="1520" height="40" fill="none" stroke="#9aa7b8" stroke-width="2"/>
+
+  <!-- scrolling marquee bar -->
+  <rect x="40" y="184" width="1520" height="34" fill="url(#lg-marquee)"/>
+  <text x="60" y="207" font-family="'Comic Sans MS', 'Marker Felt', cursive" font-size="17" fill="#a00000">★ WELCOME to our NEW website!!! ★ Now with online ordering ★ Sign our guestbook ★ Best deals of 2004 ★</text>
+
+  <!-- left sidebar -->
+  <rect x="60" y="244" width="300" height="560" fill="#eef2f8" stroke="#9aa7b8"/>
+  <rect x="60" y="244" width="300" height="34" fill="#16356b"/>
+  <text x="76" y="267" font-family="Arial, sans-serif" font-weight="700" font-size="16" fill="#ffffff">Navigation Menu</text>
+  <g font-family="'Times New Roman', serif" font-size="17" fill="#0000cc">
+    <text x="80" y="308">» Company Profile</text>
+    <text x="80" y="342">» Our Products</text>
+    <text x="80" y="376">» Latest News</text>
+    <text x="80" y="410">» Testimonials</text>
+    <text x="80" y="444">» FAQ</text>
+    <text x="80" y="478">» Downloads</text>
+    <text x="80" y="512">» Contact Form</text>
+  </g>
+  <line x1="80" y1="296" x2="256" y2="296" stroke="#0000cc" stroke-dasharray="3 3"/>
+  <!-- visitor counter -->
+  <rect x="80" y="556" width="260" height="70" fill="#000000"/>
+  <text x="90" y="580" font-family="Arial, sans-serif" font-size="13" fill="#33ff33">Visitors:</text>
+  <text x="90" y="614" font-family="'Courier New', monospace" font-weight="700" font-size="26" fill="#33ff33" letter-spacing="4">0042871</text>
+  <!-- under construction -->
+  <g transform="translate(120,660)">
+    <polygon points="80,0 120,80 40,80" fill="#ffcc00" stroke="#000" stroke-width="2"/>
+    <rect x="66" y="30" width="28" height="10" fill="#000"/>
+    <rect x="60" y="52" width="40" height="10" fill="#000"/>
+    <text x="80" y="112" font-family="Arial, sans-serif" font-size="15" fill="#cc6600" text-anchor="middle" font-weight="700">Under Construction</text>
+  </g>
+
+  <!-- main content -->
+  <text x="400" y="288" font-family="Georgia, serif" font-weight="700" font-size="40" fill="#a00000">Welcome To Our Website!!!</text>
+  <line x1="400" y1="300" x2="1000" y2="300" stroke="#a00000" stroke-width="2"/>
+  <!-- NEW starburst -->
+  <g transform="translate(1420,300)">
+    <polygon points="0,-46 12,-16 44,-16 18,4 28,36 0,16 -28,36 -18,4 -44,-16 -12,-16" fill="#ff2200"/>
+    <text x="0" y="6" font-family="Arial, sans-serif" font-weight="700" font-size="20" fill="#ffff00" text-anchor="middle">NEW!</text>
+  </g>
+
+  <g font-family="'Times New Roman', serif" font-size="19" fill="#222222">
+    <text x="400" y="336">We are a leading provider of business solutions serving clients</text>
+    <text x="400" y="364">worldwide. Please browse our website to learn more about our</text>
+    <text x="400" y="392">products and services. Click the links on the left to navigate.</text>
+  </g>
+
+  <!-- clip-art image box -->
+  <rect x="400" y="420" width="360" height="240" fill="#cfd8e6" stroke="#9aa7b8" stroke-width="2"/>
+  <path d="M400 620 L490 520 L560 590 L640 500 L760 620 Z" fill="#9fb3cf"/>
+  <circle cx="690" cy="470" r="26" fill="#ffd94a"/>
+  <text x="580" y="690" font-family="Arial, sans-serif" font-size="15" fill="#667" text-anchor="middle">[ company_photo.jpg ]</text>
+
+  <!-- old bulleted list -->
+  <g font-family="'Times New Roman', serif" font-size="18" fill="#003366">
+    <text x="800" y="452">✔ 24/7 Customer Support</text>
+    <text x="800" y="486">✔ Fast Worldwide Shipping</text>
+    <text x="800" y="520">✔ 100% Money Back Guarantee</text>
+    <text x="800" y="554">✔ Trusted by 500+ Companies</text>
+  </g>
+  <!-- beveled button -->
+  <rect x="800" y="586" width="230" height="60" fill="url(#lg-btn)" stroke="#a06f00" stroke-width="2"/>
+  <text x="915" y="624" font-family="Arial, sans-serif" font-weight="700" font-size="22" fill="#5a3d00" text-anchor="middle">CLICK HERE!</text>
+
+  <!-- footer -->
+  <rect x="40" y="820" width="1520" height="56" fill="#16356b"/>
+  <text x="800" y="846" font-family="Arial, sans-serif" font-size="14" fill="#b9cdf0" text-anchor="middle">Copyright © 2004 GlobalCorp Solutions. All Rights Reserved.</text>
+  <text x="800" y="866" font-family="Arial, sans-serif" font-size="13" fill="#7fa0d8" text-anchor="middle">Best viewed in Internet Explorer 6 at 800×600 resolution</text>
+</svg>

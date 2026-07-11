@@ -1,0 +1,109 @@
+<svg width="800" height="450" viewBox="0 0 800 450" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AutoFlow AI automation workflow builder">
+  <defs>
+    <linearGradient id="af-bg" x1="0" y1="0" x2="800" y2="450" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0a0a0d"/>
+      <stop offset="1" stop-color="#050506"/>
+    </linearGradient>
+    <linearGradient id="af-red" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#ff1f3d"/>
+      <stop offset="1" stop-color="#b30000"/>
+    </linearGradient>
+    <linearGradient id="af-node" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#16161b"/>
+      <stop offset="1" stop-color="#0e0e12"/>
+    </linearGradient>
+    <radialGradient id="af-glow" cx="0.5" cy="0.5" r="0.5">
+      <stop stop-color="#ff1f3d" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="#ff1f3d" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="af-shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="8" stdDeviation="14" flood-color="#000" flood-opacity="0.6"/>
+    </filter>
+    <filter id="af-nodeglow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#ff1f3d" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="450" fill="url(#af-bg)"/>
+  <!-- canvas dot grid -->
+  <pattern id="af-dots" width="26" height="26" patternUnits="userSpaceOnUse">
+    <circle cx="1.5" cy="1.5" r="1.2" fill="#17171d"/>
+  </pattern>
+  <rect x="0" y="34" width="800" height="416" fill="url(#af-dots)"/>
+  <circle cx="400" cy="240" r="260" fill="url(#af-glow)"/>
+
+  <!-- window chrome -->
+  <rect x="0" y="0" width="800" height="34" fill="#101013"/>
+  <circle cx="22" cy="17" r="5" fill="#ff5f57"/><circle cx="42" cy="17" r="5" fill="#febc2e"/><circle cx="62" cy="17" r="5" fill="#28c840"/>
+  <text x="400" y="21" font-family="Arial, sans-serif" font-size="10" fill="#8a8a92" text-anchor="middle" font-weight="600">AutoFlow · Workflow Builder</text>
+  <g fill="#3a3a44" transform="translate(700,11)"><rect width="18" height="12" rx="3"/><rect x="26" width="18" height="12" rx="3" fill="#ff1f3d"/><rect x="52" width="18" height="12" rx="3"/></g>
+
+  <!-- connectors -->
+  <g fill="none" stroke-width="2.5">
+    <path d="M188 130 C250 130 250 210 312 210" stroke="#ff1f3d"/>
+    <path d="M188 130 C250 130 250 320 312 320" stroke="#3a3a44" stroke-dasharray="5 5"/>
+    <path d="M470 210 C540 210 540 130 612 130" stroke="#ff1f3d"/>
+    <path d="M470 210 C540 210 540 300 612 300" stroke="#ff1f3d"/>
+  </g>
+  <!-- flow dots -->
+  <circle cx="250" cy="170" r="3.5" fill="#ff1f3d"/>
+  <circle cx="540" cy="170" r="3.5" fill="#ff1f3d"/>
+  <circle cx="540" cy="255" r="3.5" fill="#ff1f3d"/>
+
+  <!-- Trigger node -->
+  <g filter="url(#af-nodeglow)">
+    <rect x="64" y="102" width="124" height="58" rx="12" fill="url(#af-node)" stroke="#ff1f3d" stroke-opacity="0.6"/>
+  </g>
+  <rect x="64" y="102" width="4" height="58" rx="2" fill="url(#af-red)"/>
+  <circle cx="88" cy="122" r="9" fill="#ff1f3d" fill-opacity="0.18"/>
+  <path d="M85 122 l3 3 l4 -6" stroke="#ff1f3d" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="104" y="120" font-family="Arial, sans-serif" font-weight="700" font-size="10" fill="#f5f5f7">Trigger</text>
+  <text x="104" y="134" font-family="Arial, sans-serif" font-size="8" fill="#6b6b74">New form entry</text>
+  <text x="76" y="152" font-family="Arial, sans-serif" font-size="7" fill="#ff1f3d">▶ Make.com</text>
+
+  <!-- AI Extract node (center) -->
+  <g filter="url(#af-shadow)">
+    <rect x="312" y="176" width="158" height="68" rx="12" fill="url(#af-node)" stroke="#2a2a34"/>
+  </g>
+  <rect x="312" y="176" width="4" height="68" rx="2" fill="url(#af-red)"/>
+  <g transform="translate(332,196)">
+    <rect width="18" height="18" rx="6" fill="url(#af-red)"/>
+    <path d="M6 9 h6 M9 6 v6" stroke="#fff" stroke-width="1.8" stroke-linecap="round" transform="rotate(45 9 9)"/>
+  </g>
+  <text x="360" y="200" font-family="Arial, sans-serif" font-weight="700" font-size="11" fill="#f5f5f7">AI Extract &amp; Classify</text>
+  <text x="360" y="215" font-family="Arial, sans-serif" font-size="8" fill="#6b6b74">GPT-4 · parse fields, tag intent</text>
+  <rect x="332" y="224" width="70" height="12" rx="6" fill="#1c1c22"/><text x="367" y="233" font-family="Arial, sans-serif" font-size="7" fill="#8a8a92" text-anchor="middle">python</text>
+  <rect x="408" y="224" width="48" height="12" rx="6" fill="#ff1f3d22"/><text x="432" y="233" font-family="Arial, sans-serif" font-size="7" fill="#ff8a99" text-anchor="middle">GPT-4</text>
+
+  <!-- lower-left condition node -->
+  <g filter="url(#af-shadow)">
+    <rect x="64" y="296" width="124" height="52" rx="12" fill="url(#af-node)" stroke="#2a2a34"/>
+  </g>
+  <text x="80" y="318" font-family="Arial, sans-serif" font-weight="700" font-size="10" fill="#f5f5f7">Condition</text>
+  <text x="80" y="332" font-family="Arial, sans-serif" font-size="8" fill="#6b6b74">priority = high?</text>
+
+  <!-- output node 1: CRM -->
+  <g filter="url(#af-shadow)">
+    <rect x="612" y="104" width="124" height="54" rx="12" fill="url(#af-node)" stroke="#2a2a34"/>
+  </g>
+  <rect x="612" y="104" width="4" height="54" rx="2" fill="#34d399"/>
+  <text x="628" y="126" font-family="Arial, sans-serif" font-weight="700" font-size="10" fill="#f5f5f7">Update CRM</text>
+  <text x="628" y="140" font-family="Arial, sans-serif" font-size="8" fill="#6b6b74">Create/enrich record</text>
+
+  <!-- output node 2: notify -->
+  <g filter="url(#af-shadow)">
+    <rect x="612" y="274" width="124" height="54" rx="12" fill="url(#af-node)" stroke="#2a2a34"/>
+  </g>
+  <rect x="612" y="274" width="4" height="54" rx="2" fill="#34d399"/>
+  <text x="628" y="296" font-family="Arial, sans-serif" font-weight="700" font-size="10" fill="#f5f5f7">Notify Slack</text>
+  <text x="628" y="310" font-family="Arial, sans-serif" font-size="8" fill="#6b6b74">#sales · alert owner</text>
+
+  <!-- stat pill -->
+  <g filter="url(#af-shadow)">
+    <rect x="290" y="366" width="220" height="52" rx="14" fill="#111116" stroke="#22222a"/>
+  </g>
+  <text x="310" y="388" font-family="Arial, sans-serif" font-size="9" fill="#6b6b74">Manual data entry reduced</text>
+  <text x="310" y="410" font-family="Arial, sans-serif" font-weight="800" font-size="20" fill="#f5f5f7">90%</text>
+  <path d="M470 400 l-26 -20 l-14 12 l-20 -22" fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="470" cy="400" r="3" fill="#34d399"/>
+</svg>

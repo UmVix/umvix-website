@@ -1,8 +1,7 @@
 import { createMetadata } from "@/lib/metadata";
 import SectionHeading from "@/components/SectionHeading";
 import PortfolioGrid from "@/components/PortfolioGrid";
-import CaseStudyGenerator from "@/components/ai/CaseStudyGenerator";
-import BeforeAfterSlider from "@/components/portfolio/BeforeAfterSlider";
+import TransformationShowcase from "@/components/portfolio/TransformationShowcase";
 import Reveal from "@/components/motion/Reveal";
 
 export const metadata = createMetadata({
@@ -14,7 +13,7 @@ export const metadata = createMetadata({
 
 export default function PortfolioPage() {
   return (
-    <div className="mx-auto max-w-6xl px-4 py-16">
+    <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
       <Reveal y={24}>
         <SectionHeading
           title="Our Portfolio"
@@ -24,27 +23,17 @@ export default function PortfolioPage() {
       </Reveal>
       <PortfolioGrid />
 
-      <div className="mt-20">
+      <div className="mt-28">
         <Reveal y={24}>
           <SectionHeading
             title="The Umvix Transformation"
-            subtitle="Drag the handle to see how we redesigned a client's outdated platform into a modern experience."
+            subtitle="The same business — before and after Umvix. Outdated legacy platforms rebuilt into modern, high-converting experiences."
             align="center"
-            className="mb-10"
+            className="mb-14"
           />
         </Reveal>
-        <Reveal y={32} delay={0.06}>
-          <BeforeAfterSlider
-            beforeLabel="Legacy Site"
-            afterLabel="Umvix Redesign"
-            className="mx-auto max-w-4xl"
-          />
-        </Reveal>
+        <TransformationShowcase className="mx-auto max-w-6xl" />
       </div>
-
-      <Reveal y={28} delay={0.04} className="mt-20 block">
-        <CaseStudyGenerator />
-      </Reveal>
     </div>
   );
 }

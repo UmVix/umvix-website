@@ -3,12 +3,15 @@
 import { useState } from "react";
 import {
   Building2,
+  CheckCircle2,
   ChevronDown,
+  Loader2,
   Mail,
   MessageSquare,
   Tag,
   User,
 } from "lucide-react";
+import { submitContact } from "@/lib/contact/submitContact";
 
 const SUBJECTS = [
   "General Inquiry",
@@ -37,21 +40,45 @@ function FieldLabel({
   );
 }
 
-export default function ContactForm() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    company: "",
-    subject: "",
-    message: "",
-  });
+const initialFormData = {
+  name: "",
+  email: "",
+  company: "",
+  subject: "",
+  message: "",
+};
 
-  const handleSubmit = (e: React.FormEvent) => {
+export default function ContactForm() {
+  const [formData, setFormData] = useState(initialFormData);
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
+    "idle"
+  );
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert(
-      "Thank you for your message! This is a static demo, so no data was actually sent."
-    );
-    console.log("Form submitted:", formData);
+    setStatus("loading");
+    setErrorMessage("");
+
+    try {
+      await submitContact({
+        source: "form",
+        name: formData.name,
+        email: formData.email,
+        company: formData.company || undefined,
+        subject: formData.subject,
+        message: formData.message,
+      });
+      setStatus("success");
+      setFormData(initialFormData);
+    } catch (error) {
+      setStatus("error");
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again."
+      );
+    }
   };
 
   const handleChange = (
@@ -61,7 +88,28 @@ export default function ContactForm() {
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    if (status === "error") setStatus("idle");
   };
+
+  if (status === "success") {
+    return (
+      <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-6 py-12 text-center">
+        <CheckCircle2 className="mx-auto text-brand-red" size={40} />
+        <h3 className="mt-4 text-xl font-bold text-brand-white">Message sent</h3>
+        <p className="mx-auto mt-2 max-w-md text-sm text-brand-gray">
+          Thanks for reaching out. We received your message and will reply within
+          one business day.
+        </p>
+        <button
+          type="button"
+          onClick={() => setStatus("idle")}
+          className="btn-primary mt-8 rounded-xl px-6 py-3 text-sm font-semibold"
+        >
+          Send another message
+        </button>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
@@ -82,8 +130,9 @@ export default function ContactForm() {
               required
               value={formData.name}
               onChange={handleChange}
-              placeholder="John Doe"
+              placeholder="Your full name"
               className={inputClass}
+              disabled={status === "loading"}
             />
           </div>
         </div>
@@ -104,8 +153,9 @@ export default function ContactForm() {
               required
               value={formData.email}
               onChange={handleChange}
-              placeholder="john@example.com"
+              placeholder="you@company.com"
               className={inputClass}
+              disabled={status === "loading"}
             />
           </div>
         </div>
@@ -124,8 +174,9 @@ export default function ContactForm() {
             name="company"
             value={formData.company}
             onChange={handleChange}
-            placeholder="Your Company Name"
+            placeholder="Your company (optional)"
             className={inputClass}
+            disabled={status === "loading"}
           />
         </div>
       </div>
@@ -146,6 +197,7 @@ export default function ContactForm() {
             value={formData.subject}
             onChange={handleChange}
             className={`${inputClass} appearance-none pr-10`}
+            disabled={status === "loading"}
           >
             <option value="" disabled>
               Select a subject
@@ -181,15 +233,30 @@ export default function ContactForm() {
             onChange={handleChange}
             placeholder="Tell us about your project or inquiry..."
             className={`${inputClass} resize-none pt-3.5`}
+            disabled={status === "loading"}
           />
         </div>
       </div>
 
+      {status === "error" && (
+        <p className="rounded-xl border border-brand-red/30 bg-brand-red/10 px-4 py-3 text-sm text-brand-white">
+          {errorMessage}
+        </p>
+      )}
+
       <button
         type="submit"
-        className="btn-primary mt-2 w-full rounded-xl py-4 text-sm font-semibold"
+        disabled={status === "loading"}
+        className="btn-primary mt-2 flex w-full items-center justify-center gap-2 rounded-xl py-4 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-60"
       >
-        Send Message
+        {status === "loading" ? (
+          <>
+            <Loader2 size={16} className="animate-spin" />
+            Sending...
+          </>
+        ) : (
+          "Send Message"
+        )}
       </button>
     </form>
   );

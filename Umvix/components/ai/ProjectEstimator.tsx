@@ -71,8 +71,8 @@ export default function ProjectEstimator() {
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         rows={4}
-        placeholder="e.g. A mobile app for booking home-cleaning services with real-time tracking, in-app payments, and an admin dashboard..."
-        className="w-full resize-none rounded-xl border border-brand-black-soft bg-brand-black px-4 py-3 text-brand-white outline-none transition-colors focus:border-brand-red"
+        placeholder="e.g. A mobile app for booking home-cleaning services with real-time tracking and payments..."
+        className="w-full resize-none rounded-xl border border-brand-black-soft bg-brand-black px-4 py-3 text-sm text-brand-white outline-none transition-colors focus:border-brand-red sm:text-base"
       />
 
       <div className="mt-4">

@@ -113,6 +113,10 @@ export default function ParticleText({
       width = wrapper.clientWidth;
       height = Math.ceil(lineHeight * lines.length + fontSize * 0.35);
 
+      // During route transitions/unmount the wrapper can measure 0 wide —
+      // a 0-sized canvas makes getImageData throw (IndexSizeError).
+      if (width <= 0 || height <= 0) return;
+
       // Size canvas + the visible box.
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;

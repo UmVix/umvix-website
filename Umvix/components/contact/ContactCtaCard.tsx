@@ -50,7 +50,7 @@ export default function ContactCtaCard() {
               </button>
 
               <Link
-                href="mailto:hello@umvix.com"
+                href="mailto:info@umvix.com"
                 className="contact-glass-btn inline-flex items-center gap-2 rounded-xl px-7 py-3.5 text-sm font-semibold text-brand-white transition-all"
               >
                 <Mail size={16} />
@@ -62,18 +62,18 @@ export default function ContactCtaCard() {
 
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-10">
               <a
-                href="tel:+15551234567"
+                href="tel:+923165310133"
                 className="inline-flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm text-brand-white/90 transition-colors hover:bg-white/[0.06] hover:text-brand-white"
               >
                 <Phone size={16} className="text-brand-red" />
-                +1 (555) 123-4567
+                +92-316 5310133
               </a>
               <a
-                href="mailto:hello@umvix.com"
+                href="mailto:info@umvix.com"
                 className="inline-flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm text-brand-white/90 transition-colors hover:bg-white/[0.06] hover:text-brand-white"
               >
                 <Mail size={16} className="text-brand-red" />
-                hello@umvix.com
+                info@umvix.com
               </a>
             </div>
           </div>

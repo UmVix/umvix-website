@@ -1,0 +1,128 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Modern redesign of the GlobalCorp Solutions website">
+  <defs>
+    <linearGradient id="gc-bg" x1="0" y1="0" x2="1600" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0c0c0f"/>
+      <stop offset="1" stop-color="#050506"/>
+    </linearGradient>
+    <linearGradient id="gc-red" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#ff1f3d"/>
+      <stop offset="1" stop-color="#b30000"/>
+    </linearGradient>
+    <linearGradient id="gc-head" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#ffffff"/>
+      <stop offset="0.6" stop-color="#ffd6dc"/>
+      <stop offset="1" stop-color="#ff5069"/>
+    </linearGradient>
+    <linearGradient id="gc-panel" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#16161b" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#0d0d11" stop-opacity="0.95"/>
+    </linearGradient>
+    <radialGradient id="gc-glow" cx="0.5" cy="0.5" r="0.5">
+      <stop stop-color="#ff1f3d" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#ff1f3d" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gc-chart" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#ff1f3d" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#ff1f3d" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="gc-globe" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#ff1f3d"/>
+      <stop offset="1" stop-color="#b30000"/>
+    </linearGradient>
+    <filter id="gc-shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="20" stdDeviation="34" flood-color="#000" flood-opacity="0.65"/>
+    </filter>
+    <filter id="gc-redglow" x="-60%" y="-60%" width="220%" height="220%">
+      <feDropShadow dx="0" dy="0" stdDeviation="26" flood-color="#ff1f3d" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#gc-bg)"/>
+  <circle cx="1180" cy="230" r="520" fill="url(#gc-glow)"/>
+  <g stroke="#141419" stroke-width="1">
+    <line x1="0" y1="230" x2="1600" y2="230"/><line x1="0" y1="470" x2="1600" y2="470"/><line x1="0" y1="710" x2="1600" y2="710"/>
+    <line x1="400" y1="0" x2="400" y2="900"/><line x1="800" y1="0" x2="800" y2="900"/><line x1="1200" y1="0" x2="1200" y2="900"/>
+  </g>
+
+  <!-- glass nav -->
+  <rect x="80" y="56" width="1440" height="72" rx="36" fill="url(#gc-panel)" stroke="#26262e" filter="url(#gc-shadow)"/>
+  <!-- modern globe mark -->
+  <g transform="translate(112,74)">
+    <circle cx="18" cy="18" r="17" fill="url(#gc-globe)"/>
+    <path d="M2 18 h32 M18 1 v34 M6 8 q12 12 24 0 M6 28 q12 -12 24 0" stroke="#ffffff" stroke-width="1.4" fill="none" opacity="0.85"/>
+  </g>
+  <text x="162" y="102" font-family="'Segoe UI', Arial, sans-serif" font-weight="800" font-size="24" fill="#ffffff">GlobalCorp</text>
+  <g font-family="Arial, sans-serif" font-size="16" fill="#b5b5bd">
+    <text x="640" y="101">Solutions</text>
+    <text x="790" y="101">Industries</text>
+    <text x="940" y="101">About</text>
+    <text x="1050" y="101">Resources</text>
+  </g>
+  <rect x="1330" y="72" width="158" height="40" rx="20" fill="url(#gc-red)" filter="url(#gc-redglow)"/>
+  <text x="1409" y="98" font-family="Arial, sans-serif" font-weight="700" font-size="16" fill="#fff" text-anchor="middle">Get Started</text>
+
+  <!-- hero eyebrow -->
+  <rect x="80" y="238" width="330" height="40" rx="20" fill="#16161b" stroke="#2a2a32"/>
+  <circle cx="106" cy="258" r="5" fill="#ff1f3d"/>
+  <text x="122" y="264" font-family="Arial, sans-serif" font-size="15" fill="#b5b5bd">Trusted by 500+ enterprises worldwide</text>
+
+  <!-- hero headline -->
+  <text x="76" y="360" font-family="'Segoe UI', Arial, sans-serif" font-weight="800" font-size="82" fill="#ffffff">Business Solutions,</text>
+  <text x="76" y="450" font-family="'Segoe UI', Arial, sans-serif" font-weight="800" font-size="82" fill="url(#gc-head)">Reimagined.</text>
+
+  <text x="80" y="512" font-family="Arial, sans-serif" font-size="22" fill="#9a9aa2">Enterprise software, logistics and support —</text>
+  <text x="80" y="546" font-family="Arial, sans-serif" font-size="22" fill="#9a9aa2">unified in one intelligent platform.</text>
+
+  <!-- CTAs -->
+  <rect x="80" y="586" width="230" height="60" rx="30" fill="url(#gc-red)" filter="url(#gc-redglow)"/>
+  <text x="195" y="623" font-family="Arial, sans-serif" font-weight="700" font-size="19" fill="#fff" text-anchor="middle">Request a Demo</text>
+  <rect x="326" y="586" width="196" height="60" rx="30" fill="none" stroke="#3a3a44"/>
+  <path d="M356 616 l16 -10 v20 z" fill="#ff1f3d"/>
+  <text x="440" y="623" font-family="Arial, sans-serif" font-weight="600" font-size="19" fill="#e5e5ea" text-anchor="middle">Watch Film</text>
+
+  <!-- stats row -->
+  <g font-family="Arial, sans-serif">
+    <text x="80" y="742" font-weight="800" font-size="44" fill="#ffffff">500+</text>
+    <text x="82" y="770" font-size="15" fill="#6b6b74">Enterprise clients</text>
+    <text x="320" y="742" font-weight="800" font-size="44" fill="#ffffff">46</text>
+    <text x="322" y="770" font-size="15" fill="#6b6b74">Countries</text>
+    <text x="500" y="742" font-weight="800" font-size="44" fill="#ffffff">24/7</text>
+    <text x="502" y="770" font-size="15" fill="#6b6b74">Global support</text>
+    <text x="720" y="742" font-weight="800" font-size="44" fill="#ffffff">99.9%</text>
+    <text x="722" y="770" font-size="15" fill="#6b6b74">Uptime SLA</text>
+  </g>
+
+  <!-- floating product card (right) -->
+  <g filter="url(#gc-shadow)">
+    <rect x="1000" y="270" width="470" height="330" rx="22" fill="url(#gc-panel)" stroke="#2a2a34"/>
+  </g>
+  <circle cx="1030" cy="300" r="6" fill="#ff5f57"/><circle cx="1052" cy="300" r="6" fill="#febc2e"/><circle cx="1074" cy="300" r="6" fill="#28c840"/>
+  <text x="1440" y="306" font-family="Arial, sans-serif" font-size="13" fill="#55555e" text-anchor="end">operations</text>
+  <line x1="1000" y1="326" x2="1470" y2="326" stroke="#22222a"/>
+  <!-- mini KPIs -->
+  <rect x="1030" y="348" width="126" height="70" rx="12" fill="#131318" stroke="#22222a"/>
+  <text x="1046" y="374" font-family="Arial, sans-serif" font-size="12" fill="#6b6b74">Orders</text>
+  <text x="1046" y="400" font-family="Arial, sans-serif" font-weight="700" font-size="22" fill="#f5f5f7">18.4K</text>
+  <rect x="1172" y="348" width="126" height="70" rx="12" fill="#131318" stroke="#22222a"/>
+  <text x="1188" y="374" font-family="Arial, sans-serif" font-size="12" fill="#6b6b74">On-time</text>
+  <text x="1188" y="400" font-family="Arial, sans-serif" font-weight="700" font-size="22" fill="#34d399">+96%</text>
+  <rect x="1314" y="348" width="126" height="70" rx="12" fill="#131318" stroke="#22222a"/>
+  <text x="1330" y="374" font-family="Arial, sans-serif" font-size="12" fill="#6b6b74">Regions</text>
+  <text x="1330" y="400" font-family="Arial, sans-serif" font-weight="700" font-size="22" fill="#f5f5f7">46</text>
+  <!-- chart -->
+  <rect x="1030" y="436" width="410" height="140" rx="12" fill="#0e0e12" stroke="#20202a"/>
+  <path d="M1050 552 L1090 540 L1130 546 L1170 512 L1210 524 L1250 486 L1290 500 L1330 462 L1370 476 L1410 440 L1420 444 L1420 560 L1050 560 Z" fill="url(#gc-chart)"/>
+  <path d="M1050 552 L1090 540 L1130 546 L1170 512 L1210 524 L1250 486 L1290 500 L1330 462 L1370 476 L1410 440" fill="none" stroke="#ff1f3d" stroke-width="3"/>
+  <circle cx="1410" cy="440" r="6" fill="#ff1f3d" stroke="#0e0e12" stroke-width="3"/>
+
+  <!-- floating badge card -->
+  <g filter="url(#gc-shadow)">
+    <rect x="1210" y="620" width="260" height="150" rx="18" fill="url(#gc-panel)" stroke="#2a2a34"/>
+  </g>
+  <rect x="1236" y="648" width="44" height="44" rx="14" fill="url(#gc-red)"/>
+  <path d="M1250 670 l6 6 l10 -13" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="1294" y="666" font-family="Arial, sans-serif" font-weight="700" font-size="18" fill="#f5f5f7">ISO 27001</text>
+  <text x="1294" y="690" font-family="Arial, sans-serif" font-size="14" fill="#6b6b74">Certified secure</text>
+  <text x="1236" y="748" font-family="Arial, sans-serif" font-weight="800" font-size="40" fill="#34d399">A+</text>
+  <text x="1300" y="748" font-family="Arial, sans-serif" font-size="15" fill="#6b6b74">security grade</text>
+</svg>

@@ -4,8 +4,8 @@ import CountUp from "@/components/motion/CountUp";
 import Reveal from "@/components/motion/Reveal";
 
 const stats = [
-  { label: "Projects Delivered", value: 150, suffix: "+" },
-  { label: "Happy Clients", value: 80, suffix: "+" },
+  { label: "Projects Delivered", value: 30, suffix: "+" },
+  { label: "Clients Served", value: 17, suffix: "+" },
   { label: "Years of Experience", value: 8, suffix: "+" },
   { label: "AI Models Integrated", value: 25, suffix: "+" },
 ];

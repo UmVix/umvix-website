@@ -2,6 +2,7 @@ import { createMetadata } from "@/lib/metadata";
 import Hero from "@/components/home/Hero";
 import SmartSolutionsSection from "@/components/home/SmartSolutionsSection";
 import ResultsShowcase from "@/components/home/ResultsShowcase";
+import AssemblySection from "@/components/home/AssemblySection";
 
 export const metadata = createMetadata({
   title: "Home",
@@ -16,6 +17,7 @@ export default function HomePage() {
       <Hero />
       <ResultsShowcase />
       <SmartSolutionsSection />
+      <AssemblySection />
     </div>
   );
 }

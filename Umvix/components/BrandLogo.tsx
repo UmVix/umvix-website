@@ -40,6 +40,13 @@ const VARIANTS = {
     className: "h-8 w-auto object-contain object-left",
     wrapper: true,
   },
+  xs: {
+    src: LOGO_NAV,
+    aspect: NAV_ASPECT,
+    height: 24,
+    className: "h-[1.15rem] w-auto object-contain object-left",
+    wrapper: true,
+  },
 } as const;
 
 type BrandLogoProps = {

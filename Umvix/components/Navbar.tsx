@@ -8,9 +8,10 @@ import BrandLogo from "./BrandLogo";
 import Button from "./Button";
 import MagneticButton from "./motion/MagneticButton";
 import { useReducedMotion } from "@/lib/hooks";
+import { getHashId, pulseSectionHighlight, scrollToSectionWhenReady } from "@/lib/hashScroll";
 
 const navLinks = [
-  { label: "Services", href: "/services" },
+  { label: "Services", href: "/#smart-solutions" },
   { label: "About", href: "/about" },
   { label: "Portfolio", href: "/portfolio" },
   { label: "Contact", href: "/contact" },
@@ -50,6 +51,24 @@ export default function Navbar() {
     if (mobileOpen) setHidden(false);
   }, [mobileOpen]);
 
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string,
+    onNavigate?: () => void
+  ) => {
+    const hashIndex = href.indexOf("#");
+    if (hashIndex !== -1 && window.location.pathname === "/") {
+      e.preventDefault();
+      const id = getHashId(href.slice(hashIndex));
+      window.history.pushState(null, "", href);
+      void scrollToSectionWhenReady(id, {
+        reduced,
+        onComplete: () => pulseSectionHighlight(id),
+      });
+    }
+    onNavigate?.();
+  };
+
   const isHidden = hidden && !mobileOpen;
 
   return (
@@ -76,6 +95,7 @@ export default function Navbar() {
             <li key={link.href}>
               <Link
                 href={link.href}
+                onClick={(e) => handleNavClick(e, link.href)}
                 className="group relative inline-block py-1 text-sm leading-none text-brand-gray transition-colors hover:text-brand-white"
               >
                 {link.label}
@@ -115,7 +135,7 @@ export default function Navbar() {
                 <Link
                   href={link.href}
                   className="block text-sm text-brand-gray hover:text-brand-white"
-                  onClick={() => setMobileOpen(false)}
+                  onClick={(e) => handleNavClick(e, link.href, () => setMobileOpen(false))}
                 >
                   {link.label}
                 </Link>

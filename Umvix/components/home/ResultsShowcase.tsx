@@ -207,7 +207,7 @@ export default function ResultsShowcase({
         <div className="site-container relative z-30 mb-10 text-center sm:mb-12">
           {title && (
             <Reveal y={28}>
-              <h2 className="mx-auto w-full max-w-none text-center font-headline text-[clamp(1.35rem,3.8vw,3.5rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-brand-white whitespace-nowrap">
+              <h2 className="mx-auto w-full max-w-none text-center font-headline text-[clamp(1.4rem,3.4vw,3.1rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-brand-white sm:whitespace-nowrap">
                 {title}
               </h2>
             </Reveal>
@@ -233,7 +233,7 @@ export default function ResultsShowcase({
           ))}
         </div>
 
-        <Funnel />
+        <EnergyWall reduced={reduced} />
 
         <div className="pointer-events-none absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2">
           <LogoBadge logoSrc={logoSrc} />
@@ -542,64 +542,105 @@ function LogoBadge({ logoSrc = UMVIX_LOGO }: { logoSrc?: string }) {
   );
 }
 
-function Funnel() {
-  // Thin tapered line ABOVE the logo; wide soft flare BELOW it that widens
-  // downward and runs past the bottom edge of the section.
-  const hub = 300; // svg vertical centre == logo
-  const topLine = [
-    `M 117 ${hub}`,
-    `C 118 ${hub - 110} 119 ${hub - 215} 120 ${hub - 295}`,
-    `C 121 ${hub - 215} 122 ${hub - 110} 123 ${hub}`,
-    "Z",
-  ].join(" ");
-  const flare = [
-    `M 117 ${hub}`,
-    `C 112 ${hub + 84} 96 ${hub + 176} 48 ${hub + 320}`, // left edge -> wide base
-    `C 100 ${hub + 196} 140 ${hub + 196} 192 ${hub + 320}`, // wide base (past bottom)
-    `C 144 ${hub + 176} 128 ${hub + 84} 123 ${hub}`, // right edge -> hub
-    "Z",
-  ].join(" ");
-
+function EnergyWall({ reduced }: { reduced: boolean }) {
   return (
-    <svg
-      aria-hidden
-      viewBox="0 0 240 600"
-      preserveAspectRatio="xMidYMid slice"
-      className="pointer-events-none absolute left-1/2 top-1/2 z-20 h-[110%] w-auto min-w-[16rem] -translate-x-1/2 -translate-y-1/2 sm:min-w-[20rem]"
-    >
-      <defs>
-        <linearGradient
-          id="results-funnel-up"
-          gradientUnits="userSpaceOnUse"
-          x1="120"
-          y1={hub}
-          x2="120"
-          y2={hub - 295}
-        >
-          <stop offset="0%" stopColor="var(--brand-red)" stopOpacity="0.55" />
-          <stop offset="100%" stopColor="var(--brand-red)" stopOpacity="0" />
-        </linearGradient>
-        <linearGradient
-          id="results-funnel-down"
-          gradientUnits="userSpaceOnUse"
-          x1="120"
-          y1={hub}
-          x2="120"
-          y2={hub + 320}
-        >
-          <stop offset="0%" stopColor="var(--brand-red)" stopOpacity="0.6" />
-          <stop offset="45%" stopColor="var(--brand-red)" stopOpacity="0.4" />
-          <stop offset="100%" stopColor="var(--brand-red)" stopOpacity="0.12" />
-        </linearGradient>
-        <radialGradient id="results-funnel-glow" cx="50%" cy="52%" r="34%">
-          <stop offset="0%" stopColor="var(--brand-red)" stopOpacity="0.34" />
-          <stop offset="100%" stopColor="var(--brand-red)" stopOpacity="0" />
-        </radialGradient>
-      </defs>
-      <rect x="0" y="0" width="240" height="600" fill="url(#results-funnel-glow)" />
-      <path d={topLine} fill="url(#results-funnel-up)" />
-      <path d={flare} fill="url(#results-funnel-down)" />
-    </svg>
+    <div aria-hidden className="pointer-events-none absolute inset-0 z-20">
+      {/* soft radial glow around the hub */}
+      <div
+        className="absolute left-1/2 top-1/2 h-[24rem] w-[24rem] -translate-x-1/2 -translate-y-1/2 rounded-full sm:h-[28rem] sm:w-[28rem]"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(255,31,61,0.26), rgba(255,31,61,0.07) 42%, transparent 68%)",
+        }}
+      />
+
+      {/* translucent energy curtain — full height */}
+      <div
+        className="absolute inset-y-0 left-1/2 w-16 -translate-x-1/2 overflow-hidden sm:w-24"
+        style={{
+          background:
+            "linear-gradient(to right, transparent, rgba(255,31,61,0.09) 28%, rgba(255,31,61,0.2) 50%, rgba(255,31,61,0.09) 72%, transparent)",
+          maskImage:
+            "linear-gradient(to bottom, transparent, black 10%, black 92%, transparent)",
+          WebkitMaskImage:
+            "linear-gradient(to bottom, transparent, black 10%, black 92%, transparent)",
+        }}
+      >
+        {/* light sweep travelling up the curtain */}
+        {!reduced && (
+          <div
+            className="absolute inset-x-0 h-44"
+            style={{
+              background:
+                "linear-gradient(to bottom, transparent, rgba(255,255,255,0.22) 50%, transparent)",
+              animation: "wall-sweep 3.4s ease-in-out infinite",
+            }}
+          />
+        )}
+      </div>
+
+      {/* core light line — full height */}
+      <div
+        className="absolute inset-y-0 left-1/2 w-[2px] -translate-x-1/2"
+        style={{
+          background:
+            "linear-gradient(to bottom, transparent, rgba(255,255,255,0.85) 16%, var(--brand-red) 50%, rgba(255,255,255,0.85) 84%, transparent)",
+          boxShadow:
+            "0 0 16px 2px rgba(255,31,61,0.55), 0 0 44px 8px rgba(255,31,61,0.22)",
+        }}
+      />
+
+      {/* sparks rising along the wall */}
+      {!reduced &&
+        [0, 1, 2, 3, 4].map((i) => (
+          <span
+            key={i}
+            className="absolute bottom-6 left-1/2 rounded-full bg-white"
+            style={{
+              marginLeft: [-16, -7, 0, 8, 15][i],
+              width: i % 2 ? 3 : 2,
+              height: i % 2 ? 3 : 2,
+              boxShadow: "0 0 8px 2px rgba(255,31,61,0.8)",
+              animation: `beam-rise ${5.5 + i * 1.2}s linear ${i * 1.15}s infinite`,
+            }}
+          />
+        ))}
+
+      {/* pulse rings expanding from the hub (echo the logo's rounded square) */}
+      {!reduced &&
+        [0, 1].map((i) => (
+          <span
+            key={i}
+            className="absolute left-1/2 top-1/2 h-24 w-24 rounded-2xl border border-brand-red/45 sm:h-28 sm:w-28 sm:rounded-3xl"
+            style={{ animation: `hub-ring 3s ease-out ${i * 1.5}s infinite` }}
+          />
+        ))}
+
+      {/* wide floor glow — the beam lands and spreads across the bottom */}
+      <div
+        className="absolute -bottom-16 left-1/2 h-40 w-[75vw] max-w-[62rem] -translate-x-1/2 rounded-[100%] blur-2xl"
+        style={{
+          background:
+            "radial-gradient(ellipse at 50% 100%, rgba(255,31,61,0.3), rgba(255,31,61,0.1) 45%, transparent 72%)",
+        }}
+      />
+      {/* thin base line running wide along the bottom edge */}
+      <div
+        className="absolute bottom-0 left-1/2 h-px w-[85vw] max-w-[72rem] -translate-x-1/2"
+        style={{
+          background:
+            "linear-gradient(to right, transparent, rgba(255,31,61,0.7) 50%, transparent)",
+          boxShadow: "0 0 18px 2px rgba(255,31,61,0.35)",
+        }}
+      />
+      <div
+        className="absolute bottom-0 left-1/2 h-[3px] w-[26rem] max-w-[60vw] -translate-x-1/2 blur-[2px]"
+        style={{
+          background:
+            "linear-gradient(to right, transparent, rgba(255,255,255,0.75) 50%, transparent)",
+        }}
+      />
+    </div>
   );
 }
 

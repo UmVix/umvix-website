@@ -19,6 +19,7 @@ import {
 } from "framer-motion";
 import { ArrowRight, ChevronDown, MessageCircle } from "lucide-react";
 import { useReducedMotion } from "@/lib/hooks";
+import { submitContact } from "@/lib/contact/submitContact";
 import styles from "./ContactHero.module.css";
 
 type StepId = "name" | "email" | "project";
@@ -217,6 +218,8 @@ export default function ContactHero() {
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
   const [stepIndex, setStepIndex] = useState(0);
   const [complete, setComplete] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [data, setData] = useState<FormData>({
     name: "",
     email: "",
@@ -240,21 +243,39 @@ export default function ContactHero() {
   const canContinue = useCallback(() => {
     if (step === "name") return data.name.trim().length >= 2;
     if (step === "email") return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email);
-    if (step === "project") return data.project.trim().length >= 8;
+    if (step === "project") return data.project.trim().length >= 1;
     return false;
   }, [step, data]);
 
-  const goNext = useCallback(() => {
-    if (!canContinue()) return;
+  const goNext = useCallback(async () => {
+    if (!canContinue() || submitting) return;
 
     if (stepIndex >= STEPS.length - 1) {
-      console.log("Contact hero submission:", data);
-      setComplete(true);
+      setSubmitting(true);
+      setSubmitError("");
+
+      try {
+        await submitContact({
+          source: "hero",
+          name: data.name.trim(),
+          email: data.email.trim(),
+          project: data.project.trim(),
+        });
+        setComplete(true);
+      } catch (error) {
+        setSubmitError(
+          error instanceof Error
+            ? error.message
+            : "Something went wrong. Please try again."
+        );
+      } finally {
+        setSubmitting(false);
+      }
       return;
     }
 
     setStepIndex((i) => i + 1);
-  }, [canContinue, stepIndex, data]);
+  }, [canContinue, stepIndex, data, submitting]);
 
   const goBack = () => {
     if (stepIndex > 0) setStepIndex((i) => i - 1);
@@ -269,6 +290,7 @@ export default function ContactHero() {
 
   const update = (field: keyof FormData, value: string) => {
     setData((prev) => ({ ...prev, [field]: value }));
+    if (submitError) setSubmitError("");
   };
 
   const progress = complete ? 1 : (stepIndex + 1) / STEPS.length;
@@ -366,7 +388,7 @@ export default function ContactHero() {
                     value={data.name}
                     onChange={(e) => update("name", e.target.value)}
                     onKeyDown={handleKeyDown}
-                    placeholder="Alex Rivera"
+                    placeholder="Your full name"
                     className={styles.fieldInput}
                   />
                 )}
@@ -399,20 +421,34 @@ export default function ContactHero() {
 
               <p className={styles.hint}>
                 {step === "project"
-                  ? "Press Send signal when you're ready — a few sentences is perfect."
+                  ? "Press Send signal when you're ready. A few sentences is perfect."
                   : "Press Enter or Continue to move forward."}
               </p>
 
+              {submitError && (
+                <p className="mt-4 rounded-xl border border-brand-red/30 bg-brand-red/10 px-4 py-3 text-sm text-brand-white">
+                  {submitError}
+                </p>
+              )}
+
               <div className={styles.actions}>
                 {stepIndex > 0 && (
-                  <button type="button" onClick={goBack} className={styles.backBtn}>
+                  <button
+                    type="button"
+                    onClick={goBack}
+                    className={styles.backBtn}
+                    disabled={submitting}
+                  >
                     Back
                   </button>
                 )}
-                <MagneticContinueButton onClick={goNext} disabled={!canContinue()}>
+                <MagneticContinueButton
+                  onClick={() => void goNext()}
+                  disabled={!canContinue() || submitting}
+                >
                   {step === "project" ? (
                     <>
-                      Send signal
+                      {submitting ? "Sending..." : "Send signal"}
                       <ArrowRight size={16} />
                     </>
                   ) : (

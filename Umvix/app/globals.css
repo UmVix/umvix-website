@@ -79,6 +79,7 @@
 
 html {
   scroll-padding-top: var(--nav-height);
+  scroll-behavior: auto;
   /* `clip` (not `hidden`) prevents horizontal scroll WITHOUT creating a scroll
      container — required so `position: sticky` pinning works inside the page. */
   overflow-x: clip;
@@ -223,6 +224,44 @@ body::-webkit-scrollbar {
   justify-content: center;
 }
 
+/* Results showcase — centre energy wall */
+@keyframes wall-sweep {
+  0% {
+    top: 110%;
+  }
+  100% {
+    top: -30%;
+  }
+}
+
+@keyframes beam-rise {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-30rem);
+    opacity: 0;
+  }
+}
+
+@keyframes hub-ring {
+  0% {
+    transform: translate(-50%, -50%) scale(0.62);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}
+
 @keyframes rise-bar {
   0%,
   100% {
@@ -240,6 +279,23 @@ body::-webkit-scrollbar {
   }
   50% {
     transform: scaleY(1);
+  }
+}
+
+@keyframes flow-down {
+  0% {
+    top: -20%;
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    top: 120%;
+    opacity: 0;
   }
 }
 
@@ -530,4 +586,30 @@ body::-webkit-scrollbar {
   .service-orb-core {
     animation: none;
   }
+
+  .section-scroll-highlight {
+    animation: none;
+  }
+}
+
+@keyframes section-scroll-glow {
+  0% {
+    opacity: 0.72;
+    transform: translateY(10px);
+    filter: drop-shadow(0 0 0 rgba(255, 31, 61, 0));
+  }
+  45% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: drop-shadow(0 0 28px rgba(255, 31, 61, 0.45));
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: drop-shadow(0 0 0 rgba(255, 31, 61, 0));
+  }
+}
+
+.section-scroll-highlight {
+  animation: section-scroll-glow 1.15s cubic-bezier(0.22, 1, 0.36, 1) both;
 }

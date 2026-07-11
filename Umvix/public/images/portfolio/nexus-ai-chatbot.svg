@@ -1,0 +1,99 @@
+<svg width="800" height="450" viewBox="0 0 800 450" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Nexus AI customer support chatbot">
+  <defs>
+    <linearGradient id="nx-bg" x1="0" y1="0" x2="800" y2="450" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0b0b0e"/>
+      <stop offset="1" stop-color="#050507"/>
+    </linearGradient>
+    <linearGradient id="nx-red" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#ff1f3d"/>
+      <stop offset="1" stop-color="#b30000"/>
+    </linearGradient>
+    <linearGradient id="nx-panel" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#141418"/>
+      <stop offset="1" stop-color="#0d0d11"/>
+    </linearGradient>
+    <linearGradient id="nx-bubble" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#ff2d4d"/>
+      <stop offset="1" stop-color="#c40018"/>
+    </linearGradient>
+    <radialGradient id="nx-glow" cx="0.5" cy="0.5" r="0.5">
+      <stop stop-color="#ff1f3d" stop-opacity="0.25"/>
+      <stop offset="1" stop-color="#ff1f3d" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="nx-shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="12" stdDeviation="20" flood-color="#000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="450" fill="url(#nx-bg)"/>
+  <circle cx="560" cy="120" r="260" fill="url(#nx-glow)"/>
+  <!-- faint dotted grid -->
+  <g fill="#17171c">
+    <circle cx="60" cy="380" r="1.5"/><circle cx="100" cy="380" r="1.5"/><circle cx="140" cy="380" r="1.5"/>
+    <circle cx="60" cy="410" r="1.5"/><circle cx="100" cy="410" r="1.5"/><circle cx="140" cy="410" r="1.5"/>
+  </g>
+
+  <!-- chat window -->
+  <g filter="url(#nx-shadow)">
+    <rect x="230" y="40" width="420" height="370" rx="20" fill="url(#nx-panel)" stroke="#20202a"/>
+  </g>
+
+  <!-- header -->
+  <rect x="230" y="40" width="420" height="58" rx="20" fill="#101015"/>
+  <rect x="230" y="78" width="420" height="20" fill="#101015"/>
+  <g transform="translate(258,58)">
+    <rect width="30" height="30" rx="10" fill="url(#nx-red)"/>
+    <path d="M9 15 h12 M15 9 v12" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity="0.9" transform="rotate(45 15 15)"/>
+  </g>
+  <text x="300" y="72" font-family="Arial, sans-serif" font-weight="700" font-size="13" fill="#f5f5f7">Nexus Assistant</text>
+  <circle cx="302" cy="84" r="3" fill="#34d399"/>
+  <text x="312" y="87" font-family="Arial, sans-serif" font-size="9" fill="#6b6b74">Online · replies instantly</text>
+  <g fill="#3a3a44"><rect x="600" y="62" width="16" height="3" rx="1.5"/><rect x="600" y="68" width="16" height="3" rx="1.5"/><rect x="600" y="74" width="16" height="3" rx="1.5"/></g>
+
+  <!-- bot message -->
+  <circle cx="262" cy="132" r="12" fill="url(#nx-red)"/>
+  <path d="M256 132 h12 M262 126 v12" stroke="#fff" stroke-width="2" stroke-linecap="round" transform="rotate(45 262 132)"/>
+  <rect x="282" y="120" width="230" height="52" rx="14" fill="#1a1a20"/>
+  <text x="298" y="140" font-family="Arial, sans-serif" font-size="10" fill="#d5d5db">Hi! I'm Nexus 👋 How can I help</text>
+  <text x="298" y="156" font-family="Arial, sans-serif" font-size="10" fill="#d5d5db">you with your order today?</text>
+
+  <!-- user message -->
+  <rect x="360" y="186" width="256" height="34" rx="14" fill="url(#nx-bubble)"/>
+  <text x="376" y="207" font-family="Arial, sans-serif" font-size="10" fill="#fff">Where is my package #8842-QX?</text>
+
+  <!-- bot message with card -->
+  <circle cx="262" cy="250" r="12" fill="url(#nx-red)"/>
+  <path d="M256 250 h12 M262 244 v12" stroke="#fff" stroke-width="2" stroke-linecap="round" transform="rotate(45 262 250)"/>
+  <rect x="282" y="238" width="300" height="96" rx="14" fill="#1a1a20"/>
+  <text x="298" y="258" font-family="Arial, sans-serif" font-size="10" fill="#d5d5db">Your package is out for delivery 🚚</text>
+  <!-- mini tracker -->
+  <g transform="translate(298,272)">
+    <line x1="6" y1="14" x2="250" y2="14" stroke="#2a2a32" stroke-width="3"/>
+    <line x1="6" y1="14" x2="170" y2="14" stroke="#ff1f3d" stroke-width="3"/>
+    <circle cx="6" cy="14" r="5" fill="#ff1f3d"/><circle cx="88" cy="14" r="5" fill="#ff1f3d"/><circle cx="170" cy="14" r="6" fill="#ff1f3d" stroke="#1a1a20" stroke-width="2"/><circle cx="250" cy="14" r="5" fill="#2a2a32"/>
+    <text x="0" y="34" font-family="Arial, sans-serif" font-size="7" fill="#6b6b74">Shipped</text>
+    <text x="150" y="34" font-family="Arial, sans-serif" font-size="7" fill="#ff1f3d">Out for delivery</text>
+    <text x="228" y="34" font-family="Arial, sans-serif" font-size="7" fill="#6b6b74">Home</text>
+  </g>
+
+  <!-- typing indicator -->
+  <rect x="282" y="348" width="66" height="26" rx="13" fill="#1a1a20"/>
+  <circle cx="300" cy="361" r="3" fill="#6b6b74"/><circle cx="315" cy="361" r="3" fill="#8a8a92"/><circle cx="330" cy="361" r="3" fill="#b5b5bd"/>
+
+  <!-- input bar -->
+  <rect x="248" y="388" width="384" height="8" rx="4" fill="#050507"/>
+  <rect x="248" y="378" width="330" height="26" rx="13" fill="#0a0a0d" stroke="#22222a"/>
+  <text x="264" y="395" font-family="Arial, sans-serif" font-size="9" fill="#55555e">Type your message…</text>
+  <circle cx="602" cy="391" r="15" fill="url(#nx-red)"/>
+  <path d="M596 391 l12 0 M602 385 l6 6 l-6 6" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- language chips -->
+  <g font-family="Arial, sans-serif" font-size="8" fill="#8a8a92">
+    <rect x="60" y="150" width="120" height="28" rx="8" fill="#111116" stroke="#1f1f27" filter="url(#nx-shadow)"/>
+    <text x="76" y="168">🌐 12 languages</text>
+    <rect x="60" y="192" width="120" height="28" rx="8" fill="#111116" stroke="#1f1f27" filter="url(#nx-shadow)"/>
+    <text x="76" y="210">⚡ CRM synced</text>
+    <rect x="60" y="234" width="120" height="28" rx="8" fill="#111116" stroke="#1f1f27" filter="url(#nx-shadow)"/>
+    <text x="76" y="252">🤖 GPT-powered</text>
+  </g>
+</svg>
