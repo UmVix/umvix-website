@@ -1,0 +1,40 @@
+name: PostPilot cron
+
+# Hourly heartbeat for Umvix PostPilot.
+#
+# Vercel's Hobby plan only allows 2 cron jobs at daily frequency, but the app
+# needs an hourly tick: every user's local midnight, reminder time and
+# end-of-day cutoff falls on a different UTC hour. GitHub Actions gives us that
+# for free. All three endpoints are idempotent, so a duplicated or retried run
+# is a no-op — and a skipped run self-heals on the next tick.
+#
+# Required repository secrets (Settings → Secrets and variables → Actions):
+#   POSTPILOT_URL    e.g. https://dashboard.umvix.com
+#   POSTPILOT_CRON_SECRET  the same value as the CRON_SECRET env var on Vercel
+
+on:
+  schedule:
+    - cron: "0 * * * *" # every hour, on the hour (UTC)
+  workflow_dispatch: # lets you trigger a run by hand from the Actions tab
+
+jobs:
+  tick:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Day roller — create today's checklist per user timezone
+        run: |
+          curl --fail --silent --show-error --max-time 60 \
+            -H "Authorization: Bearer ${{ secrets.POSTPILOT_CRON_SECRET }}" \
+            "${{ secrets.POSTPILOT_URL }}/api/cron/day-roller"
+
+      - name: Midday reminder — nudge users with unposted platforms
+        run: |
+          curl --fail --silent --show-error --max-time 60 \
+            -H "Authorization: Bearer ${{ secrets.POSTPILOT_CRON_SECRET }}" \
+            "${{ secrets.POSTPILOT_URL }}/api/cron/midday-reminder"
+
+      - name: End-of-day sweep — mark misses, notify, digest admins
+        run: |
+          curl --fail --silent --show-error --max-time 60 \
+            -H "Authorization: Bearer ${{ secrets.POSTPILOT_CRON_SECRET }}" \
+            "${{ secrets.POSTPILOT_URL }}/api/cron/eod-sweep"

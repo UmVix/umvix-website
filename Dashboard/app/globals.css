@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Umvix brand tokens ──────────────────────────────────────────────────
+   Brand values mirror the main Umvix site. Light/dark swap the neutral
+   surfaces; the red stays constant. `.dark` on <html> switches themes. */
+
+/* Values are RGB triplets so Tailwind opacity modifiers (bg-success/15 …)
+   keep working; use rgb(var(--token)) when referencing them in plain CSS. */
+:root {
+  --brand-red: 255 31 61;
+  --brand-red-dark: 179 0 0;
+
+  /* Light theme — soft cool gray canvas, white cards */
+  --surface-sunken: 241 245 249;
+  --surface: 255 255 255;
+  --surface-raised: 248 250 252;
+  --ink: 15 23 42;
+  --ink-muted: 71 85 105;
+  --ink-faint: 148 163 184;
+  --line: 226 232 240;
+  --success: 22 163 74;
+  --warning: 217 119 6;
+  --danger: 220 38 38;
+  /* Chart-only pair, CVD-validated per theme (dataviz six checks). */
+  --chart-posted: 22 163 74;
+  --chart-missed: 220 38 38;
+}
+
+.dark {
+  --surface-sunken: 0 0 0;
+  --surface: 10 10 10;
+  --surface-raised: 22 22 22;
+  --ink: 255 255 255;
+  --ink-muted: 163 163 163;
+  --ink-faint: 115 115 115;
+  --line: 38 38 38;
+  --success: 34 197 94;
+  --warning: 245 158 11;
+  --danger: 248 113 113;
+  --chart-posted: 5 150 105;
+  --chart-missed: 239 68 68;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: rgb(var(--surface-sunken));
+  color: rgb(var(--ink));
+  font-family: var(--font-brand), system-ui, sans-serif;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-headline), system-ui, sans-serif;
+}
+
+/* iOS safe areas for the standalone PWA */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+@layer components {
+  .input {
+    @apply w-full rounded-xl border border-line bg-surface-sunken px-3.5 py-2.5 text-[15px] text-ink placeholder:text-ink-faint focus:border-brand-red focus:outline-none focus:ring-2 focus:ring-brand-red/25;
+  }
+
+  .btn-primary {
+    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-brand-gradient px-4 py-2.5 text-[15px] font-semibold text-white shadow-[0_8px_24px_rgba(255,31,61,0.28)] transition active:scale-[0.98] disabled:opacity-60;
+  }
+
+  .btn-secondary {
+    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-line bg-surface px-4 py-2.5 text-[15px] font-medium text-ink transition hover:border-ink-faint active:scale-[0.98] disabled:opacity-60;
+  }
+
+  .btn-ghost {
+    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl px-3 py-2 text-[15px] font-medium text-ink-muted transition hover:bg-surface-raised hover:text-ink active:scale-[0.98];
+  }
+
+  .skeleton {
+    @apply animate-shimmer rounded-lg bg-gradient-to-r from-surface-raised via-line to-surface-raised bg-[length:200%_100%];
+  }
+}
