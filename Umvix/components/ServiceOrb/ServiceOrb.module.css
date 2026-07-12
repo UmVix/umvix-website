@@ -315,52 +315,191 @@
   opacity: 0.8;
 }
 
-/* Mobile */
+/* -------------------------------------------------------------------------- */
+/* Mobile — fluid holo scene: centered orb + progress arc + 2x2 service grid,  */
+/* with connector wires measured from the real layout (see ServiceOrb.tsx).    */
+/* -------------------------------------------------------------------------- */
+
 .mobilePanel {
   display: none;
 }
 
-.mobileCard {
-  border-radius: 14px;
-  border: 0.5px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.04);
-  padding: 14px 16px;
+.mobileScene {
+  position: relative;
+  width: 100%;
 }
 
-.mobileCardLabel {
-  margin: 0;
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #fff;
+.mobileAmbient {
+  position: absolute;
+  inset: -24px -16px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.05;
+  background: radial-gradient(
+    ellipse 70% 55% at 50% 30%,
+    rgba(var(--ambient-rgb, 255, 77, 109), 1) 0%,
+    transparent 100%
+  );
+  transition: background 1.2s ease;
 }
 
-.mobileCardSub {
-  margin: 4px 0 0;
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.45);
+.mobileConnectors {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: visible;
 }
 
-.mobilePills {
+.mobileConnectorLine {
+  stroke-width: 1;
+  stroke-dasharray: 4 7;
+  opacity: 0.1;
+  transition: opacity 0.5s ease;
+}
+
+.mobileConnectorLineActive {
+  opacity: 0.55;
+  animation: mobileDashFlow 2.6s linear infinite;
+  filter: drop-shadow(0 0 4px currentColor);
+}
+
+.mobileOrbStage {
+  position: relative;
+  z-index: 2;
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 12px;
+  justify-content: center;
+  padding: 32px 0 40px;
 }
 
-.mobilePill {
-  display: flex;
-  align-items: center;
+.mobileOrb {
+  position: relative;
+  width: 126px;
+  height: 126px;
+  --orb-color: #c96b7f;
+  --orb-rgb: 201, 107, 127;
+}
+
+.mobileOrbFloat {
+  position: absolute;
+  inset: 0;
+  animation: mobileFloat 6s ease-in-out infinite;
+}
+
+.mobileOrbRing {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 160px;
+  height: 160px;
+  margin: -80px 0 0 -80px;
+  border: 0.5px dashed rgba(255, 255, 255, 0.09);
+  border-radius: 50%;
+  animation: shimmerSpin 22s linear infinite;
+}
+
+.mobilePulseRing {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid var(--orb-color);
+  opacity: 0;
+  animation: mobilePulse 2.8s ease-out infinite;
+}
+
+/* Thin arc that sweeps around the orb once per auto-cycle. */
+.mobileProgressSvg {
+  position: absolute;
+  inset: -9px;
+  width: calc(100% + 18px);
+  height: calc(100% + 18px);
+  transform: rotate(-90deg);
+  overflow: visible;
+  pointer-events: none;
+}
+
+.mobileProgressArc {
+  fill: none;
+  stroke-width: 0.8;
+  stroke-linecap: round;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  opacity: 0.5;
+  filter: drop-shadow(0 0 3px currentColor);
+  animation-name: mobileArcSweep;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+.mobilePillGrid {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
-  padding: 10px 14px;
-  border-radius: 12px;
-  border: 0.5px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.03);
-  cursor: pointer;
-  text-align: left;
 }
 
-.mobilePillActive {
-  background: rgba(255, 255, 255, 0.05);
+.mobileGridPill {
+  min-width: 0;
+  width: 100%;
+  padding: 10px 12px;
+  gap: 8px;
+  text-align: left;
+  animation: mobilePillEnter 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.mobilePillText {
+  min-width: 0;
+}
+
+@keyframes mobilePulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.45;
+  }
+  70% {
+    transform: scale(1.55);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.55);
+    opacity: 0;
+  }
+}
+
+@keyframes mobileDashFlow {
+  to {
+    stroke-dashoffset: -44;
+  }
+}
+
+@keyframes mobileFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes mobilePillEnter {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes mobileArcSweep {
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 @keyframes shimmerSpin {
@@ -402,8 +541,23 @@
 @media (prefers-reduced-motion: reduce) {
   .shimmerRing,
   .orbitRing1,
-  .orbitRing2 {
+  .orbitRing2,
+  .mobileOrbRing,
+  .mobileOrbFloat,
+  .mobilePulseRing,
+  .mobileConnectorLine,
+  .mobileConnectorLineActive {
     animation: none;
+  }
+
+  .mobileGridPill {
+    animation: none;
+    opacity: 1;
+  }
+
+  .mobileProgressArc {
+    animation: none;
+    opacity: 0;
   }
 
   .servicePillActive {
@@ -413,12 +567,6 @@
 
 @media (max-width: 767px) {
   .panel {
-    min-height: auto;
-  }
-
-  .canvas,
-  .connectors,
-  .scene {
     display: none !important;
   }
 

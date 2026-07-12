@@ -312,7 +312,8 @@ export function useOrbAnimation({
     return clearIntervalCycle;
   }, [isDesktop, startIntervalCycle, clearIntervalCycle]);
 
-  // Mobile auto-cycle (no GSAP)
+  // Mobile auto-cycle (no GSAP). activeIndex is a dependency so any change —
+  // including a user tap — restarts the interval with a full period.
   useEffect(() => {
     if (isDesktop || reduced || services.length < 2) return;
 
@@ -326,7 +327,7 @@ export function useOrbAnimation({
     }, autoCycleMs);
 
     return () => clearInterval(id);
-  }, [autoCycleMs, isDesktop, onServiceChange, reduced, services]);
+  }, [activeIndex, autoCycleMs, isDesktop, onServiceChange, reduced, services]);
 
   // Resize connector
   useEffect(() => {

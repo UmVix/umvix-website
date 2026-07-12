@@ -34,6 +34,11 @@ export default function ServiceOrb({
   const lineRefs = useRef<(SVGLineElement | null)[]>([]);
   const pulseRingRefs = useRef<(HTMLDivElement | null)[]>([]);
 
+  const mobileSceneRef = useRef<HTMLDivElement>(null);
+  const mobileOrbRef = useRef<HTMLDivElement>(null);
+  const mobilePillRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const mobileLineRefs = useRef<(SVGLineElement | null)[]>([]);
+
   const reduced = useReducedMotion();
   const [isDesktop, setIsDesktop] = useState(false);
 
@@ -77,6 +82,47 @@ export default function ServiceOrb({
     reduced,
     enabled: isDesktop,
   });
+
+  // Mobile connector wires: measured from the real layout (orb center →
+  // top-center of each pill), so they stay attached at any viewport width.
+  useEffect(() => {
+    if (isDesktop) return;
+    const scene = mobileSceneRef.current;
+    const orb = mobileOrbRef.current;
+    if (!scene || !orb) return;
+
+    const measure = () => {
+      const sceneRect = scene.getBoundingClientRect();
+      if (!sceneRect.width) return;
+      const orbRect = orb.getBoundingClientRect();
+      const orbCx = orbRect.left + orbRect.width / 2 - sceneRect.left;
+      const orbCy = orbRect.top + orbRect.height / 2 - sceneRect.top;
+
+      mobileLineRefs.current.forEach((line, i) => {
+        const pill = mobilePillRefs.current[i];
+        if (!line || !pill) return;
+        const rect = pill.getBoundingClientRect();
+        line.setAttribute("x1", String(rect.left + rect.width / 2 - sceneRect.left));
+        line.setAttribute("y1", String(rect.top + 1 - sceneRect.top));
+        line.setAttribute("x2", String(orbCx));
+        line.setAttribute("y2", String(orbCy));
+      });
+    };
+
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(scene);
+    window.addEventListener("resize", measure);
+    // Pills slide in with a translate animation — re-measure once they settle.
+    const pills = mobilePillRefs.current.filter(Boolean) as HTMLButtonElement[];
+    pills.forEach((pill) => pill.addEventListener("animationend", measure));
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", measure);
+      pills.forEach((pill) => pill.removeEventListener("animationend", measure));
+    };
+  }, [isDesktop, services.length]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const panel = panelRef.current;
@@ -224,41 +270,123 @@ export default function ServiceOrb({
         </div>
       </div>
 
-      {/* Mobile fallback */}
+      {/* Mobile: fluid holo scene — a centered orb with a cycle-progress arc,
+          a 2x2 service grid below it, and connector wires measured from the
+          real layout so nothing depends on a fixed viewport size. */}
       <div className={styles.mobilePanel}>
-        <div
-          className={styles.mobileCard}
-          style={{
-            borderLeft: `3px solid ${active.color}`,
-          }}
-        >
-          <p className={styles.mobileCardLabel}>{active.label}</p>
-          <p className={styles.mobileCardSub}>{active.sub}</p>
-        </div>
-        <div className={styles.mobilePills}>
-          {services.map((service, i) => {
-            const isActive = i === activeIndex;
-            return (
-              <button
+        <div ref={mobileSceneRef} className={styles.mobileScene}>
+          <div className={styles.mobileAmbient} style={ambientStyle} aria-hidden />
+
+          {/* connector wires from each pill up to the orb */}
+          <svg className={styles.mobileConnectors} aria-hidden>
+            {services.map((service, i) => (
+              <line
                 key={service.id}
-                type="button"
-                data-cursor="hover"
-                className={`${styles.mobilePill} ${isActive ? styles.mobilePillActive : ""}`}
-                style={
-                  isActive
-                    ? { borderLeft: `2.5px solid ${service.color}` }
-                    : undefined
-                }
-                onClick={() => setActive(i, false)}
-              >
-                <span className={styles.pillIcon}>{service.icon}</span>
-                <div>
-                  <p className={styles.pillLabel}>{service.label}</p>
-                  <p className={styles.pillSub}>{service.sub}</p>
-                </div>
-              </button>
-            );
-          })}
+                ref={(el) => {
+                  mobileLineRefs.current[i] = el;
+                }}
+                className={`${styles.mobileConnectorLine} ${
+                  i === activeIndex ? styles.mobileConnectorLineActive : ""
+                }`}
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="0"
+                stroke={service.color}
+                style={{ color: service.color }}
+              />
+            ))}
+          </svg>
+
+          {/* center orb — tints to the active service, with a progress arc
+              that sweeps once per auto-cycle */}
+          <div className={styles.mobileOrbStage}>
+            <div
+              ref={mobileOrbRef}
+              className={styles.mobileOrb}
+              style={
+                {
+                  "--orb-color": active.color,
+                  "--orb-rgb": active.rgb,
+                } as React.CSSProperties
+              }
+              aria-hidden
+            >
+              <div className={styles.mobileOrbFloat}>
+                <div className={styles.orbCore} />
+                <div className={styles.orbHighlight} />
+                <div className={styles.shimmerRing} />
+              </div>
+              <div className={styles.mobileOrbRing} />
+              {[0, 1].map((i) => (
+                <div
+                  key={i}
+                  className={styles.mobilePulseRing}
+                  style={{ animationDelay: `${i * 1.4}s` }}
+                />
+              ))}
+              <svg className={styles.mobileProgressSvg} viewBox="0 0 100 100">
+                <circle
+                  key={activeIndex}
+                  className={styles.mobileProgressArc}
+                  cx="50"
+                  cy="50"
+                  r="49"
+                  pathLength={100}
+                  style={{
+                    stroke: active.color,
+                    animationDuration: `${autoCycleMs}ms`,
+                  }}
+                />
+              </svg>
+            </div>
+          </div>
+
+          {/* service grid */}
+          <div className={styles.mobilePillGrid}>
+            {services.map((service, i) => {
+              const isActive = i === activeIndex;
+              return (
+                <button
+                  key={service.id}
+                  ref={(el) => {
+                    mobilePillRefs.current[i] = el;
+                  }}
+                  type="button"
+                  data-cursor="hover"
+                  onClick={() => setActive(i, false)}
+                  className={`${styles.servicePill} ${styles.mobileGridPill} ${
+                    isActive ? styles.servicePillActive : ""
+                  }`}
+                  style={
+                    {
+                      ...(isActive
+                        ? ({ "--active-rgb": service.rgb } as React.CSSProperties)
+                        : {}),
+                      animationDelay: `${0.15 + i * 0.12}s`,
+                    } as React.CSSProperties
+                  }
+                >
+                  <span
+                    className={styles.pillIcon}
+                    style={isActive ? { color: service.color } : undefined}
+                  >
+                    {service.icon}
+                  </span>
+                  <div className={styles.mobilePillText}>
+                    <p className={styles.pillLabel}>{service.label}</p>
+                    <p className={styles.pillSub}>{service.sub}</p>
+                  </div>
+                  <span
+                    className={`${styles.pillIndicator} ${
+                      isActive ? styles.pillIndicatorActive : ""
+                    }`}
+                    style={{ backgroundColor: service.color, color: service.color }}
+                  />
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

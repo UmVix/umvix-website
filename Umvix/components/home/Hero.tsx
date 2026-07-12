@@ -32,7 +32,7 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative flex min-h-[85vh] items-start overflow-x-hidden pt-[var(--nav-height)] pb-14 lg:pb-20"
+      className="relative flex min-h-[85vh] items-start overflow-x-hidden pt-[var(--nav-height)] pb-28 lg:pb-20"
     >
       {/* Ambient color bleed — shifts with active service */}
       <div
@@ -50,9 +50,9 @@ export default function Hero() {
       />
 
       <div className="site-container relative z-10 py-2 sm:py-4">
-        <div className="grid items-start gap-16 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8">
+        <div className="grid items-start gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8">
           {/* Left Side: Headline & CTAs */}
-          <div className="content-rail flex w-full flex-col items-start">
+          <div className="content-rail flex w-full min-w-0 flex-col items-start">
             <div className="hero-headline-glow w-full">
               <ParticleText
                 marginTop={12}
@@ -98,7 +98,7 @@ export default function Hero() {
           </div>
 
           {/* Right Side: ServiceOrb */}
-          <div className="relative flex w-full items-start justify-center overflow-visible pt-4 lg:ml-8 lg:justify-end xl:ml-12">
+          <div className="relative flex w-full min-w-0 items-start justify-center overflow-visible pt-4 lg:ml-8 lg:justify-end xl:ml-12">
             <ServiceOrb
               services={DEFAULT_SERVICES}
               autoCycleMs={2800}

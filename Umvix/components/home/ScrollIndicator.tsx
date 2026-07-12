@@ -40,10 +40,10 @@ export default function ScrollIndicator({
       type="button"
       onClick={scrollDown}
       aria-label="Scroll to next section"
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 8, x: "-50%" }}
+      animate={{ opacity: 1, y: 0, x: "-50%" }}
       transition={{ duration: 0.8, delay: 1.1 }}
-      className={`absolute bottom-5 left-1/2 z-20 -translate-x-1/2 cursor-pointer border-0 bg-transparent p-2 transition-opacity hover:opacity-80 sm:bottom-6 ${className}`}
+      className={`absolute bottom-5 left-1/2 z-20 cursor-pointer border-0 bg-transparent p-2 transition-opacity hover:opacity-80 sm:bottom-6 ${className}`}
     >
       <motion.span
         aria-hidden

@@ -110,7 +110,10 @@ export default function ParticleText({
       lineHeightPx = lineHeight;
       letterSpacingPx = letterSpacing;
 
-      width = wrapper.clientWidth;
+      // Clamp to the viewport so a transiently-wide parent (e.g. a grid column
+      // blown out mid-layout) can never lock the canvas — and the column with
+      // it — wider than the screen.
+      width = Math.min(wrapper.clientWidth, document.documentElement.clientWidth);
       height = Math.ceil(lineHeight * lines.length + fontSize * 0.35);
 
       // During route transitions/unmount the wrapper can measure 0 wide —
@@ -368,7 +371,7 @@ export default function ParticleText({
       <canvas
         ref={canvasRef}
         aria-hidden
-        className="pointer-events-none block w-full"
+        className="pointer-events-none block w-full max-w-full"
       />
     </div>
   );
