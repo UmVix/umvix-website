@@ -350,7 +350,9 @@ function ServiceTabs({
 }
 
 /* -------------------------------------------------------------------------- */
-/* Mobile / reduced-motion fallback                                           */
+/* Mobile / reduced-motion fallback — a sticky card deck: each service card    */
+/* pins below the navbar and the next one slides up over it, so the section    */
+/* reads as a stacked, layered deck instead of a plain list.                   */
 /* -------------------------------------------------------------------------- */
 
 function StackedFallback() {
@@ -361,28 +363,47 @@ function StackedFallback() {
       <div className="site-container relative z-10">
         <Heading />
 
-        <div className="mt-12 space-y-12">
+        <div className="mt-12 flex flex-col gap-10">
           {SMART_SOLUTIONS_SERVICES.map((service, index) => (
-            <Reveal key={service.id} y={24} delay={index === 0 ? 0 : 0.05}>
-              <div>
-                <h3 className="text-xl font-semibold text-brand-white sm:text-2xl">
-                  {service.title}
-                </h3>
-                <p className="mt-2 max-w-md text-sm leading-relaxed text-brand-gray sm:text-[0.95rem]">
-                  {service.description}
-                </p>
-
-                <div className="mt-5">
-                  <div
-                    role="tabpanel"
-                    id={`smart-solution-panel-${service.id}`}
-                    className="smart-preview-bleed h-[clamp(20rem,70vw,26rem)]"
-                  >
-                    <SmartSolutionsPreview service={service} />
+            <div
+              key={service.id}
+              className="sticky"
+              style={{
+                // each card pins slightly lower so the previous cards' top
+                // edges stay visible as a layered deck
+                top: `calc(var(--nav-height) + ${0.75 + index * 0.85}rem)`,
+                zIndex: index + 1,
+              }}
+            >
+              <Reveal y={24} delay={index === 0 ? 0 : 0.05}>
+                <div
+                  role="tabpanel"
+                  id={`smart-solution-panel-${service.id}`}
+                  className="overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a0a] shadow-[0_-18px_50px_rgba(0,0,0,0.55),0_20px_60px_rgba(0,0,0,0.4)]"
+                >
+                  {/* card header — number chip + service name + blurb */}
+                  <div className="relative border-b border-white/[0.06] px-5 py-4">
+                    <div
+                      aria-hidden
+                      className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-red/40 to-transparent"
+                    />
+                    <div className="flex items-center gap-3">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-red/12 font-headline text-xs font-extrabold text-brand-red ring-1 ring-brand-red/25">
+                        0{index + 1}
+                      </span>
+                      <h3 className="text-lg font-semibold text-brand-white">
+                        {service.title}
+                      </h3>
+                    </div>
+                    <p className="mt-2 text-sm leading-relaxed text-brand-gray">
+                      {service.description}
+                    </p>
                   </div>
+
+                  <SmartSolutionsPreview service={service} />
                 </div>
-              </div>
-            </Reveal>
+              </Reveal>
+            </div>
           ))}
         </div>
       </div>

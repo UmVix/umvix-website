@@ -1,14 +1,26 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import {
+  animate,
+  motion,
+  useInView,
+  useMotionValue,
+  useScroll,
+  useTransform,
+  MotionValue,
+} from "framer-motion";
 import { useReducedMotion } from "@/lib/hooks";
 
 /**
- * Scroll-driven assembly: as the user scrolls through this section,
- * scattered fragments of real portfolio work fly in and click together —
- * a mobile app on the left and a web dashboard on the right — capability
- * chips dock onto the devices, and the finished products light up.
+ * Portfolio assembly: scattered fragments of real portfolio work fly in and
+ * click together — a mobile app on the left and a web dashboard on the right —
+ * capability chips dock onto the devices, and the finished products light up.
+ *
+ * Desktop: scroll-driven (pinned section scrubbed by scroll).
+ * Mobile: the same scene auto-plays once it scrolls into view — scroll-scrub
+ * pinning is unreliable on mobile browsers (dynamic toolbars resize the
+ * viewport mid-gesture) and 320vh of hijacked scroll feels broken on touch.
  */
 
 const APP_SHOT = "/images/portfolio/evolve/evolve-3.png";
@@ -53,6 +65,7 @@ function Tile({
   scatters,
   baseStart,
   reduced,
+  scatterScale = 1,
 }: {
   p: MotionValue<number>;
   i: number;
@@ -62,12 +75,14 @@ function Tile({
   scatters: { x: number; y: number; r: number }[];
   baseStart: number;
   reduced: boolean;
+  /** Shrinks the fly-in distances for small screens. */
+  scatterScale?: number;
 }) {
   const s = scatters[i];
   const start = baseStart + i * 0.06;
   const end = start + 0.34;
-  const x = useTransform(p, [start, end], [s.x, 0]);
-  const y = useTransform(p, [start, end], [s.y, 0]);
+  const x = useTransform(p, [start, end], [s.x * scatterScale, 0]);
+  const y = useTransform(p, [start, end], [s.y * scatterScale, 0]);
   const rotate = useTransform(p, [start, end], [s.r, 0]);
   const opacity = useTransform(p, [start, start + 0.1], [0, 1]);
 
@@ -184,21 +199,107 @@ function Chip({
   );
 }
 
+/** Tracks whether the viewport is at the `lg` breakpoint (1024px) or wider. */
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    setIsDesktop(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  return isDesktop;
+}
+
 export default function AssemblySection() {
-  const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
+  const isDesktop = useIsDesktop();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  // SSR + first client render -> the auto-play variant (no pin), matching the
+  // SmartSolutions section's hydration strategy.
+  const pinned = mounted && isDesktop && !reduced;
+
+  return pinned ? (
+    <DesktopAssembly reduced={reduced} />
+  ) : (
+    <MobileAssembly reduced={reduced} />
+  );
+}
+
+/* Desktop: 320vh pin, scrubbed by scroll. */
+function DesktopAssembly({ reduced }: { reduced: boolean }) {
+  const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end end"],
   });
 
-  const glowOpacity = useTransform(scrollYProgress, [0.82, 0.95], [0, 1]);
-  const badgeOpacity = useTransform(scrollYProgress, [0.86, 0.96], [0, 1]);
-  const badgeY = useTransform(scrollYProgress, [0.86, 0.96], [12, 0]);
-
   return (
     <section ref={ref} className="relative h-[320vh]">
       <div className="sticky top-0 flex h-screen flex-col items-center justify-center overflow-hidden">
+        <AssemblyScene
+          p={scrollYProgress}
+          reduced={reduced}
+          scatterScale={1}
+          subtitle="These are real apps from the Umvix portfolio — keep scrolling and watch design, code, and AI click together into shipped products."
+        />
+      </div>
+    </section>
+  );
+}
+
+/* Mobile / reduced-motion: normal-flow section; the scene assembles itself
+   once it scrolls into view (reduced motion renders it pre-assembled). */
+function MobileAssembly({ reduced }: { reduced: boolean }) {
+  const ref = useRef<HTMLElement>(null);
+  const p = useMotionValue(reduced ? 1 : 0);
+  const inView = useInView(ref, { once: true, margin: "-30% 0px -30% 0px" });
+
+  useEffect(() => {
+    if (!inView || reduced) return;
+    const controls = animate(p, 1, { duration: 3.6, ease: "easeInOut" });
+    return () => controls.stop();
+  }, [inView, reduced, p]);
+
+  return (
+    <section
+      ref={ref}
+      className="relative flex flex-col items-center justify-center overflow-hidden py-20 sm:py-24"
+    >
+      <AssemblyScene
+        p={p}
+        reduced={reduced}
+        scatterScale={0.45}
+        subtitle="Real apps from the Umvix portfolio — design, code, and AI click together into shipped products."
+      />
+    </section>
+  );
+}
+
+/* The shared scene: ambient background, heading, and the two devices. */
+function AssemblyScene({
+  p,
+  reduced,
+  scatterScale,
+  subtitle,
+}: {
+  p: MotionValue<number>;
+  reduced: boolean;
+  scatterScale: number;
+  subtitle: string;
+}) {
+  const glowOpacity = useTransform(p, [0.82, 0.95], [0, 1]);
+  const badgeOpacity = useTransform(p, [0.86, 0.96], [0, 1]);
+  const badgeY = useTransform(p, [0.86, 0.96], [12, 0]);
+
+  return (
+    <>
         {/* ambient background */}
         <div
           aria-hidden
@@ -226,8 +327,7 @@ export default function AssemblySection() {
             Watch Our <span className="text-brand-red">Portfolio</span> Assemble Itself
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-brand-gray sm:text-base">
-            These are real apps from the Umvix portfolio — keep scrolling and watch
-            design, code, and AI click together into shipped products.
+            {subtitle}
           </p>
         </div>
 
@@ -266,7 +366,7 @@ export default function AssemblySection() {
                 {Array.from({ length: 6 }).map((_, i) => (
                   <Tile
                     key={i}
-                    p={scrollYProgress}
+                    p={p}
                     i={i}
                     shot={APP_SHOT}
                     cols={2}
@@ -274,16 +374,17 @@ export default function AssemblySection() {
                     scatters={PHONE_SCATTERS}
                     baseStart={0.04}
                     reduced={reduced}
+                    scatterScale={scatterScale}
                   />
                 ))}
-                <Seams p={scrollYProgress} cols={2} rows={3} reduced={reduced} />
+                <Seams p={p} cols={2} rows={3} reduced={reduced} />
               </div>
 
               {/* left chips dock onto the phone */}
               {LEFT_CHIPS.map((c, i) => (
                 <Chip
                   key={c.label}
-                  p={scrollYProgress}
+                  p={p}
                   label={c.label}
                   top={c.top}
                   from={c.from}
@@ -316,7 +417,7 @@ export default function AssemblySection() {
                   {Array.from({ length: 6 }).map((_, i) => (
                     <Tile
                       key={i}
-                      p={scrollYProgress}
+                      p={p}
                       i={i}
                       shot={DASH_SHOT}
                       cols={3}
@@ -324,9 +425,10 @@ export default function AssemblySection() {
                       scatters={DASH_SCATTERS}
                       baseStart={0.08}
                       reduced={reduced}
+                      scatterScale={scatterScale}
                     />
                   ))}
-                  <Seams p={scrollYProgress} cols={3} rows={2} reduced={reduced} />
+                  <Seams p={p} cols={3} rows={2} reduced={reduced} />
                 </div>
               </div>
 
@@ -334,7 +436,7 @@ export default function AssemblySection() {
               {DASH_CHIPS.map((c, i) => (
                 <Chip
                   key={c.label}
-                  p={scrollYProgress}
+                  p={p}
                   label={c.label}
                   left={c.left}
                   from={c.from}
@@ -346,7 +448,6 @@ export default function AssemblySection() {
             </div>
           </div>
         </div>
-      </div>
-    </section>
+    </>
   );
 }

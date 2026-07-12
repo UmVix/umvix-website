@@ -84,7 +84,9 @@ export default function SmartSolutionsPreview({
           {service.previewSubtitle}
         </p>
 
-        <div className="relative mt-5 flex min-h-[11rem] flex-1 overflow-hidden rounded-xl border border-white/10 bg-black/40 sm:min-h-[12rem] lg:min-h-[14rem]">
+        {/* Mobile: natural height (collage flows, nothing gets cropped).
+            sm+: fills the remaining card height like before. */}
+        <div className="relative mt-5 flex overflow-hidden rounded-xl border border-white/10 bg-black/40 sm:min-h-[12rem] sm:flex-1 lg:min-h-[14rem]">
           <div
             aria-hidden
             className="absolute inset-0 opacity-[0.04]"

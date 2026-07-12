@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Star, MapPin } from "lucide-react";
 import Reveal from "@/components/motion/Reveal";
 import { useReducedMotion } from "@/lib/hooks";
@@ -165,6 +165,29 @@ const ROWS: FanRowConfig[] = [
   { yOffset: 140, leftRotate: -11, rightRotate: 11, bow: 38, duration: 51 }, // outer bottom
 ];
 
+/* Mobile: the fan angles push cards out of the short stage, so rows run flat —
+   a straight 3-lane stream through the energy wall, sized for narrow screens. */
+const MOBILE_ROWS: FanRowConfig[] = [
+  { yOffset: -104, leftRotate: 0, rightRotate: 0, bow: 10, duration: 30 },
+  { yOffset: 0, leftRotate: 0, rightRotate: 0, bow: 0, duration: 38 },
+  { yOffset: 104, leftRotate: 0, rightRotate: 0, bow: 10, duration: 34 },
+];
+
+/** True below the `sm` (640px) breakpoint. */
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)");
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  return isMobile;
+}
+
 /** Vertical bow offset: flat at hub, rises/falls smoothly toward the edges. */
 function bowOffset(p: number, row: FanRowConfig) {
   const edge = Math.abs(p - 0.5) * 2; // 0 at hub … 1 at far edge
@@ -196,7 +219,9 @@ export default function ResultsShowcase({
   subtitle = "Real outcomes from real projects — a constant stream of wins built one engagement at a time.",
 }: ResultsShowcaseProps) {
   const reduced = useReducedMotion();
+  const isMobile = useIsMobile();
   const stageRef = useRef<HTMLDivElement>(null);
+  const rows = isMobile ? MOBILE_ROWS : ROWS;
 
   return (
     <section
@@ -220,11 +245,11 @@ export default function ResultsShowcase({
         </div>
       )}
 
-      <div ref={stageRef} className="relative h-[26rem] w-full sm:h-[30rem]">
+      <div ref={stageRef} className="relative h-[22rem] w-full sm:h-[30rem]">
         <div className="absolute inset-x-0 bottom-0 top-0 z-10 overflow-visible">
-          {ROWS.map((row, i) => (
+          {rows.map((row, i) => (
             <FanRow
-              key={i}
+              key={`${rows.length}-${i}`}
               row={row}
               items={rotateArray(items, i * 3)}
               stageRef={stageRef}
@@ -452,7 +477,7 @@ function PortfolioCard({
   return (
     <div
       ref={cardRef}
-      className="relative h-[4.5rem] w-[14.5rem] shrink-0 overflow-hidden rounded-xl border border-white/10 bg-brand-black-soft will-change-[opacity,transform] sm:w-[17.5rem]"
+      className="relative h-[4.5rem] w-[12.5rem] shrink-0 overflow-hidden rounded-xl border border-white/10 bg-brand-black-soft will-change-[opacity,transform] sm:w-[17.5rem]"
     >
       {/* Skeleton layer */}
       <div

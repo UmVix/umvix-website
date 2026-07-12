@@ -131,7 +131,7 @@ function Shot({ src, w, h }: { src: string; w: number; h: number }) {
 export default function ServiceProjectsCollage({ kind }: Props) {
   if (kind === "web") {
     return (
-      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden p-2.5">
+      <div aria-hidden className="pointer-events-none relative w-full overflow-hidden p-2.5 sm:absolute sm:inset-0">
         <Wires cols={2} />
         <div className="grid grid-cols-2 gap-2.5">
           <div className="flex flex-col gap-2.5">
@@ -168,7 +168,7 @@ export default function ServiceProjectsCollage({ kind }: Props) {
 
   if (kind === "ai") {
     return (
-      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden p-2.5">
+      <div aria-hidden className="pointer-events-none relative w-full overflow-hidden p-2.5 sm:absolute sm:inset-0">
         <Wires cols={2} />
         <div className="grid grid-cols-2 gap-2.5">
           <div className="flex flex-col gap-2.5">
@@ -200,7 +200,7 @@ export default function ServiceProjectsCollage({ kind }: Props) {
 
   if (kind === "automation") {
     return (
-      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden p-2.5">
+      <div aria-hidden className="pointer-events-none relative w-full overflow-hidden p-2.5 sm:absolute sm:inset-0">
         <Wires cols={2} />
         <div className="grid grid-cols-2 gap-2.5">
           <div className="flex flex-col gap-2.5">
@@ -228,7 +228,7 @@ export default function ServiceProjectsCollage({ kind }: Props) {
   }
 
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden p-2.5">
+    <div aria-hidden className="pointer-events-none relative w-full overflow-hidden p-2.5 sm:absolute sm:inset-0">
       <Wires cols={3} />
         <div className="grid grid-cols-3 gap-2.5">
         <div className="flex flex-col gap-2.5">
