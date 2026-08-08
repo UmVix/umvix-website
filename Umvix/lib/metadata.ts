@@ -4,7 +4,7 @@ export const siteConfig = {
   name: "Umvix",
   description:
     "Umvix is an IT agency delivering web development, software solutions, and digital innovation for modern businesses.",
-  url: "https://umvix.com",
+  url: "https://www.umvix.com",
 };
 
 export function createMetadata({
