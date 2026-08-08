@@ -20,6 +20,7 @@ export function createMetadata({
   const pageDescription = description ?? siteConfig.description;
 
   return {
+    metadataBase: new URL(siteConfig.url),
     title: pageTitle,
     description: pageDescription,
     icons: {
