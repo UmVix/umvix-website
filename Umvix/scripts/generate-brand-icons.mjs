@@ -1,4 +1,5 @@
 import sharp from "sharp";
+import fs from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -72,6 +73,78 @@ async function writeIcon(input, crop, size, outPath) {
     .toFile(outPath);
 }
 
+/** Brand black — the favicon background. */
+const ICON_BG = "#000000";
+/** Share of the canvas the logo mark occupies; the rest is breathing room. */
+const ICON_INSET = 0.7;
+
+/**
+ * Writes a favicon on a solid rounded-square background.
+ *
+ * The raw logo is a red-and-white mark on transparency, so on Google's white
+ * search results the white half of it disappears and the icon reads as an
+ * empty blob. Baking in the black background makes it legible on any surface.
+ */
+async function writeSearchIcon(input, crop, size, outPath) {
+  const inner = Math.round(size * ICON_INSET);
+  const offset = Math.round((size - inner) / 2);
+  const radius = Math.round(size * 0.2);
+
+  const mark = await sharp(input)
+    .extract(crop)
+    .resize(inner, inner)
+    .png()
+    .toBuffer();
+
+  const background = Buffer.from(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}">` +
+      `<rect width="${size}" height="${size}" rx="${radius}" ry="${radius}" fill="${ICON_BG}"/>` +
+      `</svg>`
+  );
+
+  const png = await sharp(background)
+    .composite([{ input: mark, left: offset, top: offset }])
+    .png()
+    .toBuffer();
+
+  if (outPath) await sharp(png).toFile(outPath);
+  return png;
+}
+
+/**
+ * Packs PNGs into a multi-resolution .ico. Google fetches /favicon.ico at the
+ * site root regardless of the <link> tags, so it needs to exist and match.
+ */
+function buildIco(images) {
+  const HEADER = 6;
+  const ENTRY = 16;
+  const header = Buffer.alloc(HEADER);
+  header.writeUInt16LE(0, 0); // reserved
+  header.writeUInt16LE(1, 2); // type: icon
+  header.writeUInt16LE(images.length, 4);
+
+  let offset = HEADER + ENTRY * images.length;
+  const entries = images.map(({ size, data }) => {
+    const entry = Buffer.alloc(ENTRY);
+    entry.writeUInt8(size >= 256 ? 0 : size, 0); // width
+    entry.writeUInt8(size >= 256 ? 0 : size, 1); // height
+    entry.writeUInt8(0, 2); // palette size
+    entry.writeUInt8(0, 3); // reserved
+    entry.writeUInt16LE(1, 4); // colour planes
+    entry.writeUInt16LE(32, 6); // bits per pixel
+    entry.writeUInt32LE(data.length, 8);
+    entry.writeUInt32LE(offset, 12);
+    offset += data.length;
+    return entry;
+  });
+
+  return Buffer.concat([
+    header,
+    ...entries,
+    ...images.map(({ data }) => data),
+  ]);
+}
+
 async function main() {
   const mainSrc = path.join(iconsDir, "logo-main.png");
   const smallSrc = path.join(iconsDir, "logo-small.png");
@@ -91,18 +164,35 @@ async function main() {
     .toFile(path.join(iconsDir, "logo-nav.png"));
 
   const favCrop = squareCrop(smallBox, 0.06);
-  const faviconOutputs = [
-    { size: 32, outPath: path.join(iconsDir, "favicon-32.png") },
+
+  // Transparent mark, still used where the site already paints a dark surface.
+  await writeIcon(smallSrc, favCrop, 32, path.join(iconsDir, "favicon-32.png"));
+
+  // Search/tab icons. Google only considers square icons that are a multiple
+  // of 48px, hence 48/96/144/192 rather than the usual 16/32 ladder.
+  const searchIcons = [
     { size: 48, outPath: path.join(iconsDir, "favicon-48.png") },
     { size: 96, outPath: path.join(iconsDir, "favicon-96.png") },
+    { size: 144, outPath: path.join(iconsDir, "favicon-144.png") },
+    { size: 192, outPath: path.join(iconsDir, "favicon-192.png") },
     { size: 180, outPath: path.join(iconsDir, "apple-touch-icon.png") },
     { size: 512, outPath: path.join(root, "app/icon.png") },
     { size: 180, outPath: path.join(root, "app/apple-icon.png") },
   ];
 
-  for (const { size, outPath } of faviconOutputs) {
-    await writeIcon(smallSrc, favCrop, size, outPath);
+  for (const { size, outPath } of searchIcons) {
+    await writeSearchIcon(smallSrc, favCrop, size, outPath);
   }
+
+  const icoSizes = [32, 48, 96];
+  const icoImages = [];
+  for (const size of icoSizes) {
+    icoImages.push({
+      size,
+      data: await writeSearchIcon(smallSrc, favCrop, size, null),
+    });
+  }
+  await fs.writeFile(path.join(root, "public/favicon.ico"), buildIco(icoImages));
 
   const navMeta = await sharp(path.join(iconsDir, "logo-nav.png")).metadata();
   console.log("logo-nav.png", navMeta.width, "x", navMeta.height);

@@ -3,7 +3,9 @@ import { Comfortaa, Montserrat } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SiteChrome from "@/components/SiteChrome";
+import JsonLd from "@/components/JsonLd";
 import { createMetadata } from "@/lib/metadata";
+import { siteGraph } from "@/lib/structuredData";
 import "./globals.css";
 
 /** Closest web match to the rounded geometric logo wordmark */
@@ -33,6 +35,8 @@ export default function RootLayout({
       <body
         className={`${brandFont.className} min-h-screen bg-brand-black text-brand-white antialiased`}
       >
+        {/* Organization + WebSite entity data, emitted once for every page. */}
+        <JsonLd data={siteGraph()} />
         <SiteChrome>
           <Navbar />
           <main className="pt-[var(--nav-height)]">{children}</main>

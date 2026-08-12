@@ -1,13 +1,14 @@
 import Link from "next/link";
-import { Github, Linkedin, Mail, MapPin, Phone, Twitter } from "lucide-react";
+import { Github, Instagram, Linkedin, Mail, MapPin, Phone, Twitter } from "lucide-react";
 import BrandLogo from "./BrandLogo";
+import { getActiveProfiles, siteConfig, type SocialKey } from "@/lib/metadata";
 
 const offices = [
   { label: "Germany", lines: "Morgenbreede 29, Bielefeld 33615, Germany" },
   { label: "Pakistan", lines: "Blue Area, Islamabad, Pakistan" },
 ];
 
-function MediumIcon({ size = 18 }: { size?: number }) {
+function MediumIcon({ size = 18 }: { size?: string | number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
       <path d="M13.54 12a6.8 6.8 0 0 1-6.77 6.82A6.8 6.8 0 0 1 0 12a6.8 6.8 0 0 1 6.77-6.82A6.8 6.8 0 0 1 13.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z" />
@@ -15,15 +16,25 @@ function MediumIcon({ size = 18 }: { size?: number }) {
   );
 }
 
-const socialLinks = [
-  { label: "Twitter", href: "#", icon: Twitter },
-  { label: "LinkedIn", href: "#", icon: Linkedin },
-  { label: "GitHub", href: "#", icon: Github },
-  { label: "Medium", href: "#", icon: MediumIcon },
+const socialIcons: Record<SocialKey, React.ComponentType<{ size?: string | number }>> = {
+  linkedin: Linkedin,
+  instagram: Instagram,
+  x: Twitter,
+  github: Github,
+  medium: MediumIcon,
+};
+
+const siteLinks = [
+  { label: "Home", href: "/" },
+  { label: "Services", href: "/services" },
+  { label: "Portfolio", href: "/portfolio" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  const activeProfiles = getActiveProfiles();
 
   return (
     <footer className="relative mt-auto border-t border-white/[0.06] bg-brand-black-soft">
@@ -42,18 +53,29 @@ export default function Footer() {
               systems for teams that want to move fast without cutting corners.
             </p>
 
-            <div className="mt-6 flex items-center gap-3">
-              {socialLinks.map(({ label, href, icon: Icon }) => (
-                <a
-                  key={label}
-                  href={href}
-                  aria-label={label}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-brand-gray transition-colors hover:border-brand-red/30 hover:text-brand-white"
-                >
-                  <Icon size={18} />
-                </a>
-              ))}
-            </div>
+            {/* Official Umvix profiles. Configured in lib/metadata.ts, which
+                also feeds the `sameAs` array in the Organization JSON-LD, so
+                the site and search engines always agree on which accounts are
+                ours. Unconfigured profiles render nothing. */}
+            {activeProfiles.length > 0 && (
+              <div className="mt-6 flex items-center gap-3">
+                {activeProfiles.map(({ label, key, href }) => {
+                  const Icon = socialIcons[key];
+                  return (
+                    <a
+                      key={key}
+                      href={href}
+                      aria-label={`${siteConfig.name} on ${label}`}
+                      rel="me noopener noreferrer"
+                      target="_blank"
+                      className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-brand-gray transition-colors hover:border-brand-red/30 hover:text-brand-white"
+                    >
+                      <Icon size={18} />
+                    </a>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           {/* Offices — stacked */}
@@ -106,22 +128,24 @@ export default function Footer() {
             &copy; {year} Umvix. All rights reserved.
           </p>
 
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
-            <Link
-              href="/contact"
-              className="text-brand-gray transition-colors hover:text-brand-white"
-            >
-              Contact
-            </Link>
-            <Link
-              href="/portfolio"
-              className="text-brand-gray transition-colors hover:text-brand-white"
-            >
-              Portfolio
-            </Link>
+          {/* Full site navigation — every page stays one internal link away
+              from every other page, including /services. */}
+          <nav
+            aria-label="Footer"
+            className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm"
+          >
+            {siteLinks.map(({ label, href }) => (
+              <Link
+                key={href}
+                href={href}
+                className="text-brand-gray transition-colors hover:text-brand-white"
+              >
+                {label}
+              </Link>
+            ))}
             <span className="hidden h-3 w-px bg-white/10 sm:block" aria-hidden />
             <span className="text-brand-gray-muted">Built with precision.</span>
-          </div>
+          </nav>
         </div>
       </div>
     </footer>

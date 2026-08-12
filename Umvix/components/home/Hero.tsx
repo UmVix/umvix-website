@@ -63,11 +63,20 @@ export default function Hero() {
               />
             </div>
 
+            {/* Deliberately not animated: this is the one sentence that tells
+                crawlers what Umvix is, so it must be visible in the raw HTML
+                rather than starting at opacity 0 behind a JS animation. */}
+            <p className="mt-6 max-w-2xl text-base leading-relaxed text-brand-gray sm:text-lg">
+              Umvix is a software development agency building web platforms,
+              mobile apps, AI chatbots, and automation for founders and growing
+              teams around the world.
+            </p>
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.75 }}
-              className="mt-10 flex flex-wrap items-center gap-8"
+              className="mt-8 flex flex-wrap items-center gap-8"
             >
               <div className="neon-border-container rounded-full p-[1.5px]">
                 <Link
