@@ -14,6 +14,7 @@ const navLinks = [
   { label: "Services", href: "/#smart-solutions" },
   { label: "About", href: "/about" },
   { label: "Portfolio", href: "/portfolio" },
+  { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
 

@@ -1,0 +1,61 @@
+---
+title: "Mobile app maintenance: what it really costs after launch"
+description: "Launch is not the finish line. OS releases, SDK deprecations, and store policy changes mean an unmaintained app breaks within about eighteen months."
+date: 2026-08-11
+category: "Mobile Apps"
+author: "Umvix Team"
+tags: ["Maintenance", "Pricing"]
+cover: "/blog/mobile-app-maintenance-cost.webp"
+draft: false
+---
+
+The uncomfortable number nobody quotes at the start: budget roughly 15–25% of the original build cost per year to keep a mobile app working. Not to add features — to keep what you have from breaking.
+
+Here is where that money actually goes.
+
+## The work that happens whether you plan it or not
+
+**OS releases, annually.** iOS and Android ship major versions every year. Every year something in your app needs attention: a deprecated API, a changed permission model, a new screen size, a UI convention that now looks wrong.
+
+**Store policy deadlines.** Google Play enforces a minimum target API level and will stop serving your app to new users if you miss it. Apple periodically requires builds compiled against a newer SDK. These are hard deadlines with real consequences, set by someone else's calendar.
+
+**SDK and dependency churn.** Your payment provider, analytics, push service, and auth library all ship breaking changes. Skip updates for a year and you are not doing an update, you are doing a migration.
+
+**Certificate and key expiry.** Push certificates, signing keys, API credentials. Every mobile team has a story about an expired certificate discovered on a weekend.
+
+**Backend drift.** Your API evolves. Old app versions in the wild still call it. Users do not update as fast as you would like — some never do.
+
+## What it costs
+
+| Tier | Typical annual cost | What it covers |
+| --- | --- | --- |
+| Keep-alive | 10–15% of build | OS compatibility, store deadlines, critical bugs |
+| Standard | 15–25% of build | The above plus dependency updates, monitoring, small improvements |
+| Active product | 25–40%+ of build | The above plus a steady feature roadmap |
+
+On a $25,000 app, that is roughly $3,750–$6,000 a year at the standard tier. Not optional spend — deferred spend, which always costs more later.
+
+## What actually drives the number up
+
+- **Number of integrations.** Each third-party dependency is someone else's release schedule imposed on yours.
+- **Platform count.** Two platforms, two sets of OS changes.
+- **Backend complexity.** An app talking to your own backend means both need maintaining.
+- **How long you deferred.** Eighteen months of skipped updates is a rebuild, priced like one.
+
+## How to spend less
+
+**Keep dependencies current continuously.** Small, frequent updates are dramatically cheaper than annual big-bang migrations. This is the single biggest lever.
+
+**Have fewer dependencies.** Every SDK added for a nice-to-have is a permanent recurring cost. Ask whether the feature is worth the subscription to somebody else's roadmap.
+
+**Version your API from day one.** So old app versions keep working while you move forward.
+
+**Monitor.** Crash reporting and performance monitoring turn "users are complaining" into "this build, this device, this line".
+
+**Set a minimum supported version and enforce it.** Supporting five-year-old OS versions forever is a choice with a price tag.
+
+## The conversation to have before you build
+
+Ask any agency quoting your app: what does year two cost, and what does it include? An honest answer has numbers in it. "We'll handle it" does not.
+
+We quote maintenance alongside the build so the total cost of ownership is visible before you commit — and we are happy to take over maintenance of an app someone else built, after an audit.

@@ -1,0 +1,65 @@
+---
+title: "Zapier vs Make vs custom code: where each one stops making sense"
+description: "No-code automation is the right answer far more often than agencies admit. Here is exactly where each tool breaks down, and the volume at which custom code gets cheaper."
+date: 2026-08-21
+category: "Automation"
+author: "Umvix Team"
+tags: ["Automation", "Comparison"]
+cover: "/blog/zapier-vs-make-vs-custom.webp"
+draft: false
+---
+
+We build custom automation for a living, and we still tell clients to use Zapier regularly. The interesting question is not which tool is best — it is where each one stops being the cheapest way to get the outcome.
+
+## Zapier
+
+**Best at:** simple, linear, low-volume workflows across popular SaaS tools. Form submission to CRM. New customer to Slack. Paid invoice to spreadsheet.
+
+**Where it stops:** the pricing model is per task, and a task is every step in every run. A five-step workflow running a thousand times a month is five thousand tasks. Costs climb quietly until someone opens the bill.
+
+Branching logic gets unwieldy fast, error handling is basic, and debugging a failure from three weeks ago is painful.
+
+**Use it when:** fewer than a few thousand runs a month, the logic fits on a napkin, and the apps are all mainstream.
+
+## Make
+
+**Best at:** the same territory with more complexity tolerance. Visual branching, iterators, and error handlers that actually work. Pricing is per operation and generally cheaper at volume than Zapier.
+
+**Where it stops:** complex scenarios become spaghetti on a canvas. There is no real version control, no code review, and no meaningful way to test before shipping. When the person who built it leaves, the scenario becomes archaeology.
+
+**Use it when:** the logic has real branching, volume is moderate, and someone in-house will own it.
+
+## n8n and self-hosted
+
+**Best at:** everything Make does, plus you can host it yourself, keep data in your own infrastructure, and write JavaScript in a node when the visual builder runs out.
+
+**Where it stops:** you now operate a service — updates, uptime, backups.
+
+**Use it when:** data residency matters, volume makes per-operation pricing painful, or you want an escape hatch into code without leaving the platform.
+
+## Custom code
+
+**Best at:** high volume, complex logic, tight integration with your own systems, and anything where correctness genuinely matters.
+
+**Where it stops:** it is software. It needs to be written, tested, deployed, monitored, and maintained. For a workflow that runs twice a week, that overhead is absurd.
+
+**Use it when** at least two of these are true:
+
+- Volume is high enough that per-operation pricing exceeds hosting plus maintenance.
+- The logic needs real testing because errors are expensive.
+- You are integrating with internal systems no connector supports.
+- The workflow is core to how the business runs, and outsourcing its reliability is unacceptable.
+
+## The crossover, roughly
+
+There is no exact threshold, but a useful heuristic: when a single workflow's platform bill passes a few hundred dollars a month, or when a failure costs more than a day's engineering time, custom code starts winning. Below that, the no-code tool is almost certainly cheaper all-in.
+
+## The approach we actually recommend
+
+**Prototype in a no-code tool. Migrate the ones that prove themselves.**
+
+Most automation ideas do not survive contact with reality. Building them properly first is expensive discovery. Build it in Make in an afternoon, run it for two months, and let the ones that matter reveal themselves — then rebuild those with tests and monitoring.
+
+The workflows that survive are the ones worth engineering. The rest quietly stop running, and you have lost an afternoon rather than a sprint.
+
+If you have a platform bill climbing or a scenario nobody understands any more, we can audit what you have and tell you which parts are worth moving.

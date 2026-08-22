@@ -1,0 +1,59 @@
+---
+title: "AI chatbot development cost in 2026: what you actually pay for"
+description: "Chatbot quotes range from a few thousand to six figures for the same-sounding brief. A breakdown of the four tiers, the ongoing costs nobody mentions, and how to work out yours."
+date: 2026-08-22
+category: "AI & Chatbots"
+author: "Umvix Team"
+tags: ["Pricing", "AI"]
+cover: "/blog/ai-chatbot-development-cost.webp"
+draft: false
+---
+
+"How much for an AI chatbot?" has become as unanswerable as "how much for a website?" — for the same reason. The word covers four genuinely different products.
+
+## The four tiers
+
+**Rule-based bot — $3,000–$10,000.** Decision trees, buttons, scripted paths. No language model. Handles known questions reliably and everything else badly. Still the right answer for narrow, high-volume flows like order status.
+
+**Retrieval-based assistant — $10,000–$40,000.** An LLM grounded in your content: docs, policies, product data. Answers in natural language, cites real sources, declines gracefully outside its scope. This is what most businesses actually want when they say "AI chatbot", and it is where we do most of our work.
+
+**Multi-agent conversational AI — $50,000–$150,000.** The assistant takes actions, not just answers: checks inventory, books the appointment, raises the ticket, processes the return. Every action is an integration with its own permissions, error handling, and audit trail.
+
+**Enterprise omnichannel — $100,000+.** The above across web, app, WhatsApp, voice, and email, with SSO, role-based access, compliance logging, and human handoff into an existing contact-centre stack.
+
+## Where the money goes
+
+Rarely on the model. Typically:
+
+- **Content and data preparation, 20–30%.** Your knowledge is spread across a website, a PDF folder, a wiki, and three people's heads. Getting it into a form a model can retrieve reliably is the single most underestimated line item.
+- **Integration work, 20–40%.** Any bot that *does* something is really an integration project wearing a chat interface.
+- **Guardrails and evaluation, 15–25%.** Scope enforcement, refusal behaviour, prompt-injection resistance, and a test suite that catches regressions when you change a prompt.
+- **Conversation design, 10–15%.** What it says when it does not know, how it escalates, what it never does.
+- **The interface, 10–15%.** Usually the cheapest part, and the part clients imagine is most of it.
+
+## The ongoing costs
+
+Build cost is not total cost.
+
+| Line | Small business | Mid-market | Enterprise |
+| --- | --- | --- | --- |
+| Model/API usage | $30–$150/mo | $500–$1,500/mo | $3,000–$15,000+/mo |
+| Hosting & infra | $20–$100/mo | $200–$800/mo | $1,000+/mo |
+| Maintenance | 15–20% of build/yr | 15–25%/yr | 20–30%/yr |
+
+Usage cost scales with conversation volume and context length. Long system prompts sent on every message are the most common source of a surprising bill — and the easiest to fix with caching.
+
+## How to estimate yours
+
+Answer four questions:
+
+1. **Does it answer, or does it act?** Acting multiplies cost, because each action is an integration.
+2. **How many sources of truth?** One clean docs site is cheap. Twelve inconsistent PDFs are not.
+3. **How many channels?** Each channel has its own delivery quirks, formatting, and testing.
+4. **What is the cost of a wrong answer?** A marketing site FAQ and a regulated financial assistant need very different guardrail budgets — and that difference is real engineering, not paperwork.
+
+## The ROI test
+
+Conversational AI is one of the few AI investments with a straightforward payback calculation. Take your monthly support ticket volume, estimate the share that is repetitive, and multiply by your cost per ticket. If automating half of that does not cover the build within a year, you are solving the wrong problem — and we will say so.
+
+Send us your ticket volume and your top twenty repeated questions. That is enough for a real number, and the consultation is free.

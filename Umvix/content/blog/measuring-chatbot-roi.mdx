@@ -1,0 +1,64 @@
+---
+title: "How to measure chatbot ROI: the metrics that matter"
+description: "Conversation counts prove nothing. The four metrics that tell you whether your assistant is deflecting work, creating pipeline, or quietly annoying your customers."
+date: 2026-08-03
+category: "AI & Chatbots"
+author: "Umvix Team"
+tags: ["AI", "Analytics"]
+cover: "/blog/measuring-chatbot-roi.webp"
+draft: false
+---
+
+Six months after launch, most chatbot dashboards show a big number of conversations and nothing anybody can act on. Here is what to measure instead, depending on why you built it.
+
+## First: what was it for?
+
+Chatbots get built for one of two reasons, and they are measured completely differently.
+
+**Support deflection** — reduce the volume of repetitive questions reaching humans.
+**Lead generation** — convert more site visitors into qualified conversations.
+
+If you cannot say which one yours is for, that is the finding. Assistants built for both usually achieve neither, because the conversation design pulls in opposite directions.
+
+## For support: the four metrics
+
+**1. Containment rate.** The share of conversations resolved without a human. This is the headline number — but on its own it is dangerous, because an assistant that stonewalls users also "contains" them. Always read it alongside satisfaction.
+
+**2. Escalation quality.** When it does hand off, does the human receive the context — what was asked, what was tried, what the customer already told it? Bad handoffs make support *slower* than no bot, and customers notice immediately when they have to repeat themselves.
+
+**3. Post-conversation satisfaction.** One thumbs up/down at the end. Segment it by contained versus escalated. If contained conversations score worse, your containment is deflection in the bad sense.
+
+**4. Cost per resolved conversation.** Model spend plus infrastructure divided by contained conversations. Compare against your fully loaded cost per human ticket. This is the number that goes in the business case.
+
+**The payback calculation:** repetitive tickets per month × cost per ticket × containment rate = monthly saving. Divide the build cost by that, and you have your payback period in months. If it is over eighteen, the scope is wrong.
+
+## For lead generation: a different four
+
+**1. Qualified conversations started.** Not total chats — conversations where the visitor described a real need.
+
+**2. Assisted conversion rate.** Do visitors who use the assistant convert at a higher rate than those who do not? Watch for selection bias: high-intent visitors are more likely to engage with anything.
+
+**3. Time to first response versus your human baseline.** The assistant's structural advantage is that it answers at 2am and on weekends. Measure the share of conversations that happen outside business hours — that is pure incremental coverage.
+
+**4. Pipeline attributed.** The only number your finance team cares about. Requires passing a conversation ID into your CRM, which is a build decision to make on day one, not an afterthought.
+
+## The diagnostic metrics
+
+These do not go in the board deck, but they tell you what to fix:
+
+- **Unanswered question log.** Every question the assistant declined or fumbled. This is your content roadmap, ranked by frequency.
+- **Rephrase rate.** How often users reword the same question. High rephrasing means it is not understanding, not that users are unclear.
+- **Abandonment point.** Where in the conversation people leave. Usually a specific dead end you can fix in an afternoon.
+- **Repeat visitors.** People who come back to the assistant found it useful the first time. Underrated signal.
+
+## The benchmark to hold yourself to
+
+Published figures for conversational AI in support land around $3.50 returned per $1 spent, with mid-sized deployments automating roughly half of repetitive tickets and cutting support cost by 25–40%. Treat those as what *good* looks like, not what you get automatically.
+
+If your numbers are far below that after three months, the problem is almost always content coverage or conversation design — rarely the model.
+
+## Set this up before launch, not after
+
+Instrument on day one: conversation logs, satisfaction prompt, escalation tracking, and a CRM identifier. Retrofitting analytics means throwing away the first three months of evidence.
+
+We build the measurement in as part of the project, and we review the numbers with clients at 30 and 90 days — because the unanswered-question log is where the next round of improvements comes from.

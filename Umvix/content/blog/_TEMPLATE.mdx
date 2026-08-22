@@ -1,0 +1,40 @@
+---
+# Copy this file to `content/blog/your-post-slug.mdx`. The file name becomes
+# the URL: content/blog/hello-world.mdx  ->  /blog/hello-world
+#
+# Files starting with "_" are ignored, so this template never gets published.
+
+title: "Your post title — keep it under ~60 characters for search results"
+description: "One or two sentences. This is the meta description Google shows, so make it specific and useful."
+date: 2026-08-23
+# Required. Exactly one of: Web Development | Mobile Apps | AI & Chatbots |
+# Automation | SaaS & Dashboards  (the build fails on anything else)
+category: "AI & Chatbots"
+# updated: 2026-09-01      # optional — set when you materially revise the post
+author: "Umvix Team"        # optional — defaults to "Umvix Team"
+tags: ["AI", "Web Development"]
+# cover: "/blog/your-post-slug.webp"  # generated for you by `npm run covers`
+draft: true                 # true = visible in `npm run dev` only, never in production
+---
+
+Opening paragraph. No `# H1` here — the title above is rendered as the page's
+H1 automatically. Start your sections at `##`.
+
+## First section
+
+Regular markdown works: **bold**, _italic_, [links](/services), lists, tables,
+and fenced code blocks.
+
+After adding a post, run `npm run covers` to generate its branded cover image
+into `public/blog/`, then set the `cover` field above to that path.
+
+### A subsection
+
+`##` and `###` headings automatically appear in the table of contents.
+
+> Blockquotes are styled with a brand-red left border.
+
+## Closing
+
+End with a takeaway. A contact CTA is appended to every post automatically, so
+you do not need to write one.

@@ -1,0 +1,86 @@
+---
+title: "Automation that survives: error handling, retries, and observability"
+description: "Most automations work on the happy path and fail silently everywhere else. The patterns that separate a workflow you can trust from one that quietly stops running."
+date: 2026-08-06
+category: "Automation"
+author: "Umvix Team"
+tags: ["Automation", "Reliability"]
+cover: "/blog/reliable-automation-error-handling.webp"
+draft: false
+---
+
+The dangerous failure in automation is not the one that throws an error. It is the one that stops running and nobody notices for three weeks.
+
+## Design for the unhappy path first
+
+Every automation has a happy path that takes an afternoon and a set of failure modes that take the rest of the week. Assume all of these will happen:
+
+- The API is down, or slow enough to time out.
+- You hit a rate limit.
+- Data arrives in a shape you did not anticipate.
+- A record was deleted between one step and the next.
+- Credentials expired.
+- The same event fires twice.
+
+None are exotic. All will occur within the first year.
+
+## Retries, done properly
+
+Retry only what is worth retrying. A 500 or a timeout is transient — retry it. A 400 is your bug — retrying just does it wrong repeatedly.
+
+Use **exponential backoff with jitter**: wait 1s, 2s, 4s, 8s, with a small random offset so that when a service recovers, every queued job does not hammer it simultaneously.
+
+Cap the attempts. Infinite retries turn one broken record into a permanent load problem.
+
+## Make everything idempotent
+
+If a workflow can run twice on the same input, it will. Network timeouts are ambiguous: you do not know whether the request succeeded before the connection dropped.
+
+Give every operation an idempotency key derived from the event, and have receiving systems reject or ignore duplicates. Most modern APIs support an idempotency header — use it. Retrying "send invoice" without it is how customers get billed twice.
+
+## A dead letter queue, not a lost record
+
+When retries are exhausted, the item must go somewhere a human can see: a table, a queue, a channel. With the original payload, the error, and the timestamp.
+
+Without this, failed items vanish. With it, you have a work queue and a diagnosis at the same time — and you can replay items once the underlying problem is fixed.
+
+## Alert on the right things
+
+Three alerts cover most of it:
+
+**1. Failure rate above a threshold.** Not every failure — a spike.
+
+**2. No successful run in an expected window.** This is the one that catches silent death. If a workflow normally runs hourly and has not succeeded in three hours, something is wrong even though nothing errored.
+
+**3. Dead letter queue depth growing.** Items accumulating means a systemic problem, not bad luck.
+
+Send them where someone will see them. An alert nobody reads is a log line with extra steps.
+
+## Log enough to diagnose without the source
+
+For each run, record: what triggered it, the input, each step's outcome, external calls with their responses, the final result, and duration. Give every run a correlation ID and carry it into downstream systems.
+
+The test: can you explain what happened in a specific run three weeks ago without opening the workflow definition? If not, you are logging too little.
+
+## Guard against the runaway
+
+Automations that create work can create it infinitely — a loop that writes a record which triggers the automation which writes a record.
+
+Protect with: a maximum items per run, a maximum runs per hour, a circuit breaker that stops after consecutive failures, and a cost ceiling on anything that calls a paid API.
+
+## The reliability checklist
+
+Before an automation goes live:
+
+- [ ] Retries with backoff on transient errors only
+- [ ] Idempotency keys on every write
+- [ ] Dead letter queue with the original payload
+- [ ] Alert on failure spike, on silence, and on queue depth
+- [ ] Correlation ID through every step
+- [ ] Rate and cost ceilings
+- [ ] A documented manual fallback for when it is down
+- [ ] A tested way to replay failed items
+
+That last one matters more than it sounds. Failures are tolerable when recovery is a button rather than a project.
+
+If you have automations you are no longer sure are running, an audit against this checklist is usually a short, cheap piece of work with an uncomfortable finding or two.

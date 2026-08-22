@@ -1,0 +1,60 @@
+---
+title: "How to launch on the App Store without a rejection"
+description: "App review rejections are predictable and almost entirely avoidable. The eight reasons we see most, and the pre-submission checklist we run before every release."
+date: 2026-08-15
+category: "Mobile Apps"
+author: "Umvix Team"
+tags: ["App Store", "Launch"]
+cover: "/blog/app-store-rejection.webp"
+draft: false
+---
+
+A rejection is rarely fatal, but it costs a week and it always lands on the day you promised the launch. Almost every one we have seen was avoidable.
+
+## The reasons apps actually get rejected
+
+**1. Incomplete information.** No demo account, or one that does not work. If any part of your app sits behind a login, reviewers need working credentials in App Store Connect — including a way past two-factor auth.
+
+**2. Broken links.** Privacy policy URLs that 404, support URLs pointing at a staging domain. Reviewers check them.
+
+**3. Placeholder content.** Lorem ipsum, test data, a "Coming soon" screen. If a feature is not ready, remove it from the build rather than shipping a stub.
+
+**4. Sign-in without an alternative.** If you offer third-party login, Apple requires an equivalent privacy-preserving option or your own email-based sign-in.
+
+**5. Payments outside the store.** Digital goods and subscriptions consumed inside the app must use in-app purchase. Linking out to your own checkout is the single most expensive mistake on this list — it can mean rearchitecting your billing.
+
+**6. Privacy labels that do not match reality.** Your declared data collection is checked against what your SDKs actually do. Analytics and ad SDKs collect more than teams realise.
+
+**7. Permission requests with no explanation.** Every permission needs a usage description string that says specifically why you need it. "This app needs camera access" is not a reason.
+
+**8. Not enough app.** Apple rejects apps that are a repackaged website or offer little beyond a static brochure. If your app is a wrapper, expect a fight.
+
+## The pre-submission checklist
+
+Before we submit anything:
+
+- [ ] Demo account created, tested from a clean device, credentials in the review notes
+- [ ] Every URL in the listing opens on a public domain
+- [ ] Permission strings written specifically, not generically
+- [ ] Privacy labels cross-checked against every SDK, not just our own code
+- [ ] Tested on the oldest OS version we claim to support
+- [ ] Tested on the smallest screen we claim to support
+- [ ] No test data, no debug menus, no unfinished screens
+- [ ] Crash-free on a cold start with no network
+- [ ] Screenshots match the current build
+- [ ] Review notes explain anything unusual, in plain language
+
+That last item is underrated. If your app does something a reviewer might misread, explain it in the notes before they guess.
+
+## When you do get rejected
+
+- **Read the actual guideline number.** The message is templated; the guideline is specific.
+- **Reply in Resolution Center rather than resubmitting blindly.** If you believe it is a misunderstanding, say so with detail — reviewers do reverse decisions.
+- **Fix and resubmit fast.** Review times are usually short; a same-day fix often lands the next day.
+- **Do not argue the guideline itself.** Argue that you comply with it.
+
+## Android is easier, not free
+
+Google Play review is faster and more automated, but has its own tripwires: the Data Safety form, target API level deadlines, and background location justifications. Budget for a policy review rather than assuming it will sail through.
+
+Planning a launch? We handle submission and review for the apps we build, and we are happy to run this checklist against an app someone else built if you have a release coming up.

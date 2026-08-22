@@ -1,0 +1,77 @@
+---
+title: "Dashboard design that people actually use"
+description: "Most dashboards are built to show everything and end up showing nothing. The design decisions that turn a data screen into something people open on purpose."
+date: 2026-08-15
+category: "SaaS & Dashboards"
+author: "Umvix Team"
+tags: ["Dashboards", "UX"]
+cover: "/blog/dashboard-design-that-works.webp"
+draft: false
+---
+
+The most common dashboard failure is not ugliness. It is a screen full of accurate, well-rendered charts that nobody looks at, because none of them lead to a decision.
+
+## Start with the decision, not the data
+
+Before any chart exists, answer: **what will someone do differently after looking at this?**
+
+If the answer is "be informed", the dashboard will not get used. Real answers sound like: "decide whether to chase this account", "spot which region is behind and call the manager", "know if last night's job failed".
+
+Every element should serve a decision. Anything that does not is decoration with a maintenance cost.
+
+## One screen, one audience
+
+An executive wants three numbers and a trend. An operations manager wants a queue and exceptions. An analyst wants filters and raw export.
+
+Trying to serve all three produces a screen that serves none. Build separate views. They can share components and data; they should not share layout.
+
+## The inverted pyramid
+
+Structure by decreasing urgency:
+
+1. **Status.** Is anything wrong right now? Usually one to three items, prominent, and *absent* when everything is fine.
+2. **Headline metrics.** Three to five numbers, each with a comparison. A number without context is trivia — "£48,200" means nothing; "£48,200, up 12% on last month" means something.
+3. **Trends.** Where things are heading.
+4. **Detail.** Tables, breakdowns, and filters, below the fold, for people who want to dig.
+
+Most dashboards invert this and lead with a dense table.
+
+## Design rules that consistently help
+
+**Show comparison by default.** Versus last period, versus target, versus the same period last year. Pick one and apply it consistently.
+
+**Make the units unmistakable.** Currency symbols, percentages, and clear time windows. "Revenue: 48.2" causes meetings.
+
+**State the freshness.** "Updated 4 minutes ago" prevents an entire category of misunderstanding.
+
+**Design the empty state.** A new account's first view is empty. That is your onboarding moment, and it is usually left as a blank grid.
+
+**Design the error state.** When a data source fails, say so on the affected tile. Silently showing stale numbers is worse than showing nothing.
+
+**Use colour to mean something.** If red means "bad", it cannot also be your brand accent on a neutral chart. Pick one semantic system and hold it.
+
+**Cap the chart count.** More than six or seven per screen and people stop reading them individually.
+
+## Interaction that earns its complexity
+
+- **Filters that persist.** Nobody wants to reselect their region every visit.
+- **Drill-down on everything.** A number you cannot click to explain is a number people distrust.
+- **Export.** Someone will always need it in a spreadsheet. Fighting this wastes goodwill.
+- **Shareable URLs.** A filtered view someone can paste into a message is far more useful than a screenshot.
+
+## Performance is a design feature
+
+A dashboard that takes eight seconds gets checked less often, which defeats the point. Practical measures:
+
+- Pre-aggregate rather than computing from raw rows on every load.
+- Load the headline numbers first and stream the rest.
+- Cache aggressively and show the freshness timestamp so caching is honest.
+- Paginate or virtualise long tables.
+
+## How to tell if it works
+
+Instrument the dashboard itself. Which tiles get looked at, which filters get used, which views get opened weekly versus never.
+
+Then remove what nobody uses. A dashboard that lost half its tiles and kept all its usage is a better dashboard, and the removal is the hardest part to get agreement on.
+
+If you have a dashboard people ignore, we usually start by watching five people use it for ten minutes each. The findings are rarely subtle.

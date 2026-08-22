@@ -155,7 +155,7 @@ function CopilotChat({ accent }: { accent: string }) {
         <div className="flex flex-1 flex-col gap-1.5">
           <div className="flex items-start gap-1 self-end">
             <div className="max-w-[70%] rounded-lg rounded-tr-[2px] bg-white/[0.06] px-1.5 py-1">
-              <p className="text-[4.5px] leading-snug">Summarize this quarter's support tickets.</p>
+              <p className="text-[4.5px] leading-snug">Summarize this quarter&apos;s support tickets.</p>
             </div>
           </div>
           <div className="flex items-start gap-1">

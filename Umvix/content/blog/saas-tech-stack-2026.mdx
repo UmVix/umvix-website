@@ -1,0 +1,75 @@
+---
+title: "SaaS tech stack in 2026: what we build on and why"
+description: "The stack we reach for by default, the reasoning behind each choice, and where we deliberately deviate. Opinionated, and explained rather than asserted."
+date: 2026-08-17
+category: "SaaS & Dashboards"
+author: "Umvix Team"
+tags: ["SaaS", "Architecture"]
+cover: "/blog/saas-tech-stack-2026.webp"
+draft: false
+---
+
+Every agency has a default stack. Ours is chosen for a specific goal: a small team shipping a product that a different small team can maintain in three years. That constraint rules out a lot of otherwise reasonable choices.
+
+## Frontend and backend: Next.js
+
+One framework for the marketing site, the app, and the API routes. Server components keep data fetching on the server, which keeps the client bundle small.
+
+**Why not a separate SPA and API?** For most SaaS products it means two repos, two deploy pipelines, two sets of types, and a permanent synchronisation tax. Worth it at large scale, expensive overhead below that.
+
+**Where we deviate:** heavy background processing, or a backend that serves several clients including mobile, justifies a separate API service.
+
+## Database: PostgreSQL
+
+Boring on purpose. It handles relational data, JSON, full-text search, and — with pgvector — embeddings, so most products need one database rather than four. Row-level security enforces tenant isolation below the application layer.
+
+**Where we deviate:** genuinely document-shaped data with no relational access patterns, or workloads needing horizontal write scaling that a managed Postgres cannot meet.
+
+## Auth: a provider, not our own
+
+Authentication is undifferentiated, security-critical, and expensive to get subtly right. Session handling, reset flows, MFA, and eventually SSO are years of someone else's work.
+
+**Where we deviate:** unusual identity requirements or hard data residency constraints that hosted providers cannot meet.
+
+## Billing: Stripe, with webhooks treated as the source of truth
+
+Subscription state lives in Stripe; your database mirrors it via webhooks. Never infer subscription status from your own records alone — they drift.
+
+**Where we deviate:** regions Stripe does not serve well, or invoice-based enterprise billing, which is a different product entirely.
+
+## Background jobs: a real queue
+
+Anything slow, retryable, or scheduled belongs off the request path. What matters is not which queue but that it has retries with backoff, a dead letter queue, and visibility into depth and failures.
+
+**The mistake to avoid:** running background work in serverless request handlers because it was quicker. It works until it silently does not.
+
+## Hosting: managed, until it is expensive
+
+Vercel for the Next.js app, managed Postgres, managed queue. You pay a premium and buy back attention, which is the scarcer resource for a small team.
+
+**Where we deviate:** at sustained high load the economics invert, and moving compute to containers on a cloud provider becomes clearly cheaper. That is a good problem, and a deliberate migration rather than a rewrite if you kept the app portable.
+
+## Observability from day one
+
+Error tracking, structured logs with correlation IDs, uptime monitoring, and per-tenant metrics. Non-negotiable, and cheap at the start.
+
+The specific rule: **set log retention on day one.** Log storage is one of the most reliably surprising bills in month six.
+
+## AI, when it earns its place
+
+We add a model when it does something rules cannot: natural-language search over customer content, extraction from messy documents, an assistant grounded in the product's own data.
+
+Behind an abstraction layer, with prompts in configuration and an evaluation set — so you can switch models as they improve without touching application code.
+
+## What we deliberately avoid early
+
+- **Microservices.** A modular monolith is faster to build and easier to reason about until you have teams that need independent deploys.
+- **Kubernetes**, until you have a specific reason and someone to own it.
+- **A custom design system**, when a well-configured component library gets you shipping months sooner.
+- **Multi-cloud.** Solving a problem you do not have, at the cost of every problem you do.
+
+## The principle
+
+Choose technology your future maintainer will recognise. Novel infrastructure is a liability when the person who chose it has moved on — and the most common thing we are asked to fix is a stack that was interesting rather than obvious.
+
+If you have a stack decision in front of you, we are happy to argue it through with you, including the parts where we would disagree with ourselves.

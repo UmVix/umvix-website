@@ -1,0 +1,71 @@
+---
+title: "Multi-tenant SaaS architecture: shared vs isolated databases"
+description: "The tenancy model you pick in week one determines your cost curve, your compliance story, and how painful your migrations are for years. A practical comparison."
+date: 2026-08-20
+category: "SaaS & Dashboards"
+author: "Umvix Team"
+tags: ["SaaS", "Architecture"]
+cover: "/blog/multi-tenant-saas-architecture.webp"
+draft: false
+---
+
+Nearly every SaaS decision can be revisited later. This one can too — but it is one of the most expensive reversals available, so it is worth getting deliberately right rather than by default.
+
+## The three models
+
+**Shared database, shared schema.** Every tenant's rows live in the same tables, separated by a `tenant_id` column. Cheapest to run, simplest to operate, one migration for everyone.
+
+**Shared database, separate schemas.** Each tenant gets its own schema in one database. Stronger separation, per-tenant backup and restore, migrations run per schema.
+
+**Database per tenant.** Full isolation. Strongest compliance story, easiest per-tenant scaling and restore, most operational overhead by a wide margin.
+
+## Choosing
+
+**Shared schema is right for most SaaS**, particularly self-serve products with many small tenants. The cost per tenant approaches zero, and one migration covers everyone.
+
+**Separate schemas** suit mid-market products with dozens or hundreds of tenants where per-tenant restore and clearer separation are worth the migration complexity.
+
+**Database per tenant** is for enterprise deals with contractual isolation requirements, tenants large enough to need their own scaling, or strict data residency per customer. Below a few hundred tenants it is manageable. Above that, provisioning and migration must be fully automated or it becomes a full-time job.
+
+## The risk in shared schema, stated plainly
+
+One missing `WHERE tenant_id = ?` and a customer sees another customer's data. This is the failure that ends companies, and it is a one-line bug.
+
+Do not rely on discipline. Enforce it structurally:
+
+- **Row-level security in the database.** Postgres RLS enforces the boundary below your application code, so a forgotten filter fails closed rather than leaking.
+- **A single data-access layer** where the tenant context is applied automatically. No raw queries scattered through the codebase.
+- **Tenant context from the session, never from the request body.** A `tenantId` a client can send is a `tenantId` a client can change.
+- **Tests that specifically try to cross the boundary.** Every list and detail endpoint, as a different tenant, asserting an empty result or a 404.
+
+That last item belongs in your CI pipeline permanently.
+
+## The noisy neighbour problem
+
+Shared infrastructure means one tenant's heavy usage degrades everyone else's experience. Published figures put error-rate spikes of 40–60% during peak load on systems without tenant-aware quotas.
+
+Mitigate with:
+
+- **Per-tenant rate limits**, not just global ones.
+- **Separate queues or weighted fair queuing** for background jobs, so one tenant's bulk import does not starve everyone's exports.
+- **Query timeouts and result caps** so one enormous request cannot monopolise a connection pool.
+- **Per-tenant metrics.** Aggregate dashboards hide exactly the problem you are looking for.
+
+## Onboarding has to be automated
+
+Whatever model you choose, provisioning a new tenant must be a single automated operation: create the tenant record or schema, seed defaults, create the owner, configure roles, send the invitation.
+
+Manual provisioning is fine for ten customers and a bottleneck at fifty. Automate it while it is still easy — templated configuration driven by metadata, not a runbook someone follows.
+
+## Migrations
+
+- **Shared schema:** one migration, all tenants, must be backward compatible while deploys roll out. Expand, migrate, contract.
+- **Separate schemas or databases:** migrations run per tenant. Needs orchestration, progress tracking, and the ability to resume after failure. Roll out in cohorts — a canary group first, then the rest.
+
+## The pragmatic default
+
+Start with **shared database, shared schema, with row-level security enforced in the database**. It is the cheapest to build and run, and RLS gives you a defensible isolation story for most buyers.
+
+Add per-tenant databases later for the specific enterprise customers who contractually require it. A hybrid is entirely normal, and far cheaper than building for the hardest case on day one.
+
+Planning a platform now? We are happy to review the tenancy model before you build — it is the cheapest hour in the project.

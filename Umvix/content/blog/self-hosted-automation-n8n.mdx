@@ -1,0 +1,67 @@
+---
+title: "Self-hosted automation: when to own your workflow engine"
+description: "Running n8n or a custom orchestrator yourself trades a subscription for operational responsibility. The three situations where that trade is clearly worth it."
+date: 2026-08-10
+category: "Automation"
+author: "Umvix Team"
+tags: ["Automation", "Architecture"]
+cover: "/blog/self-hosted-automation-n8n.webp"
+draft: false
+---
+
+Self-hosting your automation platform is not automatically cheaper or better. It is a specific trade: you stop paying per operation and start paying in operational responsibility. Here is when that maths works.
+
+## The three cases where it clearly wins
+
+**1. Data residency and privacy.** If your workflows touch personal data, health records, or financial data that cannot leave your infrastructure, hosted platforms may simply be off the table regardless of cost. This is the strongest argument and often the only one that matters.
+
+**2. Volume economics.** Per-operation pricing is excellent at low volume and painful at high volume. A workflow running hundreds of thousands of operations a month can cost more in platform fees than the compute needed to run it yourself many times over.
+
+**3. Deep internal integration.** When most of your steps talk to internal systems that no connector supports, the platform's main value — its connector library — is not doing much for you.
+
+## What you take on
+
+Be clear-eyed about it:
+
+- **Uptime.** When your automation server is down, your business processes stop. You need monitoring and someone who responds.
+- **Upgrades.** Security patches and version upgrades become your calendar item.
+- **Backups.** Workflow definitions, credentials, and execution history all need backing up and, more importantly, restore-testing.
+- **Secrets management.** Credentials for every connected system now live in your infrastructure.
+- **Scaling.** Queue depth, worker count, and the noisy-neighbour problem when one heavy workflow starves the rest.
+
+Roughly, expect a few hours a month in steady state and a day or two per major upgrade. That is the real price, and it is worth comparing against the subscription honestly.
+
+## The setup we recommend
+
+If you go self-hosted, get these right from the start:
+
+**Containers, not a VM someone configured by hand.** The instance should be reproducible from a config file, so a rebuild is routine rather than a crisis.
+
+**Separate queue workers from the UI.** Otherwise a long-running workflow makes the interface unusable.
+
+**External database, backed up.** Not the bundled default. Execution history grows fast — set a retention policy on day one, before it becomes a storage problem.
+
+**Secrets in a real store**, injected as environment variables, never in the workflow definitions themselves.
+
+**Workflows in version control.** Export definitions to a repository. This is the single biggest advantage self-hosting gives you over a hosted canvas, and most teams never use it.
+
+**Staging and production instances.** Testing in production is how automation takes down a business process on a Friday.
+
+**Alerting on failures.** Not an email nobody reads — a real alert to a channel someone watches, with the workflow name and the error.
+
+## The hybrid that works well
+
+You do not have to choose globally. A pattern we like:
+
+- Hosted platform for low-volume workflows touching mainstream SaaS.
+- Self-hosted or custom for high-volume, sensitive, or business-critical flows.
+
+Right tool per workflow, rather than a religion.
+
+## The honest recommendation
+
+If you are asking "should we self-host?" purely to save money, and none of the three cases above apply, the answer is usually no. Your subscription is cheaper than your engineers' attention.
+
+If data residency is a real constraint, or your platform bill has become a line item people ask about in meetings, it is worth costing out properly.
+
+We set up and maintain self-hosted automation for clients who need it — and we tell the ones who do not to stay where they are.

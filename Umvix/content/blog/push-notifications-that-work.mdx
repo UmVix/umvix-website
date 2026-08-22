@@ -1,0 +1,65 @@
+---
+title: "Push notifications that don't get switched off"
+description: "Permission is granted once and revoked forever. How to earn the opt-in, keep it, and send notifications that bring people back instead of driving them away."
+date: 2026-08-09
+category: "Mobile Apps"
+author: "Umvix Team"
+tags: ["Retention", "UX"]
+cover: "/blog/push-notifications-that-work.webp"
+draft: false
+---
+
+Push is the only channel that reaches a user without them opening your app. It is also the fastest way to get uninstalled. The gap between those outcomes is almost entirely about timing and relevance.
+
+## Do not ask on first launch
+
+The most common mistake, and the most expensive. A user who has been in your app for four seconds has no reason to say yes, and iOS only lets you ask once — a denial sends them to Settings, where they will never go.
+
+Ask **after** the user does something that implies they want to be told what happens next: places an order, follows a thing, saves a search, sends a message.
+
+## Prime before you prompt
+
+Show your own screen first, explaining what you will send and roughly how often. If they decline your screen, do not fire the system prompt — you keep the ask in reserve.
+
+Teams that add a priming screen typically see opt-in rates well above those that go straight to the system dialog, because the ask arrives with context.
+
+## What to send
+
+Good notifications share three properties: they are **about the user**, **timely**, and **actionable**.
+
+- "Your order shipped — arriving Thursday" ✅
+- "Sam replied to your message" ✅
+- "Price dropped on the jacket you saved" ✅
+- "We've added new features!" ❌
+- "Don't forget about us 👋" ❌
+- "Happy Friday from the team!" ❌
+
+The failed examples share a trait: they serve you, not the user. Users can tell instantly, and they respond by disabling notifications — permanently, silently, without complaint.
+
+## Frequency is the whole game
+
+There is no universal right number, but there is a reliable warning sign: if notification opt-outs rise after a campaign, you sent too many or the wrong kind. Track that ratio as carefully as you track opens.
+
+Give people granular controls — "order updates" separate from "recommendations". A user who turns off one category stays reachable on the other. A user with only an on/off switch turns everything off.
+
+## The technical parts that bite
+
+- **Deep link every notification.** Tapping a notification must land on the relevant screen, not the home screen. Nothing erodes trust faster.
+- **Respect quiet hours in the user's timezone**, not your server's.
+- **Handle the cold-start case.** Notification taps when the app was killed are a distinct code path and the most commonly broken one.
+- **Deduplicate.** Silent pushes plus visible pushes plus in-app messages can triple-notify the same event.
+- **Test on a real locked device.** Simulators lie about notification behaviour.
+
+## Measure the right thing
+
+Open rate is a vanity metric — it tells you the notification was interesting, not that it was useful. Track instead:
+
+- **Opt-out rate per campaign.** The clearest signal you overstepped.
+- **Downstream action.** Did they do the thing the notification was about?
+- **Retention of opted-in versus opted-out users.** If there is no gap, your notifications are not earning their place.
+
+## The rule
+
+Send only what the user would be annoyed to have missed. Everything else belongs in an in-app inbox they can check when they choose.
+
+Building an app with a notification strategy? We design the permission flow and the categories alongside the app itself — it is much cheaper than retrofitting it after opt-in rates disappoint.

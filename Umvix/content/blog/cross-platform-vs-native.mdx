@@ -1,0 +1,54 @@
+---
+title: "Cross-platform vs native: when doubling the build is worth it"
+description: "Cross-platform covers roughly 90% of apps. Here is how to tell whether yours is in the other 10% before you commit to paying for two codebases."
+date: 2026-08-17
+category: "Mobile Apps"
+author: "Umvix Team"
+tags: ["Mobile Apps", "Architecture"]
+cover: "/blog/cross-platform-vs-native.webp"
+draft: false
+---
+
+Going fully native means two codebases, two teams or one team context-switching, two release cycles, and two sets of bugs. It roughly doubles the platform work. Sometimes that is exactly right.
+
+## What cross-platform genuinely costs you
+
+Be honest about the trade-offs before dismissing them:
+
+- **A lag behind new OS features.** When Apple ships something at WWDC, native gets it first. Bridges follow, usually within months.
+- **Bridge dependency.** Every native capability needs a package. Most exist; the ones that do not become your problem.
+- **App size.** Cross-platform apps carry a runtime. Usually irrelevant, occasionally not for emerging markets.
+- **Deep platform integration is harder.** Widgets, complications, App Clips, background processing — all possible, all more work than they would be natively.
+
+None of these are dealbreakers for most apps. They are dealbreakers for specific ones.
+
+## Go native when
+
+**Performance is the product.** Real-time video effects, AR, 3D games, sustained sensor processing, audio pipelines with tight latency budgets. If the thing users pay for is computational, own the metal.
+
+**The app lives in the OS.** Home screen widgets, Watch apps, Live Activities, deep Siri or share-sheet integration, custom keyboards. When the OS surface *is* the product, native stops being an option and starts being the requirement.
+
+**Regulatory or hardware constraints.** Some medical, automotive, and financial hardware SDKs ship native-only, with no bridge and no plan for one.
+
+**One platform is genuinely all you need.** An internal iPad tool for one company's warehouse does not need cross-platform. Build it natively and skip the abstraction entirely.
+
+## Stay cross-platform when
+
+- The app is fundamentally screens, forms, lists, and API calls — which is most apps.
+- You need both platforms at once with a fixed budget.
+- Your roadmap is uncertain and iteration speed matters more than polish.
+- Your team is small. One codebase means one team can hold the whole thing.
+
+## The hybrid nobody mentions
+
+You are not choosing once for everything. React Native and Flutter both let you write a native module for the 5% that needs it while the other 95% stays shared.
+
+We have shipped apps where a single screen — a scanner, a real-time chart — is native code inside an otherwise cross-platform app. It is the pragmatic answer surprisingly often, and it is far cheaper than committing to native everywhere because of one feature.
+
+## The question to ask
+
+Not "which is better", but: **what does this app do that a website cannot?**
+
+If the honest answer is "nothing, we just want an icon on the home screen", you may not need an app at all. If the answer involves the camera, sensors, offline use, or background processing, we can tell you quickly which parts need native and which do not.
+
+Send us your feature list and we will mark it up — shared, bridged, or native — before you commit to an architecture.

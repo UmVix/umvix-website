@@ -1,7 +1,9 @@
 import type { Config } from "tailwindcss";
+import typography from "@tailwindcss/typography";
 
 const config: Config = {
   content: [
+    "./content/**/*.mdx",
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
@@ -45,9 +47,32 @@ const config: Config = {
         "thinking-bounce": "thinking-bounce 1.4s ease-in-out infinite",
         scan: "scan 1.8s ease-in-out infinite",
       },
+      // Prose styling for MDX blog posts, mapped onto the brand tokens.
+      typography: {
+        brand: {
+          css: {
+            "--tw-prose-body": "var(--brand-gray)",
+            "--tw-prose-headings": "var(--brand-white)",
+            "--tw-prose-lead": "var(--brand-gray)",
+            "--tw-prose-links": "var(--brand-red)",
+            "--tw-prose-bold": "var(--brand-white)",
+            "--tw-prose-counters": "var(--brand-gray-muted)",
+            "--tw-prose-bullets": "var(--brand-red)",
+            "--tw-prose-hr": "rgba(255,255,255,0.08)",
+            "--tw-prose-quotes": "var(--brand-white)",
+            "--tw-prose-quote-borders": "var(--brand-red)",
+            "--tw-prose-captions": "var(--brand-gray-muted)",
+            "--tw-prose-code": "var(--brand-white)",
+            "--tw-prose-pre-code": "var(--brand-gray)",
+            "--tw-prose-pre-bg": "rgba(255,255,255,0.04)",
+            "--tw-prose-th-borders": "rgba(255,255,255,0.14)",
+            "--tw-prose-td-borders": "rgba(255,255,255,0.08)",
+          },
+        },
+      },
     },
   },
-  plugins: [],
+  plugins: [typography],
 };
 
 export default config;

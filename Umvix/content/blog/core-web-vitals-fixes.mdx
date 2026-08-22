@@ -1,0 +1,61 @@
+---
+title: "Core Web Vitals in 2026: the fixes that actually move the needle"
+description: "Most Core Web Vitals advice is a checklist of things that change your score by nothing. Here are the four changes that consistently take a failing site to green."
+date: 2026-08-16
+category: "Web Development"
+author: "Umvix Team"
+tags: ["Performance", "SEO"]
+cover: "/blog/core-web-vitals-fixes.webp"
+draft: false
+---
+
+We audit a lot of slow sites. The same four problems account for the overwhelming majority of failures, and none of them are the ones people arrive worrying about.
+
+## First: measure the right thing
+
+Lighthouse in your browser is a lab test on your laptop over your office wifi. Google ranks on **field data** — real visitors on real devices, collected in the Chrome UX Report over 28 days.
+
+Check field data in Search Console under Core Web Vitals, or in PageSpeed Insights (the top section, not the Lighthouse section below it). If lab and field disagree, field wins.
+
+## Fix 1: the LCP image
+
+Largest Contentful Paint is usually a hero image, and it is usually failing for one of three reasons:
+
+- It is lazy-loaded. The one image guaranteed to be in the viewport should never be lazy.
+- It has no explicit priority, so the browser discovers it late.
+- It is a 2MB JPEG being displayed at 800px wide.
+
+In Next.js, that is `priority` on the hero `<Image>`, correct `sizes`, and letting the framework serve WebP or AVIF. This single fix moves more sites from red to green than everything else combined.
+
+## Fix 2: the fonts
+
+Web fonts block text rendering, then reflow the page when they load. Two changes:
+
+- `font-display: swap` so text paints immediately in a fallback.
+- Preload the one font file used above the fold.
+
+Then check your fallback stack. If your fallback is metrically nothing like your web font, swapping causes a visible jump that counts against Cumulative Layout Shift.
+
+## Fix 3: reserve space for everything that loads late
+
+Every ad slot, embed, banner, and lazy image that appears without reserved space pushes content down and costs you CLS. The fix is unglamorous: explicit `width`/`height` or `aspect-ratio` on every element whose size you know in advance.
+
+Cookie banners and notification bars deserve special attention — they are inserted late, at the top, on every single page.
+
+## Fix 4: stop shipping JavaScript nobody needs
+
+Interaction to Next Paint punishes main-thread work. The usual offenders:
+
+- A full charting or animation library imported for one component.
+- Analytics, chat, heatmap, and A/B tools all loading during page load.
+- Client components that render static content and never needed to be interactive.
+
+Run a bundle analysis, sort by size, and ask of each entry: does this need to load before the user interacts? Most third-party scripts can load after, and third-party scripts are usually the entire problem.
+
+## What we skip
+
+Micro-optimisations that cost days and change nothing: shaving milliseconds off server response when your LCP image is 2MB, minifying already-gzipped assets, obsessing over a lab score while field data goes unmeasured.
+
+Fix the image, fix the fonts, reserve the space, cut the JavaScript. Re-measure after 28 days of field data — not the same afternoon.
+
+Want a specific answer for your site? We run fixed-scope performance audits that come back with a prioritised list and the measured impact of each item.

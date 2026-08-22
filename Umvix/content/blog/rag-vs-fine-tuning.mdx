@@ -1,0 +1,64 @@
+---
+title: "RAG vs fine-tuning: which one does your business actually need?"
+description: "Almost every business asking for a fine-tuned model needs retrieval instead. The difference explained without the jargon, plus when fine-tuning genuinely earns its cost."
+date: 2026-08-18
+category: "AI & Chatbots"
+author: "Umvix Team"
+tags: ["AI", "Architecture"]
+cover: "/blog/rag-vs-fine-tuning.webp"
+draft: false
+---
+
+"We want to train the AI on our data" is one of the most common requests we get, and roughly nine times out of ten the thing being described is not training.
+
+## The difference, plainly
+
+**Fine-tuning** changes the model's weights. You show it thousands of examples of the behaviour you want, and it learns a *style*, a *format*, or a *task*. It does not reliably learn facts, and it cannot be updated without retraining.
+
+**Retrieval-augmented generation (RAG)** leaves the model alone. When a question arrives, you search your own content for the relevant passages and hand them to the model along with the question. The model answers using text it can see.
+
+The distinction that matters: fine-tuning teaches *how to behave*. Retrieval provides *what to know*.
+
+## Why most businesses need retrieval
+
+If your goal is "the assistant should know our products, policies, and prices", retrieval wins on every axis:
+
+- **Freshness.** Update a document; the next answer reflects it. No retraining, no delay.
+- **Citations.** You can show which source produced the answer, which is what makes the output trustworthy — and auditable.
+- **Access control.** Retrieval can respect who is allowed to see what. Fine-tuned weights cannot: whatever went in is available to everyone.
+- **Cost.** A retrieval pipeline is dramatically cheaper to build and to change.
+- **Correctability.** A wrong answer is usually a wrong document or a bad chunk — fixable in minutes.
+
+Fine-tuning facts into a model, by contrast, produces something that recites confidently, cannot cite anything, and goes stale the day your prices change.
+
+## When fine-tuning is genuinely right
+
+It earns its cost when the problem is *behaviour*, not knowledge:
+
+- **A consistent voice or format** across thousands of outputs, where prompting keeps drifting.
+- **A narrow, repetitive classification task** where a smaller fine-tuned model is far cheaper per call than a large general one at scale.
+- **Structured extraction** from messy documents in a specific domain, where examples teach patterns that instructions cannot.
+- **Latency or cost ceilings** that a small tuned model meets and a large general model does not.
+
+Notice the pattern: fine-tuning is an optimisation, applied after you know exactly what good output looks like — usually after a retrieval system has been running long enough to generate training data.
+
+## The order we build in
+
+1. **Prompt engineering first.** A well-written system prompt with a few examples solves more than people expect, at zero infrastructure cost.
+2. **Add retrieval** when the assistant needs to know things that live in your content.
+3. **Improve the retrieval**, not the model. Chunking strategy, hybrid search, and reranking produce bigger gains than any model swap.
+4. **Consider fine-tuning** only when you have measurable evidence that behaviour, not knowledge, is the limit.
+
+Most projects stop at step three, permanently, and that is a success rather than a shortcut.
+
+## Where RAG projects actually go wrong
+
+Almost never in the model. Nearly always in retrieval:
+
+- **Chunking that splits meaning.** Cutting documents at arbitrary character counts separates a heading from the rule underneath it.
+- **Pure vector search.** Semantic search alone misses exact terms — product codes, error numbers, policy names. Combine it with keyword search.
+- **No reranking.** Fetching the top twenty and reranking to five beats fetching five directly.
+- **Stale or contradictory sources.** If two documents disagree, the model will confidently pick one. Fix your content.
+- **No evaluation set.** Without a fixed list of questions and expected answers, "we improved it" is a feeling, not a fact.
+
+If you have been told you need a custom-trained model, send us the use case first — we will tell you honestly whether retrieval gets you there for a fraction of the cost.

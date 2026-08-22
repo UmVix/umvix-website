@@ -96,6 +96,10 @@ export function createMetadata({
     applicationName: siteConfig.name,
     alternates: {
       canonical,
+      types: {
+        // Lets feed readers and crawlers discover the blog from any page.
+        "application/rss+xml": [{ url: absoluteUrl("/feed.xml"), title: `${siteConfig.name} Blog` }],
+      },
     },
     robots: {
       index: true,

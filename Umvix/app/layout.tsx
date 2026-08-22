@@ -6,6 +6,7 @@ import SiteChrome from "@/components/SiteChrome";
 import JsonLd from "@/components/JsonLd";
 import { createMetadata } from "@/lib/metadata";
 import { siteGraph } from "@/lib/structuredData";
+import { getPostLinks } from "@/lib/blog";
 import "./globals.css";
 
 /** Closest web match to the rounded geometric logo wordmark */
@@ -37,7 +38,7 @@ export default function RootLayout({
       >
         {/* Organization + WebSite entity data, emitted once for every page. */}
         <JsonLd data={siteGraph()} />
-        <SiteChrome>
+        <SiteChrome posts={getPostLinks()}>
           <Navbar />
           <main className="pt-[var(--nav-height)]">{children}</main>
           <Footer />

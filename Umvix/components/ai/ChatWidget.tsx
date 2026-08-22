@@ -5,6 +5,8 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { X, Send, Bot, Mic, MicOff } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
+import { getFallbackAnswer, type PostLink } from "@/lib/chat/fallbackAnswers";
+import MessageText from "@/components/ai/MessageText";
 
 type Message = { role: "user" | "assistant"; content: string };
 
@@ -26,7 +28,11 @@ type SpeechRecognitionLike = {
   onerror: (() => void) | null;
 };
 
-export default function ChatWidget() {
+/**
+ * `posts` comes from the server layout: the assistant links relevant articles,
+ * and the offline fallback needs the same list without touching the filesystem.
+ */
+export default function ChatWidget({ posts = [] }: { posts?: PostLink[] }) {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -150,19 +156,14 @@ export default function ChatWidget() {
         });
       }
 
-      if (speakReply && acc) speak(acc);
+      if (speakReply && acc) speak(stripLinks(acc));
     } catch (err) {
-      const msg =
-        err instanceof Error && err.message
-          ? err.message
-          : "Sorry, I'm having trouble responding right now.";
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content: `${msg} You can also reach us directly at info@umvix.com.`,
-        },
-      ]);
+      // Network/server failure — answer from the pre-written knowledge base
+      // so the visitor still gets something useful.
+      console.error("[chat] request failed, using fallback answer:", err);
+      const reply = getFallbackAnswer(trimmed, posts);
+      setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
+      if (speakReply) speak(stripLinks(reply));
     } finally {
       setLoading(false);
     }
@@ -263,7 +264,12 @@ export default function ChatWidget() {
                         : "rounded-2xl rounded-bl-md border border-white/[0.08] bg-white/[0.05] text-brand-white/90"
                     }`}
                   >
-                    {m.content || (
+                    {m.content ? (
+                      <MessageText
+                        text={m.content}
+                        onNavigate={() => setOpen(false)}
+                      />
+                    ) : (
                       <span className="inline-flex gap-1">
                         <Dot /> <Dot delay="0.2s" /> <Dot delay="0.4s" />
                       </span>
@@ -355,6 +361,11 @@ export default function ChatWidget() {
       </AnimatePresence>
     </>
   );
+}
+
+/** Speech synthesis should read link labels, not markdown syntax. */
+function stripLinks(text: string): string {
+  return text.replace(/\[([^\]]+)\]\([^)]*\)/g, "$1");
 }
 
 function Waveform() {

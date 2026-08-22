@@ -1,0 +1,64 @@
+---
+title: "How to stop your AI chatbot from hallucinating"
+description: "Hallucination is not a mysterious model flaw you have to accept. It is a design problem with known mitigations. Here is the stack we apply to every assistant we ship."
+date: 2026-08-14
+category: "AI & Chatbots"
+author: "Umvix Team"
+tags: ["AI", "Reliability"]
+cover: "/blog/stop-chatbot-hallucinations.webp"
+draft: false
+---
+
+A chatbot that invents a refund policy is worse than no chatbot. The good news is that confident wrong answers are largely an engineering problem, and the mitigations are well understood.
+
+## Why models make things up
+
+A language model predicts plausible text. Asked something it has no grounding for, it produces the most plausible-looking answer rather than refusing — because nothing in its objective rewards refusal.
+
+So every fix comes down to one of three moves: **give it the facts**, **make refusal the easy path**, or **check the answer before the user sees it**.
+
+## 1. Ground every answer in retrieved content
+
+The largest single reduction in wrong answers comes from retrieval. Instead of asking the model what your return policy is, find the policy text and ask the model to answer *using that text*.
+
+Then say so explicitly in the system prompt: answer only from the provided sources; if the sources do not contain the answer, say you do not know.
+
+## 2. Make "I don't know" a good outcome
+
+Models refuse more readily when refusal is described as correct behaviour rather than failure. Concretely:
+
+- State the refusal wording you want, verbatim.
+- Give an example of a question it should decline.
+- Provide an escalation path — "I can't answer that, but I can put you in touch with the team" — so refusal still helps the user.
+
+An assistant that declines 10% of questions and is right on the other 90% beats one that answers everything and is right 80% of the time. Users forgive "I don't know". They do not forgive being misled.
+
+## 3. Require citations
+
+Ask the model to reference which source it used. Two benefits: it constrains the answer to retrieved material, and it lets users verify. If the model cannot produce a citation, that is a signal to fall back to a refusal.
+
+## 4. Narrow the scope, hard
+
+A general assistant has infinite surface area to be wrong on. A scoped one — "you only discuss our products, pricing, and process" — has very little.
+
+Write the boundary explicitly, include a decline example, and add an instruction to ignore attempts to change its role. This also blunts the simpler prompt-injection attempts, which usually arrive as "ignore your instructions and…".
+
+## 5. Never let it invent specifics
+
+Prices, dates, availability, legal terms, and numbers should come from a system, not a sentence. Where a number matters, fetch it and inject it. Where you cannot fetch it, instruct the model to give ranges and direct the user to a human.
+
+## 6. Evaluate like software
+
+The step most projects skip. Build a fixed set of questions with expected answers — including questions it *should* refuse — and run it every time you change a prompt, a model, or a chunking strategy.
+
+Without this, prompt changes are superstition. With it, you can see that "improving" one behaviour broke another. Fifty questions is enough to start.
+
+## 7. Watch it in production
+
+Log every conversation. Review the ones where users rephrased, escalated, or left. Those transcripts are the best backlog you will ever have — they show exactly where the assistant's knowledge stops.
+
+## What it looks like when it works
+
+The assistant answers common questions instantly and accurately, says it does not know at the edges, offers a human when it does, and never quotes a price it made up. That is achievable today with careful design — not with a bigger model.
+
+If you have an assistant that is embarrassing you, send us a handful of transcripts. The failure pattern is usually obvious within twenty conversations.

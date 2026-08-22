@@ -1,0 +1,62 @@
+---
+title: "Choosing an LLM in 2026: how to pick without guessing"
+description: "Model leaderboards do not predict how a model performs on your task. A practical selection process built on evaluation, cost per outcome, and the constraints that actually bind."
+date: 2026-08-07
+category: "AI & Chatbots"
+author: "Umvix Team"
+tags: ["AI", "Architecture"]
+cover: "/blog/choosing-an-llm-2026.webp"
+draft: false
+---
+
+Clients often arrive having read a benchmark table and decided which model they want. Benchmarks are a reasonable starting filter and a poor decision-maker, because none of them tested your task, your prompts, or your data.
+
+## Start with constraints, not capability
+
+Most model choices are decided before quality enters the conversation:
+
+**Where can the data go?** If your data cannot leave a jurisdiction or a VPC, that eliminates most options immediately. Check what your provider offers for regional processing and data retention — and get it in the contract, not the marketing page.
+
+**What latency can you tolerate?** A user-facing chat needs first-token latency in the hundreds of milliseconds. A nightly batch job does not care. Streaming hides a lot, but not everything.
+
+**What does it cost per outcome?** Not per token — per resolved conversation, per processed document. A model that costs three times more per token but needs one call instead of four is cheaper.
+
+**What context length do you actually need?** Very long contexts are expensive and often a symptom of weak retrieval. Better retrieval usually beats a bigger window.
+
+## Then evaluate on your own task
+
+This is the part teams skip, and it is the only part that reliably predicts production quality.
+
+1. **Collect 50–100 real inputs.** From your support inbox, your documents, your existing logs. Real, messy, representative.
+2. **Write what a good output looks like** for each one. This is tedious and it is the work.
+3. **Run every candidate model** through the identical prompt and inputs.
+4. **Score blind.** Have someone who does not know which model produced which output rate them.
+5. **Include the failure cases** — inputs where the right answer is "I don't know" or "escalate".
+
+A weekend of this tells you more than a month of reading comparisons, and the eval set keeps paying off: it is how you safely upgrade models later.
+
+## What we have found generally holds
+
+Independent of any specific version:
+
+- **Frontier models are worth it for reasoning-heavy work** — multi-step analysis, nuanced judgement, complex extraction.
+- **Small fast models are usually right for high-volume simple work** — classification, routing, short summaries. Paying frontier prices to categorise support tickets is a waste.
+- **The best system usually uses more than one.** Route by difficulty: cheap model first, escalate to the expensive one when confidence is low. This routinely cuts cost by more than half with no quality loss.
+- **Prompt quality outweighs model choice** more often than anyone expects. A well-structured prompt on a mid-tier model regularly beats a lazy prompt on the best model available.
+
+## Do not marry a provider
+
+Whatever you pick, keep the door open:
+
+- Put an abstraction layer between your app and the model API.
+- Keep prompts in configuration, not hard-coded.
+- Keep your eval set current so switching is a measured decision rather than a leap.
+- Avoid provider-specific features unless the benefit is large and deliberate.
+
+Models improve every few months. A system that cannot switch is one that gets slowly worse relative to what is available.
+
+## The honest default
+
+For most business applications in 2026 — assistants, extraction, summarisation, classification — a current mid-to-frontier general model with good retrieval and a careful prompt will do the job well. Spend your effort on retrieval quality, evaluation, and guardrails. That is where the wins are.
+
+We build model-agnostic and run the evaluation before committing. If you want to see what that looks like on your data, send us fifty real examples.

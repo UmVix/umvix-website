@@ -347,13 +347,17 @@ export function useOrbAnimation({
 
   // Cleanup
   useEffect(() => {
+    const pillWrappers = pillWrapperRefs.current;
+    const orbEl = orbRef.current;
+    const popoverEl = popoverRef.current;
+
     return () => {
       clearIntervalCycle();
       if (popoverTimerRef.current) clearTimeout(popoverTimerRef.current);
       floatTweensRef.current.forEach((t) => t.kill());
-      pillWrapperRefs.current.forEach((el) => el && gsap.killTweensOf(el));
-      if (orbRef.current) gsap.killTweensOf(orbRef.current);
-      if (popoverRef.current) gsap.killTweensOf(popoverRef.current);
+      pillWrappers.forEach((el) => el && gsap.killTweensOf(el));
+      if (orbEl) gsap.killTweensOf(orbEl);
+      if (popoverEl) gsap.killTweensOf(popoverEl);
     };
   }, [
     clearIntervalCycle,

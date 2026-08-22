@@ -12,12 +12,23 @@ import SentimentWidget from "@/components/effects/SentimentWidget";
 import SoundToggle from "@/components/effects/SoundToggle";
 import ChatWidget from "@/components/ai/ChatWidget";
 import HashScroll from "@/components/HashScroll";
+import type { PostLink } from "@/lib/chat/fallbackAnswers";
 
 /**
  * Bundles all global client-side chrome (providers, overlays, floating widgets)
  * so the root layout can stay a server component.
+ *
+ * `posts` is read from disk by the layout and passed through, because the chat
+ * assistant links blog articles and client components cannot read the content
+ * directory themselves.
  */
-export default function SiteChrome({ children }: { children: ReactNode }) {
+export default function SiteChrome({
+  children,
+  posts = [],
+}: {
+  children: ReactNode;
+  posts?: PostLink[];
+}) {
   return (
     <AccentProvider>
       <HashScroll />
@@ -38,7 +49,7 @@ export default function SiteChrome({ children }: { children: ReactNode }) {
         <SoundToggle />
       </div>
 
-      <ChatWidget />
+      <ChatWidget posts={posts} />
     </AccentProvider>
   );
 }

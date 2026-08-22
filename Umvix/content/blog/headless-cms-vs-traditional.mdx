@@ -1,0 +1,56 @@
+---
+title: "Headless CMS vs traditional CMS: choosing for a marketing team"
+description: "Headless is not automatically better — it moves work around. Here is what each model actually costs your editors, your developers, and your roadmap."
+date: 2026-08-14
+category: "Web Development"
+author: "Umvix Team"
+tags: ["CMS", "Comparison"]
+cover: "/blog/headless-cms-vs-traditional.webp"
+draft: false
+---
+
+"Should we go headless?" is usually asked as a technology question and answered as one. It is really a question about who does which work, and how often.
+
+## What headless actually changes
+
+A traditional CMS owns both the content and the pages. WordPress stores your post and renders it through a theme. One system, one deploy, one place to break.
+
+A headless CMS owns only the content and serves it as an API. Something else — Next.js, in our case — renders it. Two systems, two deploys, clean separation.
+
+That separation is the whole trade. Everything good and bad follows from it.
+
+## What you gain
+
+**Performance you control.** No theme, no plugin JavaScript, no query you cannot see. Your frontend ships exactly what you wrote.
+
+**One content source, many surfaces.** The same content feeds the website, a mobile app, an in-product help panel, and a partner API without duplication. If you only have a website, this benefit is theoretical.
+
+**Structured content.** Instead of a blob of HTML, you model real fields: a case study has a client, a metric, an industry. You can then sort, filter, and reuse it. This matters more than people expect and is the reason we recommend it most often.
+
+**Independent releases.** Redesign the frontend without migrating content. Change content without a deploy.
+
+## What you give up
+
+**WYSIWYG certainty.** Editors write structured fields, not a page. Good headless setups add live preview to close the gap — budget for it, because without preview, editors quietly hate the system.
+
+**Plugins.** Forms, redirects, sitemaps, related posts, search: in a traditional CMS these are installs. Headless means they are decisions and, sometimes, builds.
+
+**A second bill.** Sanity, Contentful, Storyblok and friends charge per seat or per record above their free tiers.
+
+**Developer dependency for layout.** New page *content* is self-serve. A genuinely new page *layout* usually is not.
+
+## How to decide
+
+Choose **traditional** when: one website, frequent publishing, small team, no in-house developer, layouts change often and content is mostly prose.
+
+Choose **headless** when: content feeds more than one surface, structured content unlocks real functionality, performance is tied to revenue, or you already have developers shipping regularly.
+
+Choose **headless WordPress** when: your team refuses to leave the WordPress editor, but you need the frontend to be fast. It is a genuine option, not a compromise.
+
+## The mistake we see most
+
+Teams pick headless for performance, skip the preview and editorial tooling to save budget, and end up with a fast site nobody wants to update. A CMS your editors avoid is worse than a slow site they maintain.
+
+Budget the editor experience as a first-class feature or stay on what you have.
+
+If you want, send us your content model and publishing cadence — we will tell you which of the three fits, including when the answer is "stay where you are".

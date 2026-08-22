@@ -1,11 +1,34 @@
 import { NextRequest } from "next/server";
 import { getAnthropicClient, CLAUDE_MODEL, UMVIX_CONTEXT } from "@/lib/anthropic";
+import { streamFallbackAnswer } from "@/lib/chat/fallbackAnswers";
+import { getPostLinks } from "@/lib/blog";
 
 export const runtime = "nodejs";
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
-const SYSTEM_PROMPT = `${UMVIX_CONTEXT}
+/**
+ * The published blog, inlined into the system prompt so the assistant can point
+ * visitors at a real article instead of paraphrasing it. Read once per cold
+ * start — posts only change on deploy.
+ */
+function blogSection(): string {
+  const posts = getPostLinks();
+  if (posts.length === 0) return "";
+
+  const list = posts
+    .map((post) => `- "${post.title}" (/blog/${post.slug}) — ${post.description}`)
+    .join("\n");
+
+  return `
+
+Published articles on the Umvix blog:
+${list}
+
+When one of these genuinely answers the visitor's question, link it inline as a markdown link, e.g. [title](/blog/slug), after your own short answer. Link at most one article per reply, only when it is clearly relevant, and never invent an article or URL that is not in the list above.`;
+}
+
+const SYSTEM_PROMPT = `${UMVIX_CONTEXT}${blogSection()}
 
 You are a friendly, concise virtual assistant on the Umvix website. Answer questions about our services, pricing approach, and process. Keep responses short (2-4 sentences) and conversational. Encourage users to reach out via the contact page for a detailed quote. Never invent specific prices beyond the general ranges provided.
 
@@ -212,24 +235,27 @@ export async function POST(req: NextRequest) {
     if (process.env.ANTHROPIC_API_KEY) providers.push(() => streamAnthropic(messages));
     if (process.env.OPENAI_API_KEY) providers.push(() => streamOpenAI(messages));
 
-    if (providers.length === 0) {
-      const error = new Error("No AI provider key is configured.");
-      error.name = "MissingApiKeyError";
-      throw error;
-    }
+    const lastUserMessage =
+      [...messages].reverse().find((m) => m.role === "user")?.content ?? "";
 
     let readable: ReadableStream | null = null;
-    let lastError: unknown = null;
     for (const provider of providers) {
       try {
         readable = await provider();
         break;
       } catch (error) {
-        lastError = error;
         console.error("[chat] provider failed, trying next:", error);
       }
     }
-    if (!readable) throw lastError;
+
+    // No key configured, or every provider failed — answer from the
+    // pre-written knowledge base instead of surfacing an error.
+    if (!readable) {
+      if (providers.length === 0) {
+        console.warn("[chat] no AI provider key configured; using canned answers.");
+      }
+      readable = streamFallbackAnswer(lastUserMessage, getPostLinks());
+    }
 
     return new Response(readable, {
       headers: {

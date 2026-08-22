@@ -1,0 +1,69 @@
+---
+title: "How much does it cost to build a SaaS MVP in 2026?"
+description: "Budget ranges for a first sellable version, the infrastructure decisions that quietly set your burn rate, and the features founders pay for twice by building too early."
+date: 2026-08-22
+category: "SaaS & Dashboards"
+author: "Umvix Team"
+tags: ["SaaS", "Pricing"]
+cover: "/blog/saas-mvp-cost.webp"
+draft: false
+---
+
+A SaaS MVP is not a smaller version of your product. It is the smallest thing someone will pay for. That distinction is worth roughly half your budget.
+
+## The ranges
+
+| Scope | Typical range |
+| --- | --- |
+| Single-user tool, one core workflow, Stripe checkout | $8,000 – $18,000 |
+| Team accounts, roles, billing, dashboard, integrations | $20,000 – $45,000 |
+| Multi-tenant platform with admin tooling and an API | $45,000 – $90,000+ |
+
+Plus infrastructure from day one — usually $50–$400 a month at MVP scale, before you have revenue.
+
+## What every SaaS needs before it can charge anyone
+
+These are not features. They are the floor, and they are where first-time founders underestimate most:
+
+- **Authentication** — signup, login, reset, verification, sessions.
+- **Accounts and permissions** — even "just teams" means invitations, roles, and removal.
+- **Billing** — plans, trials, upgrades, downgrades, failed payments, cancellation.
+- **Tenant isolation** — one customer must never see another's data. Not negotiable.
+- **Transactional email** — verification, receipts, invitations, notifications.
+- **An admin view** — you will need to see accounts, fix data, and issue credits from week one.
+
+That floor typically consumes 40–60% of an MVP budget before your actual product exists. Anyone quoting your idea without accounting for it is quoting something else.
+
+## Where the money goes after that
+
+**Billing complexity.** Flat per-seat monthly is simple. Usage-based, metered, annual with proration, multi-currency, tax handling — each adds real work. Start flat. You can add complexity once you know what people will pay for.
+
+**Multi-tenancy model.** Shared database with a tenant column is cheapest and right for most. Schema-per-tenant or database-per-tenant costs more upfront and is occasionally required by enterprise buyers. Choose deliberately, because migrating later is a project.
+
+**Integrations.** Each one is discovery, build, auth flow, error handling, and support burden.
+
+**Compliance.** SOC 2 or HIPAA is not a feature you add later cheaply. If you are selling into regulated buyers, architect for it now.
+
+## What to cut from v1
+
+- **Your own auth.** Use a provider. Rebuilding sessions and password resets is expensive undifferentiated work.
+- **Custom analytics.** Instrument with an off-the-shelf tool.
+- **A public API.** Ship it when a customer asks and will pay.
+- **SSO and SAML.** Enterprise-only. Add it when an enterprise deal depends on it — and charge for it.
+- **A mobile app.** A responsive web app first.
+- **White-labelling.** Almost always premature.
+- **Onboarding automation.** Onboard your first fifty customers by hand. You will learn more than any funnel dashboard would tell you.
+
+## The decisions that set your burn rate
+
+Three architecture choices quietly determine your monthly bill:
+
+1. **Managed versus self-run infrastructure.** Managed costs more per month and far less in attention. At MVP stage, attention is the scarcer resource.
+2. **Where compute idles.** Serverless is cheap at low traffic and gets expensive at sustained load. Containers are the reverse.
+3. **What you log and how long you keep it.** Log storage is a genuinely surprising line item by month six.
+
+## The realistic timeline
+
+A focused MVP with the floor plus one strong core workflow is typically 8–14 weeks. Faster than that usually means skipping the admin tooling and the billing edge cases — both of which you will build in month four anyway, under pressure, with customers waiting.
+
+Send us your core workflow and your pricing model and we will scope the floor and the product separately, so you can see exactly what each part costs.

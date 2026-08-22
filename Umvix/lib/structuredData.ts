@@ -197,3 +197,70 @@ export function siteGraph() {
     "@graph": [organizationSchema(), websiteSchema()],
   };
 }
+
+/**
+ * `BlogPosting` graph for a single article, plus its breadcrumb trail. Google
+ * uses `datePublished`/`dateModified` and the Organization publisher link to
+ * decide how the article is surfaced, so both are always emitted.
+ */
+export function blogPostingGraph({
+  slug,
+  title,
+  description,
+  date,
+  updated,
+  author,
+  tags,
+  cover,
+}: {
+  slug: string;
+  title: string;
+  description: string;
+  date: string;
+  updated?: string;
+  author: string;
+  tags: string[];
+  cover?: string;
+}) {
+  const url = absoluteUrl(`/blog/${slug}`);
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BlogPosting",
+        "@id": `${url}#article`,
+        headline: title,
+        description,
+        url,
+        mainEntityOfPage: { "@id": `${url}#webpage` },
+        datePublished: date,
+        dateModified: updated ?? date,
+        inLanguage: "en",
+        image: absoluteUrl(cover ?? siteConfig.ogImage),
+        keywords: tags.join(", "),
+        author:
+          author === "Umvix Team"
+            ? { "@id": ORGANIZATION_ID }
+            : { "@type": "Person", name: author },
+        publisher: { "@id": ORGANIZATION_ID },
+        isPartOf: { "@id": WEBSITE_ID },
+      },
+      {
+        "@type": "WebPage",
+        "@id": `${url}#webpage`,
+        url,
+        name: title,
+        description,
+        inLanguage: "en",
+        isPartOf: { "@id": WEBSITE_ID },
+        breadcrumb: { "@id": `${url}#breadcrumb` },
+      },
+      // `breadcrumbSchema` prepends Home itself.
+      breadcrumbSchema(`/blog/${slug}`, [
+        { name: "Blog", path: "/blog" },
+        { name: title, path: `/blog/${slug}` },
+      ]),
+    ],
+  };
+}

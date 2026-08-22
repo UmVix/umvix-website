@@ -1,0 +1,68 @@
+---
+title: "From internal tool to product: turning your dashboard into SaaS"
+description: "The tool you built for yourself may be sellable. It is also almost certainly not shippable as-is. What actually has to change, and how to test demand before you invest."
+date: 2026-08-04
+category: "SaaS & Dashboards"
+author: "Umvix Team"
+tags: ["SaaS", "Product"]
+cover: "/blog/internal-tool-to-saas-product.webp"
+draft: false
+---
+
+It is a good instinct: you built something to solve your own problem, it works, and people in your industry keep asking about it. Sometimes that becomes a product. Often it becomes an expensive distraction. The difference is testable before you commit.
+
+## Test demand first
+
+Before writing a line of code:
+
+**Talk to ten people outside your company** who have the problem. Not "would you use this?" — everyone says yes. Ask what they do today, what it costs them, and what they currently pay for anything adjacent.
+
+**Try to sell it before it exists.** A landing page describing the product with a real price and a "get early access" button. If nobody clicks at a price you could sustain, that is a finding worth far more than six months of building.
+
+**Find the three who would pay now.** Offer them a manual version — you run it for them, using your tool, for a fee. If nobody will pay for the outcome delivered by hand, they will not pay for the software.
+
+That last test is the most honest one available, and the cheapest.
+
+## What has to change technically
+
+Your internal tool has assumptions baked in that a product cannot have.
+
+**Multi-tenancy.** The largest change by far. Your tool assumes one company's data. A product needs isolation enforced structurally — usually a tenant column plus row-level security — and every query, job, export, and cache key audited for it. This is not a refactor you can do halfway.
+
+**Authentication and accounts.** Internal SSO becomes signup, login, password reset, invitations, roles, and account deletion.
+
+**Configuration instead of hard-coding.** Your business rules, tax rates, workflow stages, and terminology are currently constants. Customers have different ones.
+
+**Data isolation in every side path.** Background jobs, scheduled reports, exports, caches, search indexes, and log output. Tenant leakage usually happens in one of these, not in the main request path.
+
+**Rate limiting and quotas.** Your team will not accidentally take the system down. Strangers will.
+
+**Self-serve onboarding.** Today a new user gets a walkthrough from you. A product's first five minutes have to work alone.
+
+**An admin view for you.** To support customers, fix data, and issue credits without opening a database console.
+
+Realistically this is a substantial rebuild of the foundation with the domain logic carried across — not a repackaging. Budget accordingly.
+
+## What has to change commercially
+
+- **Support.** Internally, users find you at their desk. Externally, they email at 11pm and expect an answer.
+- **Documentation.** Tribal knowledge has to be written down.
+- **Uptime expectations.** Your team tolerates a Friday deploy that breaks something. Customers who pay do not.
+- **Roadmap ownership.** You will be asked for features you do not need, and saying yes to all of them is how products lose their shape.
+- **Security scrutiny.** The first serious buyer will send a questionnaire.
+
+## The pattern that works
+
+**Do not migrate. Extract.**
+
+Keep the internal tool running. Build the product alongside it, taking the domain logic — the part that is actually valuable — and rebuilding the foundation properly around it. Your internal use becomes customer zero on the new platform once it is ready.
+
+Trying to convert the live internal tool in place means every product decision is constrained by not breaking your own operations, and both things get worse.
+
+## The honest question
+
+Is the valuable part the software, or your expertise applied through it?
+
+If customers actually want your judgement and the tool is how you deliver it, a productised service may make more money for far less investment. Plenty of successful businesses stopped exactly there, deliberately.
+
+If you are weighing this up, we are happy to look at what you have built and give you a straight assessment of the gap — including when our advice is not to build it.

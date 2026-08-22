@@ -1,0 +1,58 @@
+---
+title: "How to automate lead routing without losing data"
+description: "The path from web form to a salesperson's screen breaks in five predictable places. A reliable design, and the failure modes to build against from the start."
+date: 2026-08-16
+category: "Automation"
+author: "Umvix Team"
+tags: ["Automation", "CRM"]
+cover: "/blog/automate-lead-routing.webp"
+draft: false
+---
+
+Lead routing looks like the simplest automation there is: form fires, record appears in the CRM, someone gets a notification. In practice it is where we find the most silent data loss, because failures here are invisible — nobody misses a lead they never knew arrived.
+
+## Where it breaks
+
+**1. The form submits and the automation is down.** The visitor sees a success message. Nothing was recorded. This is the worst failure mode because everyone believes it worked.
+
+**2. Duplicate detection creates duplicates.** Same person, different email capitalisation, or a plus-address. Now two records, two owners, two people calling.
+
+**3. Field mismatches drop data silently.** Your form has a picklist value the CRM does not. Most integrations discard the field rather than failing loudly.
+
+**4. Assignment rules assume someone is available.** Round-robin to a rep on holiday. The lead sits unclaimed for a week.
+
+**5. Attribution is lost in the handoff.** UTM parameters, referrer, and landing page do not survive the trip, so marketing cannot tell which channel worked.
+
+## A design that holds up
+
+**Persist first, process second.** Write the raw submission to your own storage the moment it arrives, before any integration runs. Every downstream step reads from that record. If the CRM is down, you still have the lead and can replay it.
+
+This one change eliminates the most damaging failure mode entirely, and it is usually a day of work.
+
+**Normalise before matching.** Lowercase emails, strip plus-addressing, trim whitespace, normalise phone numbers to E.164 before you check for duplicates.
+
+**Make it idempotent.** Give every submission an ID and use it as an idempotency key. Retries then become safe, and retries will happen.
+
+**Fail loudly.** Any lead that does not reach the CRM within a defined window should raise an alert to a human, not a log line nobody reads.
+
+**Carry attribution through.** Capture UTM parameters, referrer, landing page, and first-touch timestamp in hidden fields, and map them to real CRM fields. Doing this later means backfilling from nothing.
+
+**Assign to available humans.** Check working hours, holiday calendars, and capacity. Have a fallback owner. Escalate anything unclaimed after a defined period.
+
+## The measurement that keeps it honest
+
+Reconcile counts daily: form submissions versus CRM records created. They should match exactly. When they do not, you learn about it the next morning rather than at the end of the quarter.
+
+Add a simple dashboard: leads received, leads routed, average time to assignment, leads unclaimed over four hours. Four numbers, and they surface almost every problem in this article.
+
+## What about speed?
+
+Response time matters, and the win is available cheaply: an instant acknowledgement to the lead, an instant notification to the owner, and — where appropriate — an assistant that answers common questions while the human gets to their desk.
+
+That last piece is worth considering if a meaningful share of your enquiries arrive outside working hours.
+
+## Do not over-engineer the rules
+
+Complex routing — territory, product, company size, lead score — accumulates until nobody can explain why a lead went where it did. Start with simple, well-monitored rules. Add complexity only when you can measure that it improves outcomes.
+
+If leads are going missing and nobody can say how many, that reconciliation count is where we would start. We are happy to look at your current setup and tell you where it is leaking.
