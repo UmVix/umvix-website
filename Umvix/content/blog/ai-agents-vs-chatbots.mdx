@@ -13,7 +13,7 @@ Every vendor now sells "agents". Most are selling chatbots. The distinction is n
 
 ## The actual difference
 
-A **chatbot** takes a message and returns a message. It may search your documents to answer well, but the output is always text. Nothing in your business changes.
+A **chatbot** takes a message and returns a message. It may [search your documents](/blog/rag-vs-fine-tuning) to answer well, but the output is always text. Nothing in your business changes.
 
 An **agent** takes a goal and executes steps against real systems to achieve it. It decides which tool to use, calls it, reads the result, and decides what to do next. Something in your business changes.
 
@@ -29,9 +29,9 @@ Once a system takes actions, four new problems appear that a chatbot never has:
 
 **3. Auditability.** When an agent books the wrong slot, you need the full trace: what it was asked, what it retrieved, which tool it called with which arguments, what came back. Log all of it.
 
-**4. Stopping.** Agents loop. Without step limits, cost ceilings, and a definition of done, an agent can happily spend money in a circle.
+**4. Stopping.** Agents loop, so they need [the same ceilings and circuit breakers as any automation](/blog/reliable-automation-error-handling). Without step limits, cost ceilings, and a definition of done, an agent can happily spend money in a circle.
 
-None of this is exotic engineering, but it is real engineering, and it is why agent projects cost several times what a chatbot costs.
+None of this is exotic engineering, but it is real engineering, and it is why agent projects cost [several times what a chatbot costs](/blog/ai-chatbot-development-cost).
 
 ## Where agents genuinely earn their cost
 
@@ -66,5 +66,7 @@ The human stays in the loop, so the risk stays bounded — and you capture most 
 5. Does the process exist in writing today?
 
 If four of five are comfortable answers, an agent is worth scoping. If not, a well-built assistant will deliver more value for far less.
+
+If the task is really a scheduled data movement rather than a judgement call, [a plain automation](/blog/workflows-worth-automating-first) will be cheaper and more reliable.
 
 Tell us the task and we will tell you honestly which of the two it needs — including when the answer is a plain script with no AI in it at all.

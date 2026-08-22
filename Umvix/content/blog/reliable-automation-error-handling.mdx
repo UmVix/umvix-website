@@ -1,6 +1,6 @@
 ---
-title: "Automation that survives: error handling, retries, and observability"
-description: "Most automations work on the happy path and fail silently everywhere else. The patterns that separate a workflow you can trust from one that quietly stops running."
+title: "Automation that survives: retries and error handling"
+description: "Most automations work on the happy path and fail silently elsewhere. The patterns that separate a workflow you can trust from one that quietly stops."
 date: 2026-08-06
 category: "Automation"
 author: "Umvix Team"
@@ -36,7 +36,7 @@ Cap the attempts. Infinite retries turn one broken record into a permanent load 
 
 If a workflow can run twice on the same input, it will. Network timeouts are ambiguous: you do not know whether the request succeeded before the connection dropped.
 
-Give every operation an idempotency key derived from the event, and have receiving systems reject or ignore duplicates. Most modern APIs support an idempotency header — use it. Retrying "send invoice" without it is how customers get billed twice.
+Give every operation an idempotency key derived from the event, and have receiving systems reject or ignore duplicates. Most modern APIs support an idempotency header — use it. [Lead routing](/blog/automate-lead-routing) is where we see this omitted most often. Retrying "send invoice" without it is how customers get billed twice.
 
 ## A dead letter queue, not a lost record
 
@@ -52,7 +52,7 @@ Three alerts cover most of it:
 
 **2. No successful run in an expected window.** This is the one that catches silent death. If a workflow normally runs hourly and has not succeeded in three hours, something is wrong even though nothing errored.
 
-**3. Dead letter queue depth growing.** Items accumulating means a systemic problem, not bad luck.
+**3. Dead letter queue depth growing.** If you [run the platform yourself](/blog/self-hosted-automation-n8n), queue depth is also your capacity signal. Items accumulating means a systemic problem, not bad luck.
 
 Send them where someone will see them. An alert nobody reads is a log line with extra steps.
 
@@ -66,7 +66,7 @@ The test: can you explain what happened in a specific run three weeks ago withou
 
 Automations that create work can create it infinitely — a loop that writes a record which triggers the automation which writes a record.
 
-Protect with: a maximum items per run, a maximum runs per hour, a circuit breaker that stops after consecutive failures, and a cost ceiling on anything that calls a paid API.
+Protect with: a maximum items per run, a maximum runs per hour, a circuit breaker that stops after consecutive failures, and a cost ceiling on anything that calls a paid API — [AI agents need exactly the same guardrails](/blog/ai-agents-vs-chatbots).
 
 ## The reliability checklist
 
@@ -82,5 +82,7 @@ Before an automation goes live:
 - [ ] A tested way to replay failed items
 
 That last one matters more than it sounds. Failures are tolerable when recovery is a button rather than a project.
+
+This is also where [no-code platforms stop being enough](/blog/zapier-vs-make-vs-custom): retries and dead letter queues are the features you outgrow them for.
 
 If you have automations you are no longer sure are running, an audit against this checklist is usually a short, cheap piece of work with an uncomfortable finding or two.

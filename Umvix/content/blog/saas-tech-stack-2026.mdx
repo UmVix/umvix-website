@@ -21,7 +21,7 @@ One framework for the marketing site, the app, and the API routes. Server compon
 
 ## Database: PostgreSQL
 
-Boring on purpose. It handles relational data, JSON, full-text search, and — with pgvector — embeddings, so most products need one database rather than four. Row-level security enforces tenant isolation below the application layer.
+Boring on purpose. It handles relational data, JSON, full-text search, and — with pgvector — embeddings, so most products need one database rather than four. Row-level security enforces [tenant isolation](/blog/multi-tenant-saas-architecture) below the application layer.
 
 **Where we deviate:** genuinely document-shaped data with no relational access patterns, or workloads needing horizontal write scaling that a managed Postgres cannot meet.
 
@@ -33,13 +33,13 @@ Authentication is undifferentiated, security-critical, and expensive to get subt
 
 ## Billing: Stripe, with webhooks treated as the source of truth
 
-Subscription state lives in Stripe; your database mirrors it via webhooks. Never infer subscription status from your own records alone — they drift.
+[Subscription state lives in Stripe](/blog/stripe-billing-for-saas); your database mirrors it via webhooks. Never infer subscription status from your own records alone — they drift.
 
 **Where we deviate:** regions Stripe does not serve well, or invoice-based enterprise billing, which is a different product entirely.
 
 ## Background jobs: a real queue
 
-Anything slow, retryable, or scheduled belongs off the request path. What matters is not which queue but that it has retries with backoff, a dead letter queue, and visibility into depth and failures.
+Anything slow, retryable, or scheduled belongs off the request path. What matters is not which queue but that it has [retries with backoff, a dead letter queue](/blog/reliable-automation-error-handling), and visibility into depth and failures.
 
 **The mistake to avoid:** running background work in serverless request handlers because it was quicker. It works until it silently does not.
 
@@ -71,5 +71,7 @@ Behind an abstraction layer, with prompts in configuration and an evaluation set
 ## The principle
 
 Choose technology your future maintainer will recognise. Novel infrastructure is a liability when the person who chose it has moved on — and the most common thing we are asked to fix is a stack that was interesting rather than obvious.
+
+These choices are also what sets [the MVP budget](/blog/saas-mvp-cost) — managed infrastructure costs more per month and far less in attention.
 
 If you have a stack decision in front of you, we are happy to argue it through with you, including the parts where we would disagree with ourselves.

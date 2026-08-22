@@ -1,6 +1,6 @@
 ---
-title: "Next.js vs WordPress in 2026: which should your business build on?"
-description: "WordPress still runs a huge share of the web, but it is no longer the automatic answer. A practical comparison on performance, SEO, cost, and who ends up maintaining the thing."
+title: "Next.js vs WordPress: which should you build on?"
+description: "WordPress still runs much of the web, but it is no longer the automatic answer. A practical comparison on performance, SEO, cost, and who maintains it."
 date: 2026-08-21
 category: "Web Development"
 author: "Umvix Team"
@@ -26,7 +26,7 @@ If that describes you, a well-configured WordPress site with a lean theme will s
 
 The trouble arrives when the site stops being a brochure. Common breaking points:
 
-**Performance.** Roughly 45% of WordPress sites pass all three Core Web Vitals on mobile. That number is not a technology limit, it is a plugin-stack limit — every page builder, slider, and analytics add-on ships its own JavaScript, and it compounds.
+**Performance.** Roughly 45% of WordPress sites pass all three [Core Web Vitals](/blog/core-web-vitals-fixes) on mobile. That number is not a technology limit, it is a plugin-stack limit — every page builder, slider, and analytics add-on ships its own JavaScript, and it compounds.
 
 **Custom logic.** The moment you need real product logic — pricing calculators, gated portals, multi-step configurators, a customer dashboard — you are writing PHP inside a system designed for publishing.
 
@@ -47,9 +47,67 @@ The trade-off is real: a developer is involved in a way they are not with WordPr
 
 ## The middle path most teams miss
 
-You do not have to choose between "editors can publish" and "the frontend is fast". Headless architecture gives you both: WordPress, Sanity, or Contentful handles content, Next.js renders it. Your marketing team keeps the editor they know; visitors get a static-fast site.
+You do not have to choose between "editors can publish" and "the frontend is fast". [Headless architecture](/blog/headless-cms-vs-traditional) gives you both: WordPress, Sanity, or Contentful handles content, Next.js renders it. Your marketing team keeps the editor they know; visitors get a static-fast site.
 
 This is the setup we recommend most often for companies that publish regularly but have outgrown a theme.
+
+## Side by side
+
+| | WordPress | Next.js |
+| --- | --- | --- |
+| Time to first launch | Days | Weeks |
+| Non-technical publishing | Built in | Needs a CMS bolted on |
+| Core Web Vitals | Depends on theme and plugins | Controlled directly |
+| Custom product logic | Fights the platform | Native |
+| Plugin ecosystem | Vast | Build or integrate |
+| Security surface | Large, plugin-driven | Small, dependency-driven |
+| Hosting | $10–$100/mo, often more with caching | $0–$50/mo for a marketing site |
+| Who maintains it | A marketer can, mostly | A developer, mostly |
+| Migration away | Hard, content is entangled | Easier, content is separate |
+
+## Three-year cost of ownership
+
+Build cost is the number people compare. It is rarely the number that decides.
+
+| | WordPress | Next.js + headless CMS |
+| --- | --- | --- |
+| Build | $6,000 – $15,000 | $10,000 – $25,000 |
+| Hosting (3 yrs) | $1,000 – $4,000 | $0 – $2,000 |
+| Plugin/CMS licences (3 yrs) | $500 – $3,000 | $0 – $3,600 |
+| Maintenance (3 yrs) | $3,000 – $9,000 | $2,000 – $6,000 |
+| **Three-year total** | **$10,500 – $31,000** | **$12,000 – $36,600** |
+
+They converge more than either camp admits. The decision should be made on capability and who maintains it, not on a spreadsheet that lands this close — and [the broader cost picture](/blog/custom-website-cost-2026) is worth reading alongside it.
+
+## If you are migrating
+
+Most rebuild disasters are redirect disasters. In order:
+
+1. **Export the URL map first.** Every indexed URL, from Search Console and your sitemap, before anything changes.
+2. **Match old to new.** Every changed URL gets a 301. No URL should 404 or land on the homepage — homepage redirects are treated as soft 404s.
+3. **Keep the URL structure where you can.** The cheapest migration changes the technology and not the addresses.
+4. **Preserve titles, descriptions, and headings** at first. Change them after the migration settles, so you can attribute any movement.
+5. **Move structured data across.** Organization, breadcrumbs, articles.
+6. **Launch, then watch coverage weekly** in Search Console for a month. Fix errors as they appear rather than after the quarter.
+
+Traffic dips of a week or two are normal. Sustained drops are almost always missing redirects.
+
+## Common questions
+
+**Is Next.js better for SEO than WordPress?**
+Neither is inherently better — Google indexes both. Next.js makes it easier to control the things that matter: [page speed](/blog/core-web-vitals-fixes), metadata, structured data, and URL structure. A well-built WordPress site beats a badly built Next.js one every time.
+
+**Can my marketing team still publish?**
+Yes, with a CMS behind it — including WordPress itself in headless mode. Budget for live preview, or your editors will quietly stop using it. [The full comparison is here](/blog/headless-cms-vs-traditional).
+
+**What about all our plugins?**
+Some have direct equivalents, some become small builds, some you will discover nobody used. Audit the plugin list before quoting — it is the single biggest source of scope surprise in a migration.
+
+**We get hacked regularly. Will Next.js fix that?**
+It removes the most common attack path, since there is no plugin layer and usually no server-side admin to compromise. It does not make you immune — it moves your risk to dependencies and your own code.
+
+**Is WordPress dying?**
+No. It runs an enormous share of the web and will for years. It is simply no longer the default answer for every project, which is a different claim.
 
 ## How we actually decide
 
@@ -60,5 +118,7 @@ Three questions, in order:
 3. **What does a slow page cost you?** If organic traffic drives revenue, performance stops being a preference.
 
 If your answers are "product", "rarely", and "a lot", the decision is already made.
+
+If you are about to put this out to tender, our guide to [writing a website RFP](/blog/how-to-write-a-website-rfp) covers what agencies need from you to quote accurately — and [what a custom site actually costs](/blog/custom-website-cost-2026) sets expectations on budget.
 
 Not sure which side you land on? Send us the site and what you want it to do next — we will tell you honestly if a rebuild is worth it or if you just need a plugin audit.

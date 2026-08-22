@@ -1,6 +1,6 @@
 ---
-title: "From internal tool to product: turning your dashboard into SaaS"
-description: "The tool you built for yourself may be sellable. It is also almost certainly not shippable as-is. What actually has to change, and how to test demand before you invest."
+title: "Turning your internal tool into a SaaS product"
+description: "The tool you built for yourself may be sellable, but it is not shippable as-is. What has to change technically, and how to test demand before you invest."
 date: 2026-08-04
 category: "SaaS & Dashboards"
 author: "Umvix Team"
@@ -27,9 +27,9 @@ That last test is the most honest one available, and the cheapest.
 
 Your internal tool has assumptions baked in that a product cannot have.
 
-**Multi-tenancy.** The largest change by far. Your tool assumes one company's data. A product needs isolation enforced structurally — usually a tenant column plus row-level security — and every query, job, export, and cache key audited for it. This is not a refactor you can do halfway.
+**[Multi-tenancy](/blog/multi-tenant-saas-architecture).** The largest change by far. Your tool assumes one company's data. A product needs isolation enforced structurally — usually a tenant column plus row-level security — and every query, job, export, and cache key audited for it. This is not a refactor you can do halfway.
 
-**Authentication and accounts.** Internal SSO becomes signup, login, password reset, invitations, roles, and account deletion.
+**Authentication and accounts.** Internal SSO becomes signup, login, password reset, invitations, roles, and account deletion — [the floor every SaaS needs before it can charge](/blog/saas-mvp-cost).
 
 **Configuration instead of hard-coding.** Your business rules, tax rates, workflow stages, and terminology are currently constants. Customers have different ones.
 
@@ -39,7 +39,7 @@ Your internal tool has assumptions baked in that a product cannot have.
 
 **Self-serve onboarding.** Today a new user gets a walkthrough from you. A product's first five minutes have to work alone.
 
-**An admin view for you.** To support customers, fix data, and issue credits without opening a database console.
+**[An admin view for you](/blog/dashboard-design-that-works).** To support customers, fix data, and issue credits without opening a database console.
 
 Realistically this is a substantial rebuild of the foundation with the domain logic carried across — not a repackaging. Budget accordingly.
 
@@ -64,5 +64,7 @@ Trying to convert the live internal tool in place means every product decision i
 Is the valuable part the software, or your expertise applied through it?
 
 If customers actually want your judgement and the tool is how you deliver it, a productised service may make more money for far less investment. Plenty of successful businesses stopped exactly there, deliberately.
+
+You will also need real billing rather than invoices you send by hand — [the edge cases are where it breaks](/blog/stripe-billing-for-saas).
 
 If you are weighing this up, we are happy to look at what you have built and give you a straight assessment of the gap — including when our advice is not to build it.

@@ -31,7 +31,7 @@ This one change eliminates the most damaging failure mode entirely, and it is us
 
 **Normalise before matching.** Lowercase emails, strip plus-addressing, trim whitespace, normalise phone numbers to E.164 before you check for duplicates.
 
-**Make it idempotent.** Give every submission an ID and use it as an idempotency key. Retries then become safe, and retries will happen.
+**[Make it idempotent](/blog/reliable-automation-error-handling).** Give every submission an ID and use it as an idempotency key. Retries then become safe, and retries will happen.
 
 **Fail loudly.** Any lead that does not reach the CRM within a defined window should raise an alert to a human, not a log line nobody reads.
 
@@ -47,12 +47,14 @@ Add a simple dashboard: leads received, leads routed, average time to assignment
 
 ## What about speed?
 
-Response time matters, and the win is available cheaply: an instant acknowledgement to the lead, an instant notification to the owner, and — where appropriate — an assistant that answers common questions while the human gets to their desk.
+Response time matters, and the win is available cheaply: an instant acknowledgement to the lead, an instant notification to the owner, and — where appropriate — [an assistant that answers common questions](/blog/ai-chatbot-vs-live-chat) while the human gets to their desk.
 
 That last piece is worth considering if a meaningful share of your enquiries arrive outside working hours.
 
 ## Do not over-engineer the rules
 
 Complex routing — territory, product, company size, lead score — accumulates until nobody can explain why a lead went where it did. Start with simple, well-monitored rules. Add complexity only when you can measure that it improves outcomes.
+
+Lead capture is the workflow we recommend automating first, for [reasons that are mostly arithmetic](/blog/workflows-worth-automating-first).
 
 If leads are going missing and nobody can say how many, that reconciliation count is where we would start. We are happy to look at your current setup and tell you where it is leaking.

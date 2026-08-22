@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
 import { slugifyHeading } from "@/lib/blog";
 
 /**
@@ -20,6 +21,26 @@ function headingText(children: ReactNode): string {
 }
 
 const components = {
+  // Wide tables scroll inside their own container so the page body never
+  // scrolls horizontally on mobile.
+  table: ({ children }: { children?: ReactNode }) => (
+    <div className="not-prose my-7 overflow-x-auto rounded-xl border border-white/[0.08]">
+      <table className="w-full border-collapse text-left text-sm">{children}</table>
+    </div>
+  ),
+  thead: ({ children }: { children?: ReactNode }) => (
+    <thead className="bg-white/[0.04] text-brand-white">{children}</thead>
+  ),
+  th: ({ children }: { children?: ReactNode }) => (
+    <th className="whitespace-nowrap border-b border-white/[0.10] px-4 py-3 font-semibold">
+      {children}
+    </th>
+  ),
+  td: ({ children }: { children?: ReactNode }) => (
+    <td className="border-b border-white/[0.06] px-4 py-3 align-top text-brand-gray">
+      {children}
+    </td>
+  ),
   h2: ({ children }: { children?: ReactNode }) => (
     <h2 id={slugifyHeading(headingText(children))} className="scroll-mt-28 font-headline">
       {children}
@@ -59,7 +80,14 @@ const components = {
 export default function PostBody({ source }: { source: string }) {
   return (
     <div className="prose prose-invert prose-brand max-w-none prose-headings:tracking-tight prose-a:no-underline hover:prose-a:underline prose-pre:border prose-pre:border-white/[0.08] prose-img:rounded-xl">
-      <MDXRemote source={source} components={components} />
+      <MDXRemote
+        source={source}
+        components={components}
+        // remark-gfm gives MDX the GitHub-flavoured extensions posts rely on:
+        // tables, task lists, strikethrough, and autolinks. Without it a
+        // markdown table renders as a paragraph of pipe characters.
+        options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+      />
     </div>
   );
 }

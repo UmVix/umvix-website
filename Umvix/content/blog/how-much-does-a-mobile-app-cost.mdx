@@ -19,7 +19,7 @@ Feature count matters less than people expect. What moves the number most is:
 
 1. **Backend complexity.** An app that reads a product catalogue is a fraction of
    the cost of one that handles payments, roles, and real-time sync.
-2. **Native vs cross-platform.** React Native or Flutter covers iOS and Android
+2. **[Native vs cross-platform](/blog/cross-platform-vs-native).** [React Native or Flutter](/blog/react-native-vs-flutter) covers iOS and Android
    from one codebase. Going fully native roughly doubles the platform work, and
    it is only worth it for heavy graphics, deep OS integration, or strict
    performance budgets.
@@ -38,7 +38,7 @@ At Umvix, project-based pricing typically lands in these bands:
 | Cross-platform product, auth, payments, admin panel | $15,000 – $35,000 |
 | Multi-role platform with integrations and ongoing scale | $35,000+ |
 
-These are starting points, not quotes. The variable that shifts them most is how
+These are build costs and starting points, not quotes — budget separately for [maintenance after launch](/blog/mobile-app-maintenance-cost). The variable that shifts them most is how
 well-defined the requirements are on day one.
 
 ## Where budgets get wasted
@@ -52,10 +52,79 @@ mid-project:
 - **No design system.** Without shared components, every new screen costs as much
   as the first one.
 
+## Where a quote actually goes
+
+Most agency quotes break down roughly like this. If yours does not itemise, ask for it — the shape tells you what you are paying for.
+
+| Phase | Share of budget | What happens |
+| --- | --- | --- |
+| Discovery & scoping | 5–10% | Flows, requirements, technical spikes |
+| UI/UX design | 15–25% | Wireframes, visual design, prototype |
+| Frontend build | 30–40% | Screens, navigation, state, offline behaviour |
+| Backend & API | 15–30% | Data model, auth, business logic, admin |
+| QA & device testing | 10–15% | Real devices, OS versions, edge cases |
+| Project management | 10% | Coordination, demos, releases |
+
+Two things surprise people here. Design is a bigger slice than expected. And QA is not optional padding — it is the difference between a four-star app and a one-star one.
+
+## Cost by app type
+
+Different products cluster at different price points, because their backends differ far more than their screens do.
+
+| App type | Typical range | What drives it |
+| --- | --- | --- |
+| Content / catalogue app | $6,000 – $15,000 | Mostly reads, simple backend |
+| Booking or appointments | $12,000 – $30,000 | Availability logic, payments, notifications |
+| Marketplace (two-sided) | $30,000 – $70,000 | Two user types, payments, disputes, trust |
+| Social / community | $25,000 – $60,000 | Feeds, moderation, real-time, scale |
+| On-demand / delivery | $35,000 – $80,000 | Live tracking, dispatch, three user roles |
+| Internal business tool | $8,000 – $25,000 | Fewer users, more integration |
+
+Marketplaces and on-demand apps cost more than founders expect because they are really three apps: customer, provider, and admin.
+
+## The costs after launch
+
+Build cost is not total cost. Budget annually for:
+
+- **Apple Developer Program** — $99/year. **Google Play** — $25 once.
+- **Backend hosting** — $20–$500/month at early scale, depending on architecture.
+- **Third-party services** — push, analytics, crash reporting, maps, SMS. Individually small, collectively real.
+- **[Maintenance](/blog/mobile-app-maintenance-cost)** — 15–25% of build cost per year, and this one is not optional.
+
+A $25,000 app realistically costs $5,000–$8,000 a year to keep alive and current.
+
+## Who you hire changes the number
+
+| Option | Typical blended rate | Trade-off |
+| --- | --- | --- |
+| Freelancer | $25 – $70/hr | Cheapest, no redundancy, variable quality |
+| Small agency | $50 – $120/hr | Balanced; you meet the people building it |
+| Large agency | $120 – $250/hr | Process and scale, more overhead per feature |
+| In-house team | Salaries + ramp-up | Only economical past continuous roadmap |
+
+The cheapest hourly rate rarely produces the cheapest project. Rework is invisible in a quote and dominant in the final invoice.
+
+## Common questions
+
+**Can I build an app for $5,000?**
+Sometimes — a single-platform, single-flow app with a simple backend. What you cannot get at that price is two platforms, custom design, and real integrations. Be sceptical of anyone quoting a marketplace at that number.
+
+**How long will it take?**
+A focused MVP is typically 8–14 weeks. Larger platforms run 4–9 months. Timelines slip on client-side decisions far more often than on development.
+
+**Is a fixed price or hourly better?**
+Fixed price works when the scope is genuinely fixed — which requires a real discovery phase first. For evolving products, a capped time-and-materials arrangement with fortnightly demos is usually fairer to both sides.
+
+**Do I own the code?**
+You should, in writing, along with the repository, accounts, and store listings. Ask before signing. Not every agency says yes by default.
+
+**Does a cross-platform app cost half of two native apps?**
+Closer to 60–70% of two native builds, not 50%. Shared code still needs testing on both platforms, and some features need platform-specific work either way.
+
 ## How to get a number for your project
 
 Write down your must-have user flows — not features, flows. "A customer books an
-appointment and pays a deposit" is a flow. Five to eight of those is an MVP, and
+appointment and pays a deposit" is a flow. Five to eight of those is [an MVP](/blog/mobile-app-mvp-scope), and
 that list is enough for us to give you a real estimate.
 
 Send that list over and we will come back with a scoped quote, usually within

@@ -1,5 +1,5 @@
 ---
-title: "React Native vs Flutter in 2026: how we actually choose"
+title: "React Native vs Flutter: how we actually choose"
 description: "Both ship excellent cross-platform apps. The decision comes down to your existing team, your UI ambitions, and what you plan to integrate — not benchmarks."
 date: 2026-08-20
 category: "Mobile Apps"
@@ -35,7 +35,7 @@ That difference decides most of what follows.
 
 ## What does not decide it
 
-**Raw performance.** Both handle normal app workloads without effort. If you are doing something where the difference matters — heavy real-time graphics, sustained video processing — you are probably writing native code for that part regardless.
+**Raw performance.** Both handle normal app workloads without effort. If you are doing something where the difference matters — see [when native is worth the second codebase](/blog/cross-platform-vs-native) — — heavy real-time graphics, sustained video processing — you are probably writing native code for that part regardless.
 
 **Hiring pool size.** React Native has more developers available; Flutter developers are easier to retain because the ecosystem churns less. It balances out.
 
@@ -43,10 +43,79 @@ That difference decides most of what follows.
 
 ## The option people forget
 
-If your app is essentially a logged-in view of a web product, a well-built progressive web app may be enough — no store review, no release cycle, one codebase. It is the right answer more often than agencies admit, and we will tell you when it is yours.
+If your app is essentially a logged-in view of a web product, a well-built progressive web app may be enough — no [store review](/blog/app-store-rejection), no release cycle, one codebase. It is the right answer more often than agencies admit, and we will tell you when it is yours.
+
+## Side by side
+
+| | React Native | Flutter |
+| --- | --- | --- |
+| Language | JavaScript / TypeScript | Dart |
+| Rendering | Real native components | Own engine, paints every pixel |
+| Looks native by default | Yes | Only if you build it that way |
+| Design control | Bounded by platform components | Total |
+| Web code sharing | Strong, if you use React | Limited in practice |
+| Desktop / embedded | Immature | Mature |
+| Hiring pool | Larger | Smaller, lower churn |
+| Native module work | Common, well-trodden | Common, well-trodden |
+| Hot reload | Yes | Yes, generally faster |
+| App size (baseline) | Smaller | Larger |
+
+## What actually costs you time
+
+Framework choice affects maybe 10% of a project's effort. These affect far more:
+
+- **Navigation and deep linking.** Underestimated in both. Budget for it explicitly.
+- **State management.** The decision that ages worst. Pick something boring.
+- **Offline and sync.** Genuinely hard in any framework. Do not add it to v1 casually.
+- **Native module gaps.** Fine until the one SDK you need has no maintained package.
+- **Release engineering.** Signing, provisioning, build pipelines, staged rollouts. A week you did not plan for, on both platforms.
+- **[Store review](/blog/app-store-rejection).** Framework-independent, and a week you will lose if unprepared.
+
+If a proposal spends its estimate on framework debate and none on these, question the estimate.
+
+## Performance, honestly
+
+Both handle lists, forms, navigation, and API calls without issue. Where differences appear:
+
+- **Very long, complex lists.** Both need virtualisation and care. Flutter has a slight edge out of the box.
+- **Heavy custom animation.** Flutter's rendering model is an advantage.
+- **Startup time.** React Native is generally lighter, though the gap has narrowed considerably.
+- **Anything sustained and computational** — video processing, real-time audio, AR. Write that part [natively regardless](/blog/cross-platform-vs-native).
+
+None of this decides a normal business app.
+
+## Switching later
+
+It is a rewrite, not a migration — the UI layer shares nothing. What does carry across:
+
+- Your backend and API, untouched.
+- Business logic, if you kept it out of components.
+- Designs and design system.
+- The product knowledge, which is most of the value.
+
+Plan for roughly 50–70% of the original build cost. This is why the choice is worth an afternoon of thought and not a month: it is reversible, expensively.
+
+## Common questions
+
+**Which is cheaper to build in?**
+Effectively the same. Cost is driven by your team's existing skills — using a framework your developers already know is worth more than any framework property.
+
+**Which is easier to hire for?**
+React Native has more available developers. Flutter developers tend to stay longer, because the ecosystem churns less. It balances out at most team sizes.
+
+**Can I reuse my React web code?**
+Business logic, API clients, validation, and types — yes, and that is a genuine saving. Components — no, the primitives differ. Do not expect to reuse screens.
+
+**Is Flutter only for Google apps?**
+No. It has broad production use well beyond Google, including from companies with no relationship to it.
+
+**What about the new React Native architecture?**
+It removed the old asynchronous bridge and closed much of the historical performance gap. If your last look at React Native was several years ago, the objections you remember are largely out of date.
 
 ## In practice
 
 Our default is React Native, because most of our clients already have a React web codebase and the shared-team benefit is real money. We recommend Flutter when the design brief is ambitious enough that painting our own pixels becomes an advantage rather than a chore.
+
+Whichever you choose, budget for [what maintenance costs after launch](/blog/mobile-app-maintenance-cost) and scope the first release around [the flows that matter](/blog/mobile-app-mvp-scope).
 
 Tell us your team's background and show us the designs — that is usually enough for us to give you a straight recommendation.

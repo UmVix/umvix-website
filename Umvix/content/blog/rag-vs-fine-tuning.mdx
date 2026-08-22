@@ -1,6 +1,6 @@
 ---
-title: "RAG vs fine-tuning: which one does your business actually need?"
-description: "Almost every business asking for a fine-tuned model needs retrieval instead. The difference explained without the jargon, plus when fine-tuning genuinely earns its cost."
+title: "RAG vs fine-tuning: which does your business need?"
+description: "Almost every business asking for a fine-tuned model needs retrieval instead. The difference without jargon, and when fine-tuning genuinely earns its cost."
 date: 2026-08-18
 category: "AI & Chatbots"
 author: "Umvix Team"
@@ -44,12 +44,81 @@ Notice the pattern: fine-tuning is an optimisation, applied after you know exact
 
 ## The order we build in
 
-1. **Prompt engineering first.** A well-written system prompt with a few examples solves more than people expect, at zero infrastructure cost.
+1. **Prompt engineering first**, on [a model chosen by evaluation rather than leaderboard](/blog/choosing-an-llm-2026). A well-written system prompt with a few examples solves more than people expect, at zero infrastructure cost.
 2. **Add retrieval** when the assistant needs to know things that live in your content.
 3. **Improve the retrieval**, not the model. Chunking strategy, hybrid search, and reranking produce bigger gains than any model swap.
 4. **Consider fine-tuning** only when you have measurable evidence that behaviour, not knowledge, is the limit.
 
 Most projects stop at step three, permanently, and that is a success rather than a shortcut.
+
+## Side by side
+
+| | Retrieval (RAG) | Fine-tuning |
+| --- | --- | --- |
+| What it changes | What the model can see | How the model behaves |
+| Update cost | Edit a document | Retrain |
+| Time to first version | Days | Weeks |
+| Typical build cost | $10,000 – $40,000 | $15,000 – $60,000+ |
+| Can cite sources | Yes | No |
+| Respects access control | Yes | No |
+| Handles new facts | Immediately | Only after retraining |
+| Per-call cost | Higher (longer prompts) | Lower (shorter prompts) |
+| Fails by | Retrieving the wrong passage | Confidently inventing |
+
+The last row matters most. Retrieval fails visibly and fixably. Fine-tuned recall fails invisibly.
+
+## What a retrieval pipeline actually looks like
+
+Worth knowing before you commission one, because the quality lives in the middle steps:
+
+1. **Ingest.** Pull content from your docs, CMS, database, and files. Normalise to text with the metadata you will want to filter on later.
+2. **Chunk.** Split on structure — headings, sections — not on arbitrary character counts. Keep a heading attached to the rule underneath it.
+3. **Embed and index.** Store vectors alongside keyword search. Postgres with pgvector handles both for most projects, which is why [it is our default](/blog/saas-tech-stack-2026).
+4. **Retrieve hybrid.** Vector search for meaning, keyword search for exact terms — product codes, error numbers, policy names. Merge the results.
+5. **Rerank.** Fetch twenty, rerank, pass five. Consistently the highest-value step and the one most often skipped.
+6. **Generate with constraints.** Pass the passages, instruct the model to answer only from them, and require citations.
+7. **Evaluate.** A fixed question set with expected answers, run on every change.
+
+Most of the cost sits in steps 1 and 2. Most of the quality sits in steps 4 and 5.
+
+## When you would use both
+
+They are not mutually exclusive, and the combination has a specific shape:
+
+- **Retrieval supplies the facts. Fine-tuning supplies the format.** A tuned model that reliably produces your exact output structure, answering from retrieved passages.
+- **A small tuned model as a router**, deciding which retrieval index to search, with a larger model generating the answer.
+- **A tuned classifier upstream** — intent detection, routing, or triage — where a small specialised model is far cheaper at volume than a general one.
+
+In each case, fine-tuning is applied after retrieval is working, using data the retrieval system generated. That order is not optional.
+
+## Cost and time in practice
+
+| | Retrieval | Fine-tuning |
+| --- | --- | --- |
+| Data preparation | Clean and structure content | Build a labelled example set |
+| Volume needed | Your existing content | Hundreds to thousands of examples |
+| Iteration loop | Minutes | Hours to days |
+| Ongoing maintenance | Keep content current | Retrain as behaviour drifts |
+| Where it breaks | Chunking and ranking | Data quality and overfitting |
+
+The labelled example set is the real barrier to fine-tuning. Teams routinely underestimate it, then produce a few hundred inconsistent examples and conclude fine-tuning does not work.
+
+## Common questions
+
+**Is RAG cheaper than fine-tuning?**
+To build, almost always. Per call, often not — longer prompts cost more tokens. At high volume a small tuned model can be cheaper to run, which is exactly when fine-tuning starts making sense.
+
+**How much content do I need for RAG?**
+There is no minimum. A single well-written FAQ page works. Quality and consistency matter far more than volume — contradictory documents produce contradictory answers.
+
+**Can I fine-tune on my documents?**
+You can, and it usually disappoints. The model absorbs style, not reliable facts, and you lose citations and access control. If the goal is "know our content", use retrieval.
+
+**Does a bigger context window remove the need for retrieval?**
+No. Stuffing everything into context is expensive, slower, and accuracy degrades as context grows. Retrieval is how you send the right 2,000 words instead of the wrong 200,000 — and it keeps [the running cost](/blog/ai-chatbot-development-cost) sane.
+
+**How do I know it is working?**
+An evaluation set, run on every change, including questions it should refuse. Without one, "we improved it" is a feeling. [The full reliability stack is here](/blog/stop-chatbot-hallucinations).
 
 ## Where RAG projects actually go wrong
 
@@ -59,6 +128,8 @@ Almost never in the model. Nearly always in retrieval:
 - **Pure vector search.** Semantic search alone misses exact terms — product codes, error numbers, policy names. Combine it with keyword search.
 - **No reranking.** Fetching the top twenty and reranking to five beats fetching five directly.
 - **Stale or contradictory sources.** If two documents disagree, the model will confidently pick one. Fix your content.
-- **No evaluation set.** Without a fixed list of questions and expected answers, "we improved it" is a feeling, not a fact.
+- **No evaluation set.** Without [a fixed list of questions and expected answers](/blog/stop-chatbot-hallucinations), "we improved it" is a feeling, not a fact.
+
+Retrieval is also what keeps [the build cost](/blog/ai-chatbot-development-cost) in the tens of thousands rather than the hundreds.
 
 If you have been told you need a custom-trained model, send us the use case first — we will tell you honestly whether retrieval gets you there for a fraction of the cost.

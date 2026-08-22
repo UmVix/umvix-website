@@ -1,5 +1,5 @@
 ---
-title: "Stripe billing for SaaS: subscriptions, trials, and the edge cases"
+title: "Stripe billing for SaaS: the edge cases that break"
 description: "Taking a payment is the easy part. Proration, failed renewals, downgrades, and refunds are where SaaS billing implementations quietly break."
 date: 2026-08-12
 category: "SaaS & Dashboards"
@@ -28,7 +28,7 @@ Concretely:
 They arrive out of order, more than once, and occasionally late.
 
 - **Verify the signature.** Always. An unverified billing webhook endpoint is a way for anyone to grant themselves a subscription.
-- **Make handlers idempotent.** Key on the event ID and ignore events you have already processed.
+- **[Make handlers idempotent](/blog/reliable-automation-error-handling).** Key on the event ID and ignore events you have already processed.
 - **Handle out-of-order delivery.** Compare timestamps rather than assuming the newest arrival is the newest event.
 - **Return 200 quickly**, then process asynchronously. Slow handlers get retried, which produces duplicates.
 - **Reconcile nightly.** Fetch active subscriptions and compare with your records. This catches everything the webhooks missed, and it will catch something.
@@ -37,7 +37,7 @@ They arrive out of order, more than once, and occasionally late.
 
 Decide two things before you build:
 
-**Card up front or not?** Requiring a card lowers signups and raises conversion. Not requiring one does the reverse. This is a business decision that changes the implementation.
+**Card up front or not?** Requiring a card lowers signups and raises conversion — the same trade-off as [showing pricing publicly](/blog/website-mistakes-killing-conversions). Not requiring one does the reverse. This is a business decision that changes the implementation.
 
 **What happens at the end?** Automatic conversion, or expiry into a locked account? Either is fine; ambiguity is not.
 
@@ -79,5 +79,7 @@ Use Stripe's test clocks to simulate time passing, then verify:
 - Two webhooks arriving out of order
 
 Each of these is a real support ticket you would otherwise receive from a paying customer.
+
+Billing is one of the largest slices of [an MVP budget](/blog/saas-mvp-cost), and one of the few parts worth getting right before launch rather than after.
 
 We build billing this way as standard, and it is one of the more common things we are asked to come in and repair. If yours drifts, the nightly reconciliation is where we would start.

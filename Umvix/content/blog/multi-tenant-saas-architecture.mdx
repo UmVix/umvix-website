@@ -1,5 +1,5 @@
 ---
-title: "Multi-tenant SaaS architecture: shared vs isolated databases"
+title: "Multi-tenant SaaS: shared vs isolated databases"
 description: "The tenancy model you pick in week one determines your cost curve, your compliance story, and how painful your migrations are for years. A practical comparison."
 date: 2026-08-20
 category: "SaaS & Dashboards"
@@ -33,7 +33,7 @@ One missing `WHERE tenant_id = ?` and a customer sees another customer's data. T
 
 Do not rely on discipline. Enforce it structurally:
 
-- **Row-level security in the database.** Postgres RLS enforces the boundary below your application code, so a forgotten filter fails closed rather than leaking.
+- **Row-level security in the database.** [Postgres](/blog/saas-tech-stack-2026) RLS enforces the boundary below your application code, so a forgotten filter fails closed rather than leaking.
 - **A single data-access layer** where the tenant context is applied automatically. No raw queries scattered through the codebase.
 - **Tenant context from the session, never from the request body.** A `tenantId` a client can send is a `tenantId` a client can change.
 - **Tests that specifically try to cross the boundary.** Every list and detail endpoint, as a different tenant, asserting an empty result or a 404.
@@ -49,7 +49,7 @@ Mitigate with:
 - **Per-tenant rate limits**, not just global ones.
 - **Separate queues or weighted fair queuing** for background jobs, so one tenant's bulk import does not starve everyone's exports.
 - **Query timeouts and result caps** so one enormous request cannot monopolise a connection pool.
-- **Per-tenant metrics.** Aggregate dashboards hide exactly the problem you are looking for.
+- **Per-tenant metrics.** [Aggregate dashboards hide exactly the problem you are looking for](/blog/dashboard-design-that-works).
 
 ## Onboarding has to be automated
 
@@ -64,8 +64,10 @@ Manual provisioning is fine for ten customers and a bottleneck at fifty. Automat
 
 ## The pragmatic default
 
-Start with **shared database, shared schema, with row-level security enforced in the database**. It is the cheapest to build and run, and RLS gives you a defensible isolation story for most buyers.
+Start with **shared database, shared schema, with row-level security enforced in the database**. It is [the cheapest to build and run](/blog/saas-mvp-cost), and RLS gives you a defensible isolation story for most buyers.
 
 Add per-tenant databases later for the specific enterprise customers who contractually require it. A hybrid is entirely normal, and far cheaper than building for the hardest case on day one.
+
+If you are converting something you built internally, tenancy is the single largest piece of that work — [we covered it separately](/blog/internal-tool-to-saas-product).
 
 Planning a platform now? We are happy to review the tenancy model before you build — it is the cheapest hour in the project.

@@ -1,6 +1,6 @@
 ---
 title: "How much does it cost to build a SaaS MVP in 2026?"
-description: "Budget ranges for a first sellable version, the infrastructure decisions that quietly set your burn rate, and the features founders pay for twice by building too early."
+description: "Budget ranges for a first sellable version, the infrastructure choices that quietly set your burn rate, and the features founders pay for twice."
 date: 2026-08-22
 category: "SaaS & Dashboards"
 author: "Umvix Team"
@@ -28,7 +28,7 @@ These are not features. They are the floor, and they are where first-time founde
 - **Authentication** — signup, login, reset, verification, sessions.
 - **Accounts and permissions** — even "just teams" means invitations, roles, and removal.
 - **Billing** — plans, trials, upgrades, downgrades, failed payments, cancellation.
-- **Tenant isolation** — one customer must never see another's data. Not negotiable.
+- **[Tenant isolation](/blog/multi-tenant-saas-architecture)** — one customer must never see another's data. Not negotiable.
 - **Transactional email** — verification, receipts, invitations, notifications.
 - **An admin view** — you will need to see accounts, fix data, and issue credits from week one.
 
@@ -36,7 +36,7 @@ That floor typically consumes 40–60% of an MVP budget before your actual produ
 
 ## Where the money goes after that
 
-**Billing complexity.** Flat per-seat monthly is simple. Usage-based, metered, annual with proration, multi-currency, tax handling — each adds real work. Start flat. You can add complexity once you know what people will pay for.
+**[Billing complexity](/blog/stripe-billing-for-saas).** Flat per-seat monthly is simple. Usage-based, metered, annual with proration, multi-currency, tax handling — each adds real work. Start flat. You can add complexity once you know what people will pay for.
 
 **Multi-tenancy model.** Shared database with a tenant column is cheapest and right for most. Schema-per-tenant or database-per-tenant costs more upfront and is occasionally required by enterprise buyers. Choose deliberately, because migrating later is a project.
 
@@ -47,7 +47,7 @@ That floor typically consumes 40–60% of an MVP budget before your actual produ
 ## What to cut from v1
 
 - **Your own auth.** Use a provider. Rebuilding sessions and password resets is expensive undifferentiated work.
-- **Custom analytics.** Instrument with an off-the-shelf tool.
+- **Custom analytics.** Instrument with an off-the-shelf tool, and save [the dashboard work](/blog/dashboard-design-that-works) for your product.
 - **A public API.** Ship it when a customer asks and will pay.
 - **SSO and SAML.** Enterprise-only. Add it when an enterprise deal depends on it — and charge for it.
 - **A mobile app.** A responsive web app first.
@@ -56,14 +56,79 @@ That floor typically consumes 40–60% of an MVP budget before your actual produ
 
 ## The decisions that set your burn rate
 
-Three architecture choices quietly determine your monthly bill:
+Three architecture choices quietly determine your monthly bill (our [default stack](/blog/saas-tech-stack-2026) explains the reasoning behind each):
 
 1. **Managed versus self-run infrastructure.** Managed costs more per month and far less in attention. At MVP stage, attention is the scarcer resource.
 2. **Where compute idles.** Serverless is cheap at low traffic and gets expensive at sustained load. Containers are the reverse.
 3. **What you log and how long you keep it.** Log storage is a genuinely surprising line item by month six.
 
-## The realistic timeline
+## A worked MVP budget
 
-A focused MVP with the floor plus one strong core workflow is typically 8–14 weeks. Faster than that usually means skipping the admin tooling and the billing edge cases — both of which you will build in month four anyway, under pressure, with customers waiting.
+A B2B workflow tool: team accounts, one core workflow, Stripe subscriptions, a dashboard, and one integration.
+
+| Line | Estimate |
+| --- | --- |
+| Discovery, data model, architecture | $3,000 |
+| Design system + 12 screens | $6,500 |
+| Auth, accounts, roles, invitations | $4,000 |
+| Core workflow (the actual product) | $9,000 |
+| [Billing](/blog/stripe-billing-for-saas) + plan gating | $4,500 |
+| [Dashboard](/blog/dashboard-design-that-works) and reporting | $3,500 |
+| One third-party integration | $2,500 |
+| Admin tooling | $2,000 |
+| QA, deployment, observability | $3,000 |
+| **Total** | **$38,000** |
+
+Note the proportion: the core workflow — the reason the product exists — is under a quarter of the budget. That ratio is normal, and it is why cutting the floor to "save money" backfires.
+
+## What it costs to run
+
+| Line | Monthly at MVP scale |
+| --- | --- |
+| App hosting | $20 – $150 |
+| Managed database | $25 – $200 |
+| Auth provider | $0 – $100 |
+| Email (transactional) | $0 – $50 |
+| Monitoring & error tracking | $0 – $80 |
+| Background jobs / queue | $10 – $50 |
+| **Typical total** | **$55 – $630** |
+
+Plus Stripe's percentage of revenue. Set log retention on day one — storage is the line that surprises people by month six.
+
+## Timeline by scope
+
+| Scope | Realistic timeline |
+| --- | --- |
+| Single-user tool | 5–8 weeks |
+| Team accounts + billing + dashboard | 8–14 weeks |
+| Multi-tenant platform with admin and API | 4–7 months |
+
+Anything promising a full SaaS in three weeks is skipping the floor, the admin tooling, or the billing edge cases — both of which you will build in month four regardless, under pressure, with customers waiting.
+
+## Ways to spend less without regretting it
+
+- **Buy the undifferentiated parts.** Auth, email, analytics, error tracking. Building them is the most expensive way to learn nothing.
+- **One tenancy model, chosen deliberately.** [Shared schema with row-level security](/blog/multi-tenant-saas-architecture) is right for most, and far cheaper than per-tenant databases.
+- **Flat pricing first.** Usage-based billing is a project of its own.
+- **Onboard the first fifty customers by hand.** You learn more than any funnel would tell you, and you defer a build.
+- **One integration, chosen by customers.** Not five, chosen by you.
+- **Boring infrastructure.** [The stack we default to](/blog/saas-tech-stack-2026) is boring on purpose — novel infrastructure is a liability once the person who chose it moves on.
+
+## Common questions
+
+**Can I build a SaaS MVP for $10,000?**
+For a single-user tool with one workflow and simple billing, yes. Team accounts, roles, and multi-tenancy push it past that quickly, because the floor is the same regardless of how simple your product is.
+
+**Should I use a no-code platform first?**
+Often, yes. If it validates demand and the ceiling is far enough away, it is the cheapest possible discovery. Migrate once you have paying customers and a clear reason.
+
+**How much should I raise before building?**
+Enough for the build plus twelve months of running costs plus the first round of changes customers ask for. Building with exactly the build budget is how products launch and then freeze.
+
+**Do I need SOC 2 to sell?**
+Not to start. You need it when enterprise buyers require it — and architecting for it early is much cheaper than retrofitting. Ask your first ten prospects whether it will come up.
+
+**What about an app as well?**
+Later. A responsive web app covers most SaaS use cases, and a [mobile build](/blog/how-much-does-a-mobile-app-cost) is a second product with its own budget and maintenance.
 
 Send us your core workflow and your pricing model and we will scope the floor and the product separately, so you can see exactly what each part costs.

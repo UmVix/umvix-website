@@ -1,5 +1,5 @@
 ---
-title: "Mobile app maintenance: what it really costs after launch"
+title: "Mobile app maintenance: the real annual cost"
 description: "Launch is not the finish line. OS releases, SDK deprecations, and store policy changes mean an unmaintained app breaks within about eighteen months."
 date: 2026-08-11
 category: "Mobile Apps"
@@ -9,7 +9,7 @@ cover: "/blog/mobile-app-maintenance-cost.webp"
 draft: false
 ---
 
-The uncomfortable number nobody quotes at the start: budget roughly 15–25% of the original build cost per year to keep a mobile app working. Not to add features — to keep what you have from breaking.
+The uncomfortable number nobody quotes at the start: budget roughly 15–25% of [the original build cost](/blog/how-much-does-a-mobile-app-cost) per year to keep a mobile app working. Not to add features — to keep what you have from breaking.
 
 Here is where that money actually goes.
 
@@ -17,7 +17,7 @@ Here is where that money actually goes.
 
 **OS releases, annually.** iOS and Android ship major versions every year. Every year something in your app needs attention: a deprecated API, a changed permission model, a new screen size, a UI convention that now looks wrong.
 
-**Store policy deadlines.** Google Play enforces a minimum target API level and will stop serving your app to new users if you miss it. Apple periodically requires builds compiled against a newer SDK. These are hard deadlines with real consequences, set by someone else's calendar.
+**Store policy deadlines.** Google Play enforces a minimum target API level and will stop serving your app to new users if you miss it. Apple periodically requires builds compiled against a newer SDK, and [each resubmission goes through review again](/blog/app-store-rejection). These are hard deadlines with real consequences, set by someone else's calendar.
 
 **SDK and dependency churn.** Your payment provider, analytics, push service, and auth library all ship breaking changes. Skip updates for a year and you are not doing an update, you are doing a migration.
 
@@ -38,7 +38,7 @@ On a $25,000 app, that is roughly $3,750–$6,000 a year at the standard tier. N
 ## What actually drives the number up
 
 - **Number of integrations.** Each third-party dependency is someone else's release schedule imposed on yours.
-- **Platform count.** Two platforms, two sets of OS changes.
+- **Platform count.** Two platforms, two sets of OS changes — one more reason [cross-platform](/blog/cross-platform-vs-native) is the default for most products.
 - **Backend complexity.** An app talking to your own backend means both need maintaining.
 - **How long you deferred.** Eighteen months of skipped updates is a rebuild, priced like one.
 

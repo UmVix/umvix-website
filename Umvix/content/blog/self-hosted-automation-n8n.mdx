@@ -1,5 +1,5 @@
 ---
-title: "Self-hosted automation: when to own your workflow engine"
+title: "Self-hosted automation: when to own the engine"
 description: "Running n8n or a custom orchestrator yourself trades a subscription for operational responsibility. The three situations where that trade is clearly worth it."
 date: 2026-08-10
 category: "Automation"
@@ -15,7 +15,7 @@ Self-hosting your automation platform is not automatically cheaper or better. It
 
 **1. Data residency and privacy.** If your workflows touch personal data, health records, or financial data that cannot leave your infrastructure, hosted platforms may simply be off the table regardless of cost. This is the strongest argument and often the only one that matters.
 
-**2. Volume economics.** Per-operation pricing is excellent at low volume and painful at high volume. A workflow running hundreds of thousands of operations a month can cost more in platform fees than the compute needed to run it yourself many times over.
+**2. Volume economics.** [Per-operation pricing](/blog/zapier-vs-make-vs-custom) is excellent at low volume and painful at high volume. A workflow running hundreds of thousands of operations a month can cost more in platform fees than the compute needed to run it yourself many times over.
 
 **3. Deep internal integration.** When most of your steps talk to internal systems that no connector supports, the platform's main value — its connector library — is not doing much for you.
 
@@ -47,7 +47,7 @@ If you go self-hosted, get these right from the start:
 
 **Staging and production instances.** Testing in production is how automation takes down a business process on a Friday.
 
-**Alerting on failures.** Not an email nobody reads — a real alert to a channel someone watches, with the workflow name and the error.
+**[Alerting on failures](/blog/reliable-automation-error-handling).** Not an email nobody reads — a real alert to a channel someone watches, with the workflow name and the error.
 
 ## The hybrid that works well
 
@@ -63,5 +63,7 @@ Right tool per workflow, rather than a religion.
 If you are asking "should we self-host?" purely to save money, and none of the three cases above apply, the answer is usually no. Your subscription is cheaper than your engineers' attention.
 
 If data residency is a real constraint, or your platform bill has become a line item people ask about in meetings, it is worth costing out properly.
+
+Tenant-style isolation and per-workflow quotas matter here for the same reasons they do in [multi-tenant SaaS](/blog/multi-tenant-saas-architecture).
 
 We set up and maintain self-hosted automation for clients who need it — and we tell the ones who do not to stay where they are.

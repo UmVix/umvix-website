@@ -24,6 +24,8 @@ Those are build costs. Budget separately for hosting, domains, and a maintenance
 
 ## What actually moves the number
 
+The platform decision sits underneath all of this — [Next.js or WordPress](/blog/nextjs-vs-wordpress) changes both the build cost and what you pay to run it.
+
 **1. Design originality.** Adapting a proven layout is fast. A distinctive, animated, art-directed experience is a separate discipline with its own timeline. This is usually the biggest single swing.
 
 **2. Content readiness.** Sites stall on copy far more often than on code. If we are writing and sourcing content, that is scope. If it is ready on day one, the project moves.
@@ -32,7 +34,7 @@ Those are build costs. Budget separately for hosting, domains, and a maintenance
 
 **4. Custom logic.** A pricing calculator, a quoting tool, a customer portal. Anything with rules is software, not pages, and it gets estimated as software.
 
-**5. Performance and accessibility targets.** "Looks fine" is cheap. Passing Core Web Vitals and WCAG AA on every template is deliberate work.
+**5. Performance and accessibility targets.** "Looks fine" is cheap. Passing [Core Web Vitals](/blog/core-web-vitals-fixes) and WCAG AA on every template is deliberate work.
 
 Notice what is not on that list: page count. Ten pages sharing one design system cost barely more than six.
 
@@ -43,11 +45,76 @@ Notice what is not on that list: page count. Ten pages sharing one design system
 - **No design system.** Without shared components, page eleven costs as much as page one.
 - **Scope by accumulation.** "While we're in there" is how a $9,000 project becomes a $19,000 one.
 
+## Where the money goes in a website project
+
+| Phase | Share of budget | What happens |
+| --- | --- | --- |
+| Discovery & content strategy | 10–15% | Goals, sitemap, page types, requirements |
+| Design | 25–35% | Wireframes, visual design, design system |
+| Build | 30–40% | Templates, components, CMS, integrations |
+| Content & migration | 10–15% | Writing, formatting, moving old content |
+| QA, performance, launch | 10% | Cross-browser, accessibility, redirects, go-live |
+
+The line most often cut is content — and it is the line that most often causes a project to stall for a month.
+
+## Cost by site type
+
+| Site type | Typical range |
+| --- | --- |
+| One-page or landing site | $800 – $3,000 |
+| Small business site, 5–10 pages | $3,000 – $8,000 |
+| Custom marketing site with CMS | $8,000 – $20,000 |
+| E-commerce (standard platform) | $6,000 – $25,000 |
+| Headless e-commerce or custom checkout | $25,000 – $70,000 |
+| Web application / customer portal | $25,000 – $80,000+ |
+
+The jump from "site" to "application" is the biggest single step, because you move from pages to logic, roles, and state.
+
+## What it costs to run
+
+Budget annually, separately from the build:
+
+- **Hosting** — $0–$50/month for a static or Next.js marketing site; more for applications.
+- **Domain** — $10–$40/year.
+- **CMS** — free to $100+/month depending on seats and records.
+- **Third-party services** — forms, search, analytics, email, chat.
+- **Maintenance** — 10–20% of build cost per year for updates, fixes, and small changes.
+
+A $12,000 site typically runs $1,200–$2,400 a year all-in. Sites on plugin-heavy platforms tend to sit at the top of that range, which is part of [the Next.js versus WordPress calculation](/blog/nextjs-vs-wordpress).
+
+## Freelancer, agency, or in-house?
+
+| Option | Typical cost | Best when |
+| --- | --- | --- |
+| Freelancer | $1,000 – $10,000 | Scope is clear and small |
+| Small agency | $5,000 – $40,000 | You need design, build, and strategy together |
+| Large agency | $40,000+ | Brand work, multiple stakeholders, scale |
+| In-house | Salaries | Continuous roadmap, not a one-off project |
+
+The failure mode with freelancers is not quality — it is availability six months later. Ask what happens when something breaks and they are on another project.
+
+## Common questions
+
+**Why do quotes for the same brief differ by 5x?**
+Because the briefs are not the same in the agencies' heads. One quoted a template with your logo; another quoted custom design, a CMS, and three integrations. This is exactly what a [structured RFP](/blog/how-to-write-a-website-rfp) prevents.
+
+**How long does a custom site take?**
+Six to twelve weeks for a marketing site with a CMS. Longer if content is not ready — which it usually is not.
+
+**Should I pay for SEO as part of the build?**
+Technical SEO — structure, speed, metadata, schema, redirects — should be included, not an upsell. Ongoing content and link work is a separate service.
+
+**What happens to my Google rankings during a redesign?**
+Rankings are lost to missing redirects, not to redesigns. Insist on a URL map and 301s for every changed URL, and keep the old sitemap available until the new one is indexed.
+
+**Is a cheap site worth it?**
+For validating an idea, yes. For a business where the site is the main sales channel, a $2,000 site that converts poorly is more expensive than a $12,000 one that does not — which is worth reading alongside [the conversion mistakes list](/blog/website-mistakes-killing-conversions).
+
 ## How to get a quote you can compare
 
-Send three things to every agency you approach:
+Send three things to every agency you approach (our [RFP guide](/blog/how-to-write-a-website-rfp) expands on this):
 
-1. Your goal, in a sentence — leads, sales, credibility, support deflection.
+1. Your goal, in a sentence — leads, sales, credibility, support deflection. (If it is leads, read [what quietly kills conversion](/blog/website-mistakes-killing-conversions) first.)
 2. A list of page types, not pages ("service page", "case study", "pricing").
 3. Every system it has to talk to.
 

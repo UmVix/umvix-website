@@ -1,5 +1,5 @@
 ---
-title: "Cross-platform vs native: when doubling the build is worth it"
+title: "Cross-platform vs native: when to build twice"
 description: "Cross-platform covers roughly 90% of apps. Here is how to tell whether yours is in the other 10% before you commit to paying for two codebases."
 date: 2026-08-17
 category: "Mobile Apps"
@@ -41,7 +41,7 @@ None of these are dealbreakers for most apps. They are dealbreakers for specific
 
 ## The hybrid nobody mentions
 
-You are not choosing once for everything. React Native and Flutter both let you write a native module for the 5% that needs it while the other 95% stays shared.
+You are not choosing once for everything. [React Native and Flutter](/blog/react-native-vs-flutter) both let you write a native module for the 5% that needs it while the other 95% stays shared.
 
 We have shipped apps where a single screen — a scanner, a real-time chart — is native code inside an otherwise cross-platform app. It is the pragmatic answer surprisingly often, and it is far cheaper than committing to native everywhere because of one feature.
 
@@ -49,6 +49,8 @@ We have shipped apps where a single screen — a scanner, a real-time chart — 
 
 Not "which is better", but: **what does this app do that a website cannot?**
 
-If the honest answer is "nothing, we just want an icon on the home screen", you may not need an app at all. If the answer involves the camera, sensors, offline use, or background processing, we can tell you quickly which parts need native and which do not.
+If the honest answer is "nothing, we just want an icon on the home screen", you may not need an app at all — [a fast web platform](/blog/nextjs-vs-wordpress) may serve you better. If the answer involves the camera, sensors, offline use, or background processing, we can tell you quickly which parts need native and which do not.
+
+Whichever way it lands, the architecture decision flows straight into [what the build costs](/blog/how-much-does-a-mobile-app-cost) and [what you pay to keep it running](/blog/mobile-app-maintenance-cost).
 
 Send us your feature list and we will mark it up — shared, bridged, or native — before you commit to an architecture.

@@ -1,6 +1,6 @@
 ---
 title: "How to stop your AI chatbot from hallucinating"
-description: "Hallucination is not a mysterious model flaw you have to accept. It is a design problem with known mitigations. Here is the stack we apply to every assistant we ship."
+description: "Hallucination is not a mysterious model flaw you must accept. It is a design problem with known fixes — the stack we apply to every assistant we ship."
 date: 2026-08-14
 category: "AI & Chatbots"
 author: "Umvix Team"
@@ -19,7 +19,7 @@ So every fix comes down to one of three moves: **give it the facts**, **make ref
 
 ## 1. Ground every answer in retrieved content
 
-The largest single reduction in wrong answers comes from retrieval. Instead of asking the model what your return policy is, find the policy text and ask the model to answer *using that text*.
+The largest single reduction in wrong answers comes from [retrieval](/blog/rag-vs-fine-tuning). Instead of asking the model what your return policy is, find the policy text and ask the model to answer *using that text*.
 
 Then say so explicitly in the system prompt: answer only from the provided sources; if the sources do not contain the answer, say you do not know.
 
@@ -55,10 +55,10 @@ Without this, prompt changes are superstition. With it, you can see that "improv
 
 ## 7. Watch it in production
 
-Log every conversation. Review the ones where users rephrased, escalated, or left. Those transcripts are the best backlog you will ever have — they show exactly where the assistant's knowledge stops.
+Log every conversation. Review the ones where users rephrased, escalated, or left. Those transcripts are [the best backlog you will ever have](/blog/measuring-chatbot-roi) — they show exactly where the assistant's knowledge stops.
 
 ## What it looks like when it works
 
-The assistant answers common questions instantly and accurately, says it does not know at the edges, offers a human when it does, and never quotes a price it made up. That is achievable today with careful design — not with a bigger model.
+The assistant answers common questions instantly and accurately, says it does not know at the edges, offers a human when it does, and never quotes a price it made up. That is achievable today with careful design — not with a bigger model, and usually not by [switching model at all](/blog/choosing-an-llm-2026).
 
 If you have an assistant that is embarrassing you, send us a handful of transcripts. The failure pattern is usually obvious within twenty conversations.

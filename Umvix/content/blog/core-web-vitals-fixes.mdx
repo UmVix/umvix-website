@@ -1,6 +1,6 @@
 ---
-title: "Core Web Vitals in 2026: the fixes that actually move the needle"
-description: "Most Core Web Vitals advice is a checklist of things that change your score by nothing. Here are the four changes that consistently take a failing site to green."
+title: "Core Web Vitals in 2026: the fixes that work"
+description: "Most Core Web Vitals advice changes your score by nothing. Here are the four fixes that consistently take a failing site to green, in order of impact."
 date: 2026-08-16
 category: "Web Development"
 author: "Umvix Team"
@@ -25,7 +25,7 @@ Largest Contentful Paint is usually a hero image, and it is usually failing for 
 - It has no explicit priority, so the browser discovers it late.
 - It is a 2MB JPEG being displayed at 800px wide.
 
-In Next.js, that is `priority` on the hero `<Image>`, correct `sizes`, and letting the framework serve WebP or AVIF. This single fix moves more sites from red to green than everything else combined.
+In [Next.js](/blog/nextjs-vs-wordpress), that is `priority` on the hero `<Image>`, correct `sizes`, and letting the framework serve WebP or AVIF. This single fix moves more sites from red to green than everything else combined.
 
 ## Fix 2: the fonts
 
@@ -46,7 +46,7 @@ Cookie banners and notification bars deserve special attention — they are inse
 
 Interaction to Next Paint punishes main-thread work. The usual offenders:
 
-- A full charting or animation library imported for one component.
+- A full charting or animation library imported for one component — the same discipline that keeps [a dashboard fast](/blog/dashboard-design-that-works).
 - Analytics, chat, heatmap, and A/B tools all loading during page load.
 - Client components that render static content and never needed to be interactive.
 
@@ -55,6 +55,8 @@ Run a bundle analysis, sort by size, and ask of each entry: does this need to lo
 ## What we skip
 
 Micro-optimisations that cost days and change nothing: shaving milliseconds off server response when your LCP image is 2MB, minifying already-gzipped assets, obsessing over a lab score while field data goes unmeasured.
+
+Speed is only one way a site loses visitors — [seven conversion mistakes](/blog/website-mistakes-killing-conversions) covers the rest.
 
 Fix the image, fix the fonts, reserve the space, cut the JavaScript. Re-measure after 28 days of field data — not the same afternoon.
 

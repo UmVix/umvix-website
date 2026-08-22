@@ -1,6 +1,6 @@
 ---
-title: "Zapier vs Make vs custom code: where each one stops making sense"
-description: "No-code automation is the right answer far more often than agencies admit. Here is exactly where each tool breaks down, and the volume at which custom code gets cheaper."
+title: "Zapier vs Make vs custom code: where each stops"
+description: "No-code automation is right more often than agencies admit. Where each tool breaks down, and the volume at which custom code becomes the cheaper option."
 date: 2026-08-21
 category: "Automation"
 author: "Umvix Team"
@@ -31,7 +31,7 @@ Branching logic gets unwieldy fast, error handling is basic, and debugging a fai
 
 ## n8n and self-hosted
 
-**Best at:** everything Make does, plus you can host it yourself, keep data in your own infrastructure, and write JavaScript in a node when the visual builder runs out.
+**Best at:** everything Make does, plus you can [host it yourself](/blog/self-hosted-automation-n8n), keep data in your own infrastructure, and write JavaScript in a node when the visual builder runs out.
 
 **Where it stops:** you now operate a service — updates, uptime, backups.
 
@@ -39,9 +39,9 @@ Branching logic gets unwieldy fast, error handling is basic, and debugging a fai
 
 ## Custom code
 
-**Best at:** high volume, complex logic, tight integration with your own systems, and anything where correctness genuinely matters.
+**Best at:** high volume, complex logic, [tight integration with your own systems](/blog/automate-lead-routing), and anything where correctness genuinely matters.
 
-**Where it stops:** it is software. It needs to be written, tested, deployed, monitored, and maintained. For a workflow that runs twice a week, that overhead is absurd.
+**Where it stops:** it is software. It needs to be written, tested, deployed, [monitored](/blog/reliable-automation-error-handling), and maintained. For a workflow that runs twice a week, that overhead is absurd.
 
 **Use it when** at least two of these are true:
 
@@ -52,13 +52,80 @@ Branching logic gets unwieldy fast, error handling is basic, and debugging a fai
 
 ## The crossover, roughly
 
-There is no exact threshold, but a useful heuristic: when a single workflow's platform bill passes a few hundred dollars a month, or when a failure costs more than a day's engineering time, custom code starts winning. Below that, the no-code tool is almost certainly cheaper all-in.
+There is no exact threshold, but a useful heuristic: when a single workflow's platform bill passes a few hundred dollars a month, or when a failure costs more than a day's engineering time, custom code starts winning. Below that, the no-code tool is almost certainly cheaper all-in — and [the manual process it replaces](/blog/cost-of-manual-data-entry) is usually costing more than either.
+
+## Side by side
+
+| | Zapier | Make | n8n (self-hosted) | Custom |
+| --- | --- | --- | --- | --- |
+| Pricing basis | Per task (every step) | Per operation | Per hosted instance | Hosting + build |
+| Connector library | Largest | Large | Good | You build it |
+| Branching logic | Basic | Strong | Strong | Unlimited |
+| Error handling | Minimal | Good | Good | Whatever you design |
+| Version control | None | None | Export to git | Native |
+| Testing before ship | Manual runs | Manual runs | Manual runs | Real test suite |
+| Data residency | Vendor's | Vendor's | Yours | Yours |
+| Who can maintain it | Anyone | Ops-minded person | Technical person | Developer |
+
+The row that decides most migrations is version control. It is what turns a workflow from a drawing nobody dares change into something you can review, test, and roll back.
+
+## The cost crossover, with numbers
+
+A five-step workflow. Note that Zapier bills every step, so runs multiply.
+
+| Runs/month | Zapier (≈5 tasks/run) | Make (≈5 ops/run) | Self-hosted / custom |
+| --- | --- | --- | --- |
+| 500 | ~$30/mo | ~$10/mo | Hosting only |
+| 5,000 | ~$100–$150/mo | ~$30–$50/mo | Hosting only |
+| 50,000 | ~$400–$800/mo | ~$150–$300/mo | ~$30–$80/mo + maintenance |
+| 500,000 | Enterprise pricing | ~$500–$1,500/mo | ~$100–$300/mo + maintenance |
+
+Treat these as shape, not as a quote — vendor plans change. The pattern holds: below a few thousand runs a month the platform is unbeatable; somewhere in the tens of thousands the maths starts favouring code, and [the manual process you are replacing](/blog/cost-of-manual-data-entry) usually costs more than either option.
+
+## Migrating a workflow to code
+
+When one proves itself, move it deliberately:
+
+1. **Document what it actually does**, including the branches nobody remembers adding.
+2. **Write the tests first**, from real historical payloads. You now have months of them.
+3. **Run both in parallel**, with the new one writing to a staging destination. Compare outputs for a week.
+4. **Cut over**, leaving the platform version disabled rather than deleted.
+5. **Add [retries, a dead letter queue, and alerting](/blog/reliable-automation-error-handling)** — the reliability features you were outgrowing the platform for.
+6. **Delete the old one** after a month of clean running.
+
+## What no-code genuinely does better
+
+Worth stating, because engineers underrate it:
+
+- **Connector maintenance.** When an API changes, the vendor fixes it. In your code, you do.
+- **Visibility.** A non-technical colleague can see what runs and when.
+- **Speed of change.** A tweak is minutes, not a deploy.
+- **No infrastructure.** Nothing to patch, back up, or wake up for.
+
+That last set is why we recommend keeping low-volume workflows on a platform even after moving the heavy ones to code.
+
+## Common questions
+
+**Which is better, Zapier or Make?**
+Make, for anything with real branching, and it is cheaper at volume. Zapier, for the widest connector library and the simplest experience. If you are choosing today with no legacy, start with Make.
+
+**Is n8n a drop-in replacement?**
+Functionally close, and you can [self-host it](/blog/self-hosted-automation-n8n). The trade is that you now run a service — updates, backups, uptime.
+
+**Can I mix them?**
+Yes, and most mature setups do: platform for the long tail, code for the critical path. Right tool per workflow.
+
+**When is AI worth adding?**
+When a step needs judgement rather than rules — classifying free text, extracting from messy documents, drafting a reply. If rules can do it, rules are cheaper and more predictable, and [an agent is usually overkill](/blog/ai-agents-vs-chatbots).
+
+**How do I stop the bill climbing?**
+Reduce steps per run (filter early), avoid polling triggers where webhooks exist, and audit for scenarios that run on records they should have skipped. Most surprising bills are one workflow firing far more often than anyone thought.
 
 ## The approach we actually recommend
 
 **Prototype in a no-code tool. Migrate the ones that prove themselves.**
 
-Most automation ideas do not survive contact with reality. Building them properly first is expensive discovery. Build it in Make in an afternoon, run it for two months, and let the ones that matter reveal themselves — then rebuild those with tests and monitoring.
+Most automation ideas do not survive contact with reality — [start with the ones that pay back fastest](/blog/workflows-worth-automating-first). Building them properly first is expensive discovery. Build it in Make in an afternoon, run it for two months, and let the ones that matter reveal themselves — then rebuild those with tests and monitoring.
 
 The workflows that survive are the ones worth engineering. The rest quietly stop running, and you have lost an afternoon rather than a sprint.
 

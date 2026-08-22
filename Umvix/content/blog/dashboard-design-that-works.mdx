@@ -44,7 +44,7 @@ Most dashboards invert this and lead with a dense table.
 
 **State the freshness.** "Updated 4 minutes ago" prevents an entire category of misunderstanding.
 
-**Design the empty state.** A new account's first view is empty. That is your onboarding moment, and it is usually left as a blank grid.
+**Design the empty state.** A new account's first view is empty — one of the [floor features every SaaS needs before it can charge anyone](/blog/saas-mvp-cost). That is your onboarding moment, and it is usually left as a blank grid.
 
 **Design the error state.** When a data source fails, say so on the affected tile. Silently showing stale numbers is worse than showing nothing.
 
@@ -63,7 +63,7 @@ Most dashboards invert this and lead with a dense table.
 
 A dashboard that takes eight seconds gets checked less often, which defeats the point. Practical measures:
 
-- Pre-aggregate rather than computing from raw rows on every load.
+- Pre-aggregate rather than computing from raw rows on every load — and keep [per-tenant query caps](/blog/multi-tenant-saas-architecture) in place so one customer cannot slow everyone down.
 - Load the headline numbers first and stream the rest.
 - Cache aggressively and show the freshness timestamp so caching is honest.
 - Paginate or virtualise long tables.
@@ -73,5 +73,7 @@ A dashboard that takes eight seconds gets checked less often, which defeats the 
 Instrument the dashboard itself. Which tiles get looked at, which filters get used, which views get opened weekly versus never.
 
 Then remove what nobody uses. A dashboard that lost half its tiles and kept all its usage is a better dashboard, and the removal is the hardest part to get agreement on.
+
+If that dashboard is an internal tool other companies keep asking about, [there is a separate decision to make](/blog/internal-tool-to-saas-product).
 
 If you have a dashboard people ignore, we usually start by watching five people use it for ten minutes each. The findings are rarely subtle.

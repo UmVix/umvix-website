@@ -46,7 +46,7 @@ Give people granular controls — "order updates" separate from "recommendations
 
 - **Deep link every notification.** Tapping a notification must land on the relevant screen, not the home screen. Nothing erodes trust faster.
 - **Respect quiet hours in the user's timezone**, not your server's.
-- **Handle the cold-start case.** Notification taps when the app was killed are a distinct code path and the most commonly broken one.
+- **Handle the cold-start case.** Notification taps when the app was killed are a distinct code path and the most commonly broken one — and a crash here shows up in [your maintenance budget](/blog/mobile-app-maintenance-cost), not your build budget.
 - **Deduplicate.** Silent pushes plus visible pushes plus in-app messages can triple-notify the same event.
 - **Test on a real locked device.** Simulators lie about notification behaviour.
 
@@ -61,5 +61,7 @@ Open rate is a vanity metric — it tells you the notification was interesting, 
 ## The rule
 
 Send only what the user would be annoyed to have missed. Everything else belongs in an in-app inbox they can check when they choose.
+
+Notifications are one of the six flows we treat as non-negotiable in [a first-version scope](/blog/mobile-app-mvp-scope), and getting the permission strings right is also [an App Store review item](/blog/app-store-rejection).
 
 Building an app with a notification strategy? We design the permission flow and the categories alongside the app itself — it is much cheaper than retrofitting it after opt-in rates disappoint.
